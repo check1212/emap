@@ -1,0 +1,229 @@
+@charset "utf-8";
+/* Type Selector */
+*{margin:0; padding:0;margin:0; padding:0;}
+img, fieldset, button{border:none;}
+ul, ol, li {list-style:none;}
+hr, button img{display:none;}
+a{text-decoration:none;}
+a:hover, a:active, a:focus{text-decoration:none;}
+textarea{overflow:auto;}
+legend {position:absolute; top:0; left:0; width:0; height:0; overflow:hidden; visibility:hidden; font-size:0; line-height:0;} /* For Screen Reader */
+caption{display:none;}
+img{border:0; vertical-align: middle;}
+html, body{margin:0; padding:0; height: 100%;width: 100%;}
+html {overflow:hidden;}
+body {background:#fff;}
+body,div,ul,li,dl,dt,dd,ol,p,h1,h2,h3,h4,h5,h6,form {
+	margin:0; padding:0;
+}
+body {
+	font:normal 15px 'Nanum Gothic', '나눔 고딕', '맑은 고딕', '돋움', dotum; color:#000000;
+}
+h1 {
+	font-family:"굴림", Gulim, AppleGothic, Sans-serif; font-size:13pt;
+}
+h2 {  
+	color: #727272;
+    font-size: 1.4em;
+    line-height: 1.125em;
+    margin: 1.125em 0 0.208em;
+}  
+h3 {
+	font-size: 1.333em;
+    line-height: 1.125em;
+    margin: 1.688em 0 0.3125em;
+}
+input.text {
+    border-color: #ACACAC #D9D9D9 #D9D9D9 #ACACAC;
+    border-right: 1px solid #D9D9D9;
+    border-style: solid;
+    border-width: 1px;
+    color: #848484;
+    font-size: 11px;
+    height: 15px;   
+    padding: 3px 0 0 3px;}
+
+input {
+    color: #67625C;
+    font-family: gulim;
+    font-size: 1em;
+    vertical-align: middle;
+}
+select {
+    color: #444444;
+    font-size: 100%;
+    height: 21px;
+    vertical-align: middle;
+} 
+
+table .t_center {
+	text-align: center;
+}
+
+table .t_left {
+	text-align: left;
+}
+
+table input[type='checkbox'] {
+	height: 20px;
+	vertical-align:-5px;
+}
+
+#container {
+	width: 100%;
+	height: 100%;
+}
+
+.con_left {
+	width: 68px;
+	height: 100%;
+	float: left;
+	border-right: 1px solid #d4d4d4;
+}
+
+.div_left {
+	width: 295px;
+	height: 100%;
+	float: left;
+	display: none;
+	border-right: 1px solid #d4d4d4;
+}
+
+.div_left #div_left_route table {
+	width: 275px; 
+	border: 1px solid #d4d4d4;
+	cursor: default;
+}
+
+.div_left #div_left_route #route_resultlist table{
+    width: 100%;
+    border: 0px;
+    border-bottom: 1px solid #d4d4d4;
+    cursor: pointer;
+}
+
+.div_left #div_left_route #route_resultlist tr:hover {
+    background: #d4d4d4;
+}
+
+.div_left #div_left_route #route_resultlist {
+	height: 370px; 
+	margin: 0 10px;
+	border: 1px solid #d4d4d4;
+}
+
+.div_left #div_left_route button {
+	width: 275px;
+	margin: 10px 10px 0;
+	height: 40px;
+}
+
+.logo {
+	width: 51px;
+	height: 50px;
+	margin: 10px auto;
+	cursor: pointer;
+	/* background-image: url(../images/sk/logo.jpg); */
+}
+
+.nav {
+	width: 68px;
+	height: 100%;
+	/* background-image: url(../images/sk/nav.jpg); */
+}
+
+.map_tool {
+	width: 100%;	
+}
+.map_tool li {
+	text-align: center;
+}
+.map_tool li img {
+	margin: 1px auto;
+	cursor:pointer;
+}
+
+.option {
+	width: 68px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin-bottom: 10px;
+}
+.option li {
+	text-align: center;
+}
+.option li img {
+	margin: 1px auto;
+	cursor:pointer;
+}
+
+.slide1 {
+	width: 37px;
+	height: 64px;
+	position: absolute;
+	left: 68px;
+	z-index: 1;
+	cursor: pointer;
+	background-image: url(../images/sk/slide.jpg);
+}
+
+.slide1_on {
+	width: 37px;
+	height: 64px;
+	position: absolute;
+	left: 363px;
+	z-index: 1;
+	cursor: pointer;
+	background-image: url(../images/sk/slide_off.jpg);
+}
+
+.con_center {
+	width: 100%;
+	height: 100%;
+	float: left;
+}
+
+.map {
+	width: 100%;
+	height: 100%;
+}
+
+#div_route_detail {
+	width: 500px;
+	height: 320px;
+	left: 400px;
+	top: 100px;
+	border: 1px solid;
+	background: #ffffff;
+	position: absolute;
+	display: none;
+}
+
+#div_route_detail #route_detail_list {
+	width: 480px;
+	height: 155px;
+	margin: 0 10px 6px;
+	border: 1px solid;
+}
+
+#div_route_detail #route_detail_list tr:hover {
+    background: #d4d4d4;
+}
+
+.scale {
+	width: 420px;
+	height: 25px;
+	left: 85px;
+	top: 20px;
+	position: absolute;
+	background-color: rgba(213, 213, 213, 0.5);
+	text-align: center;
+	font-size: 15px;
+	font-weight:bold;
+}
+
+.pointer {
+	cursor: pointer;
+}

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sk">
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="SkShipVO" type="com.sk.SkShipVO"/>
+	<typeAlias  alias="RouteVO" type="com.sk.RouteVO"/>
+	<typeAlias  alias="RouteDetailVO" type="com.sk.RouteDetailVO"/>
+	
+	<select id="map.test" resultClass="RouteVO">
+		<![CDATA[ 
+			SELECT ROUTEID, ROUTENAME FROM "TB_RouteMaster"
+		]]>
+	</select>
+	
+	<select id="map.getPlanList" resultClass="RouteVO">
+		<![CDATA[ 
+			SELECT * FROM "TB_RouteMaster"
+		]]>
+	</select>
+	
+	<select id="map.getRouteList" resultClass="RouteVO">
+		<![CDATA[ 
+			SELECT * FROM "TB_RouteMaster"
+			 WHERE routeid = #routeid#
+		]]>
+	</select>
+	
+	<insert id="map.RouteInsert" parameterClass="RouteVO">
+    	<![CDATA[ 
+			INSERT INTO "TB_RouteMaster"(routename, makename, makedate, modifydate, usefg)
+			VALUES(#routename#,#makename#,now(),now(),'Y')
+		]]>
+  	</insert>
+	
+	<update id="map.RouteUpdate" parameterClass="RouteVO">
+    	<![CDATA[ 
+			UPDATE "TB_RouteMaster"
+			   SET routename = #routename#, makename = #makename#, modifydate = now()
+			 WHERE routeid = #routeid#
+		]]>
+  	</update>
+	
+	<insert id="map.RouteDetailInsert" parameterClass="RouteDetailVO">
+    	<![CDATA[ 
+			INSERT INTO "TB_RouteDetail"("ROUTEID", "routeseq", "lon", "lat")
+			VALUES(#routeid#,#routeseq#,#lon#,#lat#)
+		]]>
+  	</insert>
+	
+	<delete id="map.RouteDetailDelete" parameterClass="RouteDetailVO">
+    	<![CDATA[ 
+			DELETE FROM "TB_RouteDetail"
+			 WHERE "ROUTEID" = #routeid#
+		]]>
+  	</delete>
+	
+	<select id="map.getRouteDetailList" resultClass="RouteDetailVO">
+		<![CDATA[ 
+			SELECT * FROM "TB_RouteDetail"
+			 WHERE "ROUTEID" = #routeid#
+		]]>
+	</select>
+	
+	<delete id="map.RouteDelete" parameterClass="RouteDetailVO">
+    	<![CDATA[ 
+			DELETE FROM "TB_RouteMaster"
+			 WHERE routeid = #routeid#
+		]]>
+  	</delete>
+</sqlMap>            
