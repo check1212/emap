@@ -154,6 +154,7 @@ function mapEvent(){
 	$("#route_detail_close").on('click',function(e){
 		route_reset();
 		$('#div_route_detail').hide();
+		DrawRoute();
 	});
 
 	//항로계획 상세  wp 추가
