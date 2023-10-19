@@ -57,6 +57,7 @@
 <script type="text/javascript" src="<c:url value="/js/map/style.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/map.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/layer.js?version=${nowDate}"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/map/layerWeather.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/wfsLayer.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/interaction.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/measure.js?version=${nowDate}"/>"></script>
@@ -90,8 +91,8 @@ window.onload = function(){
 							<li class="tool4" id="mapMove"><img alt="" src="images/sk/maptool/btn4.jpg"></li>
 							<!-- <li class="tool5" id="mapSearch1"><img alt="" src="images/sk/maptool/btn5.jpg"></li> -->
 							<!-- <li class="tool6" id="mapSearch2"><img alt="" src="images/sk/maptool/btn6.jpg"></li>  -->
-							<!-- <li class="tool7" id="mapSearch3"><img alt="" src="images/sk/maptool/btn7.jpg"></li> -->
-							<li class="tool6" id="mapSearch2">항로계획</li>
+							<li class="tool7" id="mapSearch3"><img alt="" src="images/sk/maptool/btn7.jpg"></li>
+							<!-- <li class="tool6" id="mapSearch2">항로계획</li> -->
 						</ul>
 					</div>
 					<div class="option">
@@ -176,6 +177,48 @@ window.onload = function(){
 				<button id="route_detail_delete">삭제</button>
 			</div>
 			<div class="scale"> <span id="mouseLocationStat" style="width:210px;float:left;"></span>  <span id="mapZoomLevelStat" style="width:200px;float:left;">SCALE=>1:10.000[LEVEL:27]</span></div>
+
+<!-- 			<div class="leftMenu">
+				<table style="border-collapse: separate; border-spacing: 5px;">
+					<tr>
+						<td>선박관리</td>
+					</tr>
+					<tr height="1px">
+						<td style="background-color: #6395b2"></td>
+					</tr>
+					<tr>
+						<td>지도설정</td>
+					</tr>
+					<tr height="1px">
+						<td style="background-color: #6395b2"></td>
+					</tr>
+					<tr>
+						<td style="background-color: #487295; font-weight: bold">기상정보</td>
+					</tr>
+					<tr height="1px">
+						<td style="background-color: #6395b2"></td>
+					</tr>
+					<tr>
+						<td>항로계획</td>
+					</tr>
+					<tr height="1px">
+						<td style="background-color: #6395b2"></td>
+					</tr>
+					<tr>
+						<td>기타</td>
+					</tr>
+					<tr height="1px">
+						<td style="background-color: #6395b2"></td>
+					</tr>
+				</table>
+			</div> -->
+
+			<div class="leftMenu3">
+				<br>
+				<br>
+				&nbsp;<input type="checkbox" id="checkWindspeed" checked> 풍향/풍속&nbsp;<br>
+				&nbsp;<input type="checkbox" id="checkTemp" checked> 기온
+			</div>
 		</div>
 	</div>
 
