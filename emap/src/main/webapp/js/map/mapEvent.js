@@ -267,3 +267,12 @@ function getLayer(id) {
     }
 	return lyr;
 }
+
+function getFeatureId(layer, id) {
+	for(var i=0; i<layer.getSource().getFeatures().length; i++) {
+		var feature = layer.getSource().getFeatures()[i];
+		if(feature.get("id") == id) {
+			return feature;
+		}
+	}
+}
