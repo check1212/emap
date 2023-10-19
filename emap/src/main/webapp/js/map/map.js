@@ -29,11 +29,14 @@ var chocieShipMmsi="";  //상세선박정보 id
 var featTest;
 
 //35.5468629,129.3005359 울산
+// 중앙
 function mapInit(){
 	var view = new ol.View({
-		center: ol.proj.fromLonLat([129.567,35.448
+		//center: ol.proj.fromLonLat([129.567,35.448
+		center: ol.proj.fromLonLat([128.100,36.000
 		]),
-		zoom: 12,
+		//zoom: 12,
+		zoom: 7,
 	});
 	
 	googlemap = new ol.layer.Tile({
@@ -60,9 +63,15 @@ function mapInit(){
 		controls: new ol.control.defaults().extend([mouseControlCoordinate]),
 	});		
     map.on('moveend', onMoveEnd);
-     
+
+	// 해도 레이어
+	wmsInit();
+    map.removeLayer(googlemap); //배경맵 삭제
     vectorInit(); //베이스 vector레이어
     mapEvent(); //맵 버튼이벤트 설정
+
+	// 날씨 레이어
+	wmsWeatherInit();
 }
 
 //2초간격 스케쥴 메소드
@@ -114,6 +123,26 @@ function mapEvent(){
 		//fn_addInteractions();
 	});
 	
+	//항로계획
+	$("#mapSearch3").on('click',function(e){
+		deactiveInteractions();
+		let dis = $("#div_left_route").css("display");
+		if(dis == "block") {
+			route_reset();
+			
+			$("#mapSearch3 img").attr("src","images/sk/maptool/btn7.jpg");
+			$("#div_left_route").hide();
+			$("#div_route_detail").hide();
+			$(".div_left").hide();
+			$('#div_route_detail').hide();
+		} else {
+			search_plan();
+			
+			$("#mapSearch3 img").attr("src","images/sk/maptool/btn7_on.jpg");
+		}
+		setSize();		
+	});
+	
 	//항로계획 상세 저장
 	$("#route_detail_save").on('click',function(e){
 		route_save();
@@ -124,13 +153,18 @@ function mapEvent(){
 		route_reset();
 		$('#div_route_detail').hide();
 	});
-	
+
 	//항로계획 상세  wp 추가
 	$("#wp_add").on('click',function(e){
 		let data = $("#select_detail").val();
-		if(data == "") alert("WP 선택 후 등록 바랍니다.");
+		if(data == "") alert("WP 선택 후 사용 바랍니다.");
 		else detail_add();
 		
+	});
+	
+	//항로계획 상세  wp 수정
+	$("#wp_update").on('click',function(e){
+		route_update();
 	});
 	
 	//항로계획 상세 wp 삭제
@@ -146,6 +180,7 @@ function mapEvent(){
 	});
 }
 
+//WP Control
 function fn_addInteractions() {
 	
 	let lyr=getLayer("route_p");
@@ -227,6 +262,7 @@ function plan_detail(id) {
 	});
 }
 
+//항로계획 상세정보
 function RouteDetailList(id) {
 	$("#route_detail_list").html("");
 	let lyr_p =getLayer("route_p");
@@ -326,6 +362,7 @@ function route_save() {
 	});
 }
 
+//항로계획 상세 저장
 function route_detail_save() {
 	var arr_num = new Array();
 	var arr_lon = new Array();
@@ -417,6 +454,12 @@ function detail_add() {
 	fn_addInteractions();
 }
 
+//WP 수정
+function route_update() {
+	fn_addInteractions();
+}
+
+//WP 삭제
 function route_delete() {
 	$.ajax({
 		type: "POST",

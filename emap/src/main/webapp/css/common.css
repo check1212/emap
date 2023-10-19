@@ -224,6 +224,30 @@ table input[type='checkbox'] {
 	font-weight:bold;
 }
 
+.leftMenu {
+	position: absolute;
+	height: 100%;
+	color: white;
+	background-color: #3e688b;
+}
+
+.leftMenu3 {
+	position: absolute;
+	/* height: 100%; */
+	/* top: 65px;
+	left: 71px; */
+	/* color: white; */
+	text-align: left;
+	font-size: 8pt;
+	/* background-color: #487295 */
+}
+
+/* .popup {
+	color: white;
+	font-size: 10pt;
+	background-color: rgba(0, 11, 121, 0.5);
+} */
+
 .pointer {
 	cursor: pointer;
 }

@@ -8,7 +8,7 @@ function wmsInit(){
         source: new ol.source.TileWMS({
             url: geoserverWmsUrl,
             serverType: 'geoserver',
-            crossOrigin: 'anonymous',            
+            crossOrigin: 'anonymous',
             params: { 
             	'VERSION': '1.1.0' , 
                 'LAYERS': 'skemap:DEPAREA',               
@@ -71,7 +71,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_LNDARE_A);     
+    map.addLayer(lev6_LNDARE_A);
     
     //wms 강(기본맵처럼사용)
     var rivers = new ol.layer.Tile({
@@ -251,9 +251,26 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_SLCONS_L);   
-    
-    
+    map.addLayer(lev6_SLCONS_L);
+
+    //wms 닷 anchor
+    var anchor = new ol.layer.Tile({
+		id : 'anchor',
+    	title: 'anchor',
+    	opacity: 1,
+        source: new ol.source.TileWMS({
+            url: geoserverWmsUrl,
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous',            
+            params: { 
+            	'VERSION': '1.1.0' , 
+                'LAYERS': 'skemap:anchor',               
+                'CRS' : 'EPSG:3857',
+            },            
+        })
+    });
+    map.addLayer(anchor);
+
     
          
     lightIconlayer(); //등대,등표,부표 호출
