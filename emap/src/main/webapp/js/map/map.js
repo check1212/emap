@@ -173,7 +173,18 @@ function mapEvent(){
 	$("#wp_delete").on('click',function(e){
 		let data = $("#select_detail").val();
 		if(data == "") alert("WP 선택 후 삭제 바랍니다.");
-		else $("#detail_tr_"+$("#select_detail").val()).remove();
+		else {
+			$("#detail_tr_"+$("#select_detail").val()).remove();
+			var rt_info = getRouteInfo($("#hd_routeid").val());
+			var arr = new Array();
+			for(var i=0; i<$("#route_detail_list table tr").length; i++) {
+				var tr = $("#route_detail_list table tr")[i];
+				var tds = $(tr).children();
+				arr.push({lon : Number($(tds[3]).children().val()), lat : Number($(tds[2]).children().val())});
+			}
+			rt_info.lonlat = arr;
+			DrawRoute();
+		}
 	});
 	
 	//항로계획 상세삭제
