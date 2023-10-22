@@ -118,6 +118,29 @@ table input[type='checkbox'] {
 	height: 40px;
 }
 
+.div_left #div_left_ship table {
+	width: 275px; 
+	border: 1px solid #d4d4d4;
+	cursor: default;
+}
+
+.div_left #div_left_ship #ship_resultlist table{
+    width: 100%;
+    border: 0px;
+    border-bottom: 1px solid #d4d4d4;
+    cursor: pointer;
+}
+
+.div_left #div_left_ship #ship_resultlist tr:hover {
+    background: #d4d4d4;
+}
+
+.div_left #div_left_ship #ship_resultlist {
+	height: 370px; 
+	margin: 0 10px;
+	border: 1px solid #d4d4d4;
+}
+
 .logo {
 	width: 51px;
 	height: 50px;

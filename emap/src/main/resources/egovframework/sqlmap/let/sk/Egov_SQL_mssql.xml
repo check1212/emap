@@ -6,6 +6,7 @@
 	<typeAlias  alias="SkShipVO" type="com.sk.SkShipVO"/>
 	<typeAlias  alias="RouteVO" type="com.sk.RouteVO"/>
 	<typeAlias  alias="RouteDetailVO" type="com.sk.RouteDetailVO"/>
+	<typeAlias  alias="ShipInfoVO" type="com.sk.ShipInfoVO"/>
 	
 	<select id="map.test" resultClass="RouteVO">
 		<![CDATA[ 
@@ -68,4 +69,13 @@
 			 WHERE routeid = #routeid#
 		]]>
   	</delete>
+	
+	<select id="map.getShipSearch" resultClass="ShipInfoVO">
+		<![CDATA[ 
+			SELECT * FROM "TB_SHIP"
+			 WHERE ("MMSI","GatherTime") IN (
+					SELECT "MMSI", MAX("GatherTime") as time 
+					  FROM "TB_SHIP" GROUP BY "MMSI");
+		]]>
+	</select>
 </sqlMap>            

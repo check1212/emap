@@ -74,12 +74,8 @@ function mapInit(){
 
 	// 날씨 레이어
 	wmsWeatherInit();
-}
-
-//2초간격 스케쥴 메소드
-function scheduleShipInfo_old(){
-	getShipSearch(); //선박리스트 조회
-	//getShipSearch_Detail_Data(); //선박상세조회
+	
+	getShipSearch(); //선박정보
 }
 
 //맵 버튼이벤트 설정
@@ -107,10 +103,20 @@ function mapEvent(){
 	 	deactiveInteractions();
 	});
 	 
-	//항로범위
+	//선박정보
 	$("#mapSearch1").on('click',function(e){	
-	 	deactiveInteractions(); 	
-	 	setActiveDrawToolSearch('circle');
+	 	deactiveInteractions();
+	 	let dis = $("#div_left_ship").css("display");
+		if(dis == "block") {
+			$("#div_left_ship").hide();
+			$(".div_left").hide();
+		} else {
+			$("#div_left_route").hide();
+			$(".div_left").show();
+			$("#div_left_ship").show();
+			getShipList();
+		}
+		setSize();
 	});
 	
 	//프린트
@@ -130,17 +136,19 @@ function mapEvent(){
 		deactiveInteractions();
 		let dis = $("#div_left_route").css("display");
 		if(dis == "block") {
-			route_reset();
-			
-			$("#mapSearch3 img").attr("src","images/sk/maptool/btn7.jpg");
+			route_reset();			
+			//$("#mapSearch3 img").attr("src","images/sk/maptool/btn7.jpg");
 			$("#div_left_route").hide();
 			$("#div_route_detail").hide();
 			$(".div_left").hide();
 			$('#div_route_detail').hide();
 		} else {
-			search_plan();
-			
-			$("#mapSearch3 img").attr("src","images/sk/maptool/btn7_on.jpg");
+			$("#div_left_ship").hide();
+			$("#div_left_route").show();
+			$(".div_left").show();
+			$("#route_detail_list").html("");
+			search_plan();			
+			//$("#mapSearch3 img").attr("src","images/sk/maptool/btn7_on.jpg");
 		}
 		setSize();		
 	});
@@ -194,6 +202,23 @@ function mapEvent(){
 	});
 }
 
+var realtime_stack = 0;
+//선박위치보여주기..(주기적으로 부르게하는 펀션)
+function scheduleShipInfo(){	
+	realtime_stack ++;
+	setTimeout(function(){		
+		if(realtime_stack==1){
+			if(realtime_stack != 0){
+				realtime_stack = realtime_stack -1;
+			}
+			getShipSearch(); //선박리스트 조회		
+		}else{
+			if(realtime_stack == 0)realtime_stack = 0;
+			else realtime_stack = realtime_stack -1;
+		}
+    }, 10000);	
+}
+
 //WP Control
 function fn_addInteractions() {
 	
@@ -241,10 +266,7 @@ function fn_addInteractions() {
 
 //항로계획 리스트
 function search_plan(){
-	$("#div_left_route").show();
-	$(".div_left").show();
-
-	$("#route_detail_list").html("");
+	route_list = [];
 	setSize();
 	
 	$.ajax({
@@ -525,4 +547,90 @@ function getRouteInfo(id) {
 			return route_list[i];
 		}
 	}
+}
+
+//선박정보
+function getShipSearch() {
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		url: "getShipSearch.do",
+		asyn: false,
+		data : { },
+		success: function(data) {		    
+			shipList = [];
+			ship_layer.getSource().clear();
+			//console.log(data);		    
+			if(data != null){
+				shipList = data;
+				makeShipFeature(); //선박리스트 feat만들기
+				scheduleShipInfo(); //스케쥴 다시 호출
+			}
+		}
+	});
+}
+
+//선박리스트
+function makeShipFeature() {
+	//선박 레이어 라인 표시
+	for(var i=0;i<shipList.length;i++){
+		var item = shipList[i];
+		var pointFeature = new ol.Feature({
+			geometry: new ol.geom.Point([Number(item.lon),Number(item.lat)])
+		});				
+		let c_geometry = pointFeature.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
+			
+		shipNameText = shipList[i].mmsi+"\n"+shipList[i].shipname; //이름인경우
+		
+		pointFeature.id = "ship_"+shipList[i].mmsi;
+		pointFeature.setStyle(
+			new ol.style.Style({		            
+					image: new ol.style.Icon({
+					src: 'images/sk/shipIcon.png',
+		        	anchor: [0.8, 0.8],		
+		        	rotateWithView: true,
+					rotation: item.theading!=null?item.theading:0,			          	
+				}),
+				text: new ol.style.Text({
+					textAlign: 'center',
+		            font:  'bold '+shipStyle.font+'px Arial',
+		            fill: new ol.style.Fill({color: shipStyle.color}),
+		            stroke: new ol.style.Stroke({color:'#ffffff', width:0}),
+		            text: shipNameText,
+		            offsetX: 0,
+		            offsetY: -25,
+		            overflow:true,
+		        })
+			})
+		);		
+		
+		try{
+			ship_layer.getSource().addFeature(pointFeature);
+		}catch(e){
+			console.log(e);
+			console.log("shipList[i] error : "+shipList[i].mmsi);
+		}
+	}
+}
+
+function getShipList() {
+	var str = "<table style='width: 100%'  border='1' cellspacing='0'><colgroup><col width='50%'><col width='50%'></colgroup>";
+	for(var i=0;i<shipList.length;i++){
+		var item = shipList[i];
+		str += "<tr onclick='getShipCenter("+item.lon+","+item.lat+");'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'>"+item.shipname+"</td>";
+		str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'>"+item.mmsi+"</td></tr>";
+	}
+	str += "</table>";
+
+	$("#ship_resultlist").html(str);
+}
+
+function getShipCenter(lon, lat){
+	var pointFeature = new ol.Feature({
+		geometry: new ol.geom.Point([Number(lon),Number(lat)])
+	});				
+	let c_geometry = pointFeature.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
+	var lyrCenter = ol.extent.getCenter(pointFeature.getGeometry().getExtent());
+	map.getView().setCenter(lyrCenter);
+    map.getView().setZoom(14);
 }

@@ -89,7 +89,7 @@ window.onload = function(){
 							<li class="tool2" id="mapZoomIn"><img alt="" src="images/sk/maptool/btn2.jpg"></li>
 							<li class="tool3" id="mapZoomOut"><img alt="" src="images/sk/maptool/btn3.jpg"></li>
 							<li class="tool4" id="mapMove"><img alt="" src="images/sk/maptool/btn4.jpg"></li>
-							<!-- <li class="tool5" id="mapSearch1"><img alt="" src="images/sk/maptool/btn5.jpg"></li> -->
+							<li class="tool5" id="mapSearch1"><img alt="" src="images/sk/maptool/btn5.jpg"></li> -
 							<!-- <li class="tool6" id="mapSearch2"><img alt="" src="images/sk/maptool/btn6.jpg"></li>  -->
 							<li class="tool7" id="mapSearch3"><img alt="" src="images/sk/maptool/btn7.jpg"></li>
 							<!-- <li class="tool6" id="mapSearch2">항로계획</li> -->
@@ -125,6 +125,16 @@ window.onload = function(){
 							<option value="0.5">0.5NM</option>
 						</select>
 					</div>
+				</div>
+				<div id="div_left_ship" style="display: none;">
+					<table style="margin: 10px 10px 0;">
+						<colgroup><col width="50%"><col width="50%"></colgroup>
+						<tr>
+							<th style="padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;">선명</th>
+							<th style="padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;">IMO 번호</th>
+						</tr>
+					</table>
+					<div id="ship_resultlist"></div>
 				</div>
 			</div>
 			<div class="con_center">

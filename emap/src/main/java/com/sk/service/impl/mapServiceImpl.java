@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sk.SkShipVO;
 import com.sk.RouteDetailVO;
 import com.sk.RouteVO;
+import com.sk.ShipInfoVO;
 import com.sk.service.mapService;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -85,6 +86,11 @@ public class mapServiceImpl extends EgovAbstractServiceImpl implements mapServic
 	@Override
 	public int RouteDelete(RouteDetailVO vo) throws Exception {
 		return mapDAO.RouteDelete(vo);
+	}
+	
+	@Override
+	public List<ShipInfoVO> getShipSearch() throws Exception {
+		return mapDAO.getShipSearch();
 	}
 
 }
