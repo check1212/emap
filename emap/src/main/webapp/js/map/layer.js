@@ -1,5 +1,5 @@
 var geoserverWmsUrl = "http://141.164.62.150:8089/geoserver/wms";
-function wmsInit(){	
+function wmsInit(){
 	//wms 바다(기본맵처럼사용)
 	var DEPAREA = new ol.layer.Tile({
 		id : 'DEPAREA',
