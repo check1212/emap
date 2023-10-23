@@ -80,7 +80,7 @@ function setSize() {
 		$(".con_center").width(window_w-left_w-l_div-4+"px");
 		$(".con_center").height(window_h+"px");
 		$("#route_resultlist").height(window_h-135+"px");
-		$("#ship_resultlist").height(window_h-55+"px");
+		$("#ship_resultlist").height(window_h-75+"px");
 		
 		$(".scale").css({'left': 115+l_div+"px"});
 		

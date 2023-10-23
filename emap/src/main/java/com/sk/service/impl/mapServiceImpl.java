@@ -92,5 +92,10 @@ public class mapServiceImpl extends EgovAbstractServiceImpl implements mapServic
 	public List<ShipInfoVO> getShipSearch() throws Exception {
 		return mapDAO.getShipSearch();
 	}
+	
+	@Override
+	public List<ShipInfoVO> getShipOne(ShipInfoVO vo) throws Exception {
+		return mapDAO.getShipOne(vo);
+	}
 
 }

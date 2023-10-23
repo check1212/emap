@@ -135,6 +135,8 @@ window.onload = function(){
 						</tr>
 					</table>
 					<div id="ship_resultlist"></div>
+					<button id="ship_search">항적 조회</button>					
+					<input type="hidden" id="select_ship">
 				</div>
 			</div>
 			<div class="con_center">

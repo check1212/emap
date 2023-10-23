@@ -91,4 +91,9 @@ public class mapDAO extends EgovComAbstractDAO {
    	public List<ShipInfoVO> getShipSearch() throws Exception {
     	return (List<ShipInfoVO>) list("map.getShipSearch");
     }
+    
+    @SuppressWarnings("unchecked")
+   	public List<ShipInfoVO> getShipOne(ShipInfoVO vo) throws Exception {
+    	return (List<ShipInfoVO>) list("map.getShipOne", vo);
+    }
 }

@@ -200,6 +200,13 @@ function mapEvent(){
 	$("#route_detail_delete").on('click',function(e){
 		route_delete();
 	});
+	
+	//항로 조회
+	$("#ship_search").on('click',function(e){
+		let data = $("#select_ship").val();
+		if(data == "") alert("선박 선택 후 사용 바랍니다.");
+		else drawShipRoute();
+	});
 }
 
 var realtime_stack = 0;
@@ -564,7 +571,7 @@ function getShipSearch() {
 			if(data != null){
 				shipList = data;
 				makeShipFeature(); //선박리스트 feat만들기
-				scheduleShipInfo(); //스케쥴 다시 호출
+				//scheduleShipInfo(); //스케쥴 다시 호출
 			}
 		}
 	});
@@ -614,18 +621,27 @@ function makeShipFeature() {
 }
 
 function getShipList() {
+	$("#select_ship").val("");
 	var str = "<table style='width: 100%'  border='1' cellspacing='0'><colgroup><col width='50%'><col width='50%'></colgroup>";
 	for(var i=0;i<shipList.length;i++){
 		var item = shipList[i];
-		str += "<tr onclick='getShipCenter("+item.lon+","+item.lat+");'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'>"+item.shipname+"</td>";
+		str += "<tr onclick='getShipCenter("+item.mmsi+","+item.lon+","+item.lat+");'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'>"+item.shipname+"</td>";
 		str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'>"+item.mmsi+"</td></tr>";
 	}
 	str += "</table>";
 
 	$("#ship_resultlist").html(str);
+	
+	$("#ship_resultlist table tr").on('click',function(e){
+		for(var i=0; i<$("#ship_resultlist table tr").length; i++) {
+			var tr = $("#ship_resultlist table tr")[i];
+			$(tr).css("background","#ffffff");
+		}
+		$(this).css("background","#d4d4d4");				
+	});
 }
 
-function getShipCenter(lon, lat){
+function getShipCenter(id,lon, lat){
 	var pointFeature = new ol.Feature({
 		geometry: new ol.geom.Point([Number(lon),Number(lat)])
 	});				
@@ -633,4 +649,83 @@ function getShipCenter(lon, lat){
 	var lyrCenter = ol.extent.getCenter(pointFeature.getGeometry().getExtent());
 	map.getView().setCenter(lyrCenter);
     map.getView().setZoom(14);
+    $("#select_ship").val(id);
+    wfs_layer.getSource().clear();	
+}
+
+function drawShipRoute() {
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		url: "getShipOne.do",
+		asyn: false,
+		data : { mmsi : $("#select_ship").val() },
+		success: function(data) { 
+			wfs_layer.getSource().clear();	   
+			if(data != null){
+				var arr_line = new Array();
+				for(var i=0; i<data.length; i++) {				
+					arr_line.push([Number(data[i].lon),Number(data[i].lat)]);
+					var pointFeature = new ol.Feature({
+						geometry: new ol.geom.Point([Number(data[i].lon),Number(data[i].lat)])
+					});	
+					let c_geometry2 = pointFeature.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
+					var pointLabel = "";
+					if(i != data.length-1){
+						pointFeature.setStyle(
+								new ol.style.Style({
+									image: new ol.style.Circle({
+							            radius: 4,
+							            fill: new ol.style.Fill({
+							                color: shipStyle.color
+							            }),
+							            stroke: new ol.style.Stroke({
+								        	color: '#ffffff',
+								        	width: 1,
+								      	})
+							        }),		            
+						            text: new ol.style.Text({
+						                textAlign: 'center',
+						                font:  'bold '+shipStyle.font+'px Arial',
+						                fill: new ol.style.Fill({color: shipStyle.color}),
+						                stroke: new ol.style.Stroke({color:'#ffffff', width:0}),
+						                text: data[i].gathertime,
+						                offsetX: 70,
+						                offsetY: 0,
+						                overflow:true,
+						            })
+						      	})
+							);
+					}
+					wfs_layer.getSource().addFeature(pointFeature);
+				}
+				styles = [
+				    // linestring
+				    new ol.style.Style({
+				      stroke: new ol.style.Stroke({
+				        color: '#ff0000',
+				        width: 2,
+				      })					      
+				    }),
+				];
+				var feat_line = new ol.Feature({
+					geometry:new ol.geom.LineString(arr_line)
+				});
+				feat_line.setStyle(styles);
+				let c_geometry = feat_line.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
+				
+				try{
+					wfs_layer.getSource().addFeature(feat_line);
+					
+					var lyrCenter = ol.extent.getCenter(feat_line.getGeometry().getExtent());			
+					//zoom, center 설정
+				    //map.getView().setCenter(lyrCenter);
+				    //map.getView().setZoom(17);						
+				}catch(e){
+					console.log(e);
+					console.log("error : "+item.mmsi);
+				}
+			}
+		}
+	});
 }
