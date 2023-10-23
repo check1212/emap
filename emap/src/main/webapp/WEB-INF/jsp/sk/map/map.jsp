@@ -225,9 +225,10 @@ window.onload = function(){
 
 			<div class="leftMenu3">
 				<br>
-				<br>
 				&nbsp;<input type="checkbox" id="checkWindspeed" checked> 풍향/풍속&nbsp;<br>
-				&nbsp;<input type="checkbox" id="checkTemp" checked> 기온
+				&nbsp;<input type="checkbox" id="checkFlowspeed" checked> 유향/유속&nbsp;<br>
+				&nbsp;<input type="checkbox" id="checkWaveheight" checked> 파향/파고&nbsp;<br>
+				&nbsp;<input type="checkbox" id="checkTemp" checked> 기온&nbsp;<br>
 			</div>
 		</div>
 	</div>
