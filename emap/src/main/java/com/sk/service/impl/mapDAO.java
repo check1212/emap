@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.sk.SkShipVO;
 import com.sk.RouteDetailVO;
 import com.sk.RouteVO;
+import com.sk.ShipInfoVO;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 
@@ -84,5 +85,10 @@ public class mapDAO extends EgovComAbstractDAO {
     @SuppressWarnings("unchecked")
    	public int RouteDelete(RouteDetailVO vo) throws Exception {
     	return (int) update("map.RouteDelete", vo);
+    }
+    
+    @SuppressWarnings("unchecked")
+   	public List<ShipInfoVO> getShipSearch() throws Exception {
+    	return (List<ShipInfoVO>) list("map.getShipSearch");
     }
 }

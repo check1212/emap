@@ -32,6 +32,7 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 import com.sk.SkShipVO;
 import com.sk.RouteDetailVO;
 import com.sk.RouteVO;
+import com.sk.ShipInfoVO;
 import com.sk.service.LibJson;
 import com.sk.service.mapService;
 
@@ -153,17 +154,6 @@ public class WebController {
 				System.out.println("lon :" + vo.getLon());
 				System.out.println("lat :" + vo.getLat());
 				mapService.RouteDetailInsert(vo);
-			/*} else {
-				vo.setRouteid(Integer.parseInt(id));
-				vo.setRouteseq(Integer.parseInt(num));
-				vo.setLon(arr_lon[i]);
-				vo.setLat(arr_lat[i]);
-				System.out.println("R_pointid :" + vo.getR_pointid());
-				System.out.println("Routeid :" + vo.getRouteid());
-				System.out.println("lon :" + vo.getLon());
-				System.out.println("lat :" + vo.getLat());
-				mapService.RouteDetailUpdate(vo);
-			}*/
 		}
 		json.Json(res, list);
 	}
@@ -210,9 +200,19 @@ public class WebController {
 		RouteDetailVO vo = new RouteDetailVO();
 		vo.setRouteid(Integer.parseInt(id));
 		mapService.RouteDetailDelete(vo);
-		mapService.RouteDelete(vo);
-		
-		
+		mapService.RouteDelete(vo);		
 		json.Json(res, list);
+	}
+	
+	//선박정보
+	@RequestMapping("getShipSearch.do")
+	public void getShipSearch(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		System.out.println("getShipSearch : start!");	
+		List<ShipInfoVO> slist = mapService.getShipSearch();		
+		System.out.println("slist.size() : "+slist.size());
+		if(slist.size() > 0) {			
+			/*json으로 정보 전달*/
+			json.Json(res, slist);
+		}
 	}
 }

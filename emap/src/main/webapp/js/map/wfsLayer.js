@@ -43,6 +43,23 @@ function vectorInit(){
     });
     map.addLayer(plan_l);
     
+    //선박 벡터레이어
+    ship_layer = new ol.layer.Vector({
+    	id: "shipLayer",
+		source: shipSource,
+		style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 228, 0, 0.5)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#FF007F',
+                width: 2
+            }),
+        }),
+        zIndex : 9999
+	});
+    map.addLayer(ship_layer);
+    
     /*
 	//항로범위
     const mapSearch2 = new ol.layer.Vector({
@@ -93,23 +110,6 @@ function vectorInit(){
         zIndex : 9999
 	});
     map.addLayer(wfs_layer);    
-    
-    //선박 벡터레이어
-    ship_layer = new ol.layer.Vector({
-    	id: "shipLayer",
-		source: shipSource,
-		style: new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: 'rgba(255, 228, 0, 0.5)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: '#FF007F',
-                width: 2
-            }),
-        }),
-        zIndex : 9999
-	});
-    map.addLayer(ship_layer);
     
     //선박상세 벡터레이어
     shipDetail_layer = new ol.layer.Vector({

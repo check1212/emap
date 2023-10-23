@@ -6,6 +6,8 @@ var year = date.getFullYear();
 var month = ("0" + (1 + date.getMonth())).slice(-2);
 var day = ("0" + date.getDate()).slice(-2);
 
+var route_list = [];
+
 var ColorPickerValue = "#ff0000";
 var shipStyle={
 	font : "12",
@@ -72,12 +74,8 @@ function mapInit(){
 
 	// 날씨 레이어
 	wmsWeatherInit();
-}
-
-//2초간격 스케쥴 메소드
-function scheduleShipInfo_old(){
-	getShipSearch(); //선박리스트 조회
-	//getShipSearch_Detail_Data(); //선박상세조회
+	
+	getShipSearch(); //선박정보
 }
 
 //맵 버튼이벤트 설정
@@ -105,10 +103,20 @@ function mapEvent(){
 	 	deactiveInteractions();
 	});
 	 
-	//항로범위
+	//선박정보
 	$("#mapSearch1").on('click',function(e){	
-	 	deactiveInteractions(); 	
-	 	setActiveDrawToolSearch('circle');
+	 	deactiveInteractions();
+	 	let dis = $("#div_left_ship").css("display");
+		if(dis == "block") {
+			$("#div_left_ship").hide();
+			$(".div_left").hide();
+		} else {
+			$("#div_left_route").hide();
+			$(".div_left").show();
+			$("#div_left_ship").show();
+			getShipList();
+		}
+		setSize();
 	});
 	
 	//프린트
@@ -128,17 +136,19 @@ function mapEvent(){
 		deactiveInteractions();
 		let dis = $("#div_left_route").css("display");
 		if(dis == "block") {
-			route_reset();
-			
-			$("#mapSearch3 img").attr("src","images/sk/maptool/btn7.jpg");
+			route_reset();			
+			//$("#mapSearch3 img").attr("src","images/sk/maptool/btn7.jpg");
 			$("#div_left_route").hide();
 			$("#div_route_detail").hide();
 			$(".div_left").hide();
 			$('#div_route_detail').hide();
 		} else {
-			search_plan();
-			
-			$("#mapSearch3 img").attr("src","images/sk/maptool/btn7_on.jpg");
+			$("#div_left_ship").hide();
+			$("#div_left_route").show();
+			$(".div_left").show();
+			$("#route_detail_list").html("");
+			search_plan();			
+			//$("#mapSearch3 img").attr("src","images/sk/maptool/btn7_on.jpg");
 		}
 		setSize();		
 	});
@@ -152,6 +162,7 @@ function mapEvent(){
 	$("#route_detail_close").on('click',function(e){
 		route_reset();
 		$('#div_route_detail').hide();
+		DrawRoute();
 	});
 
 	//항로계획 상세  wp 추가
@@ -171,13 +182,41 @@ function mapEvent(){
 	$("#wp_delete").on('click',function(e){
 		let data = $("#select_detail").val();
 		if(data == "") alert("WP 선택 후 삭제 바랍니다.");
-		else $("#detail_tr_"+$("#select_detail").val()).remove();
+		else {
+			$("#detail_tr_"+$("#select_detail").val()).remove();
+			var rt_info = getRouteInfo($("#hd_routeid").val());
+			var arr = new Array();
+			for(var i=0; i<$("#route_detail_list table tr").length; i++) {
+				var tr = $("#route_detail_list table tr")[i];
+				var tds = $(tr).children();
+				arr.push({lon : Number($(tds[3]).children().val()), lat : Number($(tds[2]).children().val())});
+			}
+			rt_info.lonlat = arr;
+			DrawRoute();
+		}
 	});
 	
 	//항로계획 상세삭제
 	$("#route_detail_delete").on('click',function(e){
 		route_delete();
 	});
+}
+
+var realtime_stack = 0;
+//선박위치보여주기..(주기적으로 부르게하는 펀션)
+function scheduleShipInfo(){	
+	realtime_stack ++;
+	setTimeout(function(){		
+		if(realtime_stack==1){
+			if(realtime_stack != 0){
+				realtime_stack = realtime_stack -1;
+			}
+			getShipSearch(); //선박리스트 조회		
+		}else{
+			if(realtime_stack == 0)realtime_stack = 0;
+			else realtime_stack = realtime_stack -1;
+		}
+    }, 10000);	
 }
 
 //WP Control
@@ -209,8 +248,17 @@ function fn_addInteractions() {
 		$("#"+f.feature.id+"_lat").val(x.toFixed(3));
 		$("#"+f.feature.id+"_lon").val(y.toFixed(3));
 		
+		var rt_info = getRouteInfo($("#hd_routeid").val());
+		var arr = new Array();
+		for(var i=0; i<$("#route_detail_list table tr").length; i++) {
+			var tr = $("#route_detail_list table tr")[i];
+			var tds = $(tr).children();
+			arr.push({lon : Number($(tds[3]).children().val()), lat : Number($(tds[2]).children().val())});
+		}
+		rt_info.lonlat = arr;
 		f.feature.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
 		
+		DrawRoute();
 		deactiveInteractions();
 	});
 	map.addInteraction(drawInteration_route);
@@ -218,25 +266,84 @@ function fn_addInteractions() {
 
 //항로계획 리스트
 function search_plan(){
-	$("#div_left_route").show();
-	$(".div_left").show();
+	route_list = [];
 	setSize();
 	
 	$.ajax({
 		type: "POST",
 		dataType: "json",
 		url: "getPlanList.do",
+		async : false,
 		success: function(data) {
 			if(data != null){
 				var str = "<table><colgroup><col width='60%'><col width='40%'></colgroup>";
 				for(var i=0;i<data.length;i++){
-					str += "<tr onclick='plan_detail(\""+ data[i].routeid +"\")'><td>"+data[i].routename+"</td><td>"+data[i].modifydate+"</td></tr>";
+					str += "<tr onclick='plan_detail(\""+ data[i].routeid +"\")'><td>"+data[i].routename+"</td><td>"+data[i].modifydate+"</td></tr>";				
+
+					var route_info = {
+							id : data[i].routeid,
+							lonlat : []
+					}
+					route_list.push(route_info);
+					RouteDetailList(data[i].routeid,route_info);
+					DrawRoute();
 				}
 				str += "</table>";
 				$("#route_resultlist").html(str);
 			}
 		}
 	});
+}
+
+//항로계획 상세정보 리스트
+function RouteDetailList(id, info) {
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		url: "RouteDetailList.do",			
+		data : {
+			id : id
+		},
+		async : false,
+		success: function(data) {
+			var lonlat = new Array();
+			for(var i=0;i<data.length;i++){
+				lonlat.push({lon : data[i].lon, lat : data[i].lat});
+			}
+			info.lonlat = lonlat;			
+		}
+	});
+}
+
+//항로계획 feature 그리기
+function DrawRoute() {
+	let lyr_p =getLayer("route_p");
+	let lyr_l =getLayer("route_l");
+	lyr_p.getSource().clear();
+	lyr_l.getSource().clear();
+	
+	for(var i=0; i<route_list.length; i++) {
+		var r = route_list[i];
+		var arr_line = new Array();
+		for(var j=0; j<r.lonlat.length; j++) {
+			var point = [Number(r.lonlat[j].lon),Number(r.lonlat[j].lat)];
+			var feat_p = new ol.Feature({
+				id:"rt_"+r.id+"_"+j,
+				geometry:new ol.geom.Point(point)
+			});	
+			feat_p.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
+			
+			lyr_p.getSource().addFeature(feat_p);
+			
+			arr_line.push([Number(r.lonlat[j].lon),Number(r.lonlat[j].lat)]);
+		}
+		var feat_line = new ol.Feature({
+			id:"rt_"+r.id,
+			geometry:new ol.geom.LineString(arr_line)
+		});
+		let c_geometry = feat_line.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
+		lyr_l.getSource().addFeature(feat_line);
+	}
 }
 
 //항로계획 상세정보
@@ -254,76 +361,36 @@ function plan_detail(id) {
 				$("#txt_routename").val(data[0].routename);
 				$("#txt_makename").val(data[0].makename);
 				$("#txt_modifydate").text(data[0].modifydate);
-				RouteDetailList(id);
 				
+				var route_info = getRouteInfo(data[0].routeid);				
+				var str = "<table style='width: 100%'  border='1' cellspacing='0'><colgroup><col width='15%'><col width='25%'><col width='30%'><col width='30%'></colgroup>";
+				for(var j=0; j<route_info.lonlat.length; j++) {
+					str += "<tr id='detail_tr_"+j+"'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'>"+(j+1)+"</td>";
+					str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' style='width: 105px;' value=''></td>";
+					str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' style='width: 128px;' id='rt_"+route_info.id+"_"+j+"_lat' value='"+route_info.lonlat[j].lat+"'></td>";
+					str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' style='width: 128px;' id='rt_"+route_info.id+"_"+j+"_lon'value='"+route_info.lonlat[j].lon+"'></td>";
+					str += "</tr>";
+					let lyr_l =getLayer("route_l");
+					var f = getFeatureId(lyr_l, "rt_"+data[0].routeid);
+					var lyrCenter = ol.extent.getCenter(f.getGeometry().getExtent());			
+					//zoom, center 설정
+				    map.getView().setCenter(lyrCenter);
+				    map.getView().setZoom(13);	
+				}
+				$("#route_detail_list").html(str);
+						
+				$("#route_detail_list table tr").on('click',function(e){
+					for(var i=0; i<$("#route_detail_list table tr").length; i++) {
+						var tr = $("#route_detail_list table tr")[i];
+						$(tr).css("background","#ffffff");
+						if(tr.id == this.id) {
+							$("#select_detail").val(i);
+						}
+					}
+					$(this).css("background","#d4d4d4");				
+				});
 				$("#div_route_detail").show();
 			}
-		}
-	});
-}
-
-//항로계획 상세정보
-function RouteDetailList(id) {
-	$("#route_detail_list").html("");
-	let lyr_p =getLayer("route_p");
-	let lyr_l =getLayer("route_l");
-	lyr_p.getSource().clear();
-	lyr_l.getSource().clear();
-	$.ajax({
-		type: "POST",
-		dataType: "json",
-		url: "RouteDetailList.do",			
-		data : {
-			id : id
-		},
-		success: function(data) {
-			var str = "<table style='width: 100%'  border='1' cellspacing='0'><colgroup><col width='15%'><col width='25%'><col width='30%'><col width='30%'></colgroup>";
-			var arr_line = new Array();
-			
-			for(var i=0;i<data.length;i++){
-				str += "<tr id='detail_tr_"+i+"'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'>"+data[i].routeseq+"</td>";
-				str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' style='width: 105px;' value=''></td>";
-				str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' style='width: 128px;' id='rt_"+$("#hd_routeid").val()+"_"+$("#select_detail").val()+"_lat' value='"+data[i].lat+"'></td>";
-				str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' style='width: 128px;' id='rt_"+$("#hd_routeid").val()+"_"+$("#select_detail").val()+"_lon'value='"+data[i].lon+"'></td>";
-				str += "</tr>";
-				
-				var point = [Number(data[i].lon),Number(data[i].lat)];
-				var feat_p = new ol.Feature({
-					id:"rt_"+$("#hd_routeid").val()+"_"+$("#select_detail").val(),
-					geometry:new ol.geom.Point(point)
-				});	
-				feat_p.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
-				
-				lyr_p.getSource().addFeature(feat_p);
-				
-				arr_line.push([Number(data[i].lon),Number(data[i].lat)]);
-			}
-			str += "</table>";
-			$("#route_detail_list").html(str);
-			
-			var feat_line = new ol.Feature({
-				geometry:new ol.geom.LineString(arr_line)
-			});	
-			let c_geometry = feat_line.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
-			lyr_l.getSource().addFeature(feat_line);
-			
-			var lyrCenter = ol.extent.getCenter(feat_line.getGeometry().getExtent());			
-			//zoom, center 설정
-		    map.getView().setCenter(lyrCenter);
-		    map.getView().setZoom(13);
-
-			$("#route_detail_list table tr").on('click',function(e){
-				console.log($(this));
-				for(var i=0; i<$("#route_detail_list table tr").length; i++) {
-					var tr = $("#route_detail_list table tr")[i];
-					$(tr).css("background","#ffffff");
-					if(tr.id == this.id) {
-						$("#select_detail").val(i);
-					}
-				}
-				$(this).css("background","#d4d4d4");				
-			});
-			
 		}
 	});
 }
@@ -410,7 +477,6 @@ function detail_add() {
 		$("#route_detail_list").html(str);
 
 		$("#route_detail_list table tr").on('click',function(e){
-			console.log($(this));
 			for(var i=0; i<$("#route_detail_list table tr").length; i++) {
 				var tr = $("#route_detail_list table tr")[i];
 				$(tr).css("background","#ffffff");
@@ -475,3 +541,96 @@ function route_delete() {
 	});
 }
 
+function getRouteInfo(id) {
+	for(var i=0; i<route_list.length; i++) {
+		if(route_list[i].id == id) {
+			return route_list[i];
+		}
+	}
+}
+
+//선박정보
+function getShipSearch() {
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		url: "getShipSearch.do",
+		asyn: false,
+		data : { },
+		success: function(data) {		    
+			shipList = [];
+			ship_layer.getSource().clear();
+			//console.log(data);		    
+			if(data != null){
+				shipList = data;
+				makeShipFeature(); //선박리스트 feat만들기
+				scheduleShipInfo(); //스케쥴 다시 호출
+			}
+		}
+	});
+}
+
+//선박리스트
+function makeShipFeature() {
+	//선박 레이어 라인 표시
+	for(var i=0;i<shipList.length;i++){
+		var item = shipList[i];
+		var pointFeature = new ol.Feature({
+			geometry: new ol.geom.Point([Number(item.lon),Number(item.lat)])
+		});				
+		let c_geometry = pointFeature.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
+			
+		shipNameText = shipList[i].mmsi+"\n"+shipList[i].shipname; //이름인경우
+		
+		pointFeature.id = "ship_"+shipList[i].mmsi;
+		pointFeature.setStyle(
+			new ol.style.Style({		            
+					image: new ol.style.Icon({
+					src: 'images/sk/shipIcon.png',
+		        	anchor: [0.8, 0.8],		
+		        	rotateWithView: true,
+					rotation: item.theading!=null?item.theading:0,			          	
+				}),
+				text: new ol.style.Text({
+					textAlign: 'center',
+		            font:  'bold '+shipStyle.font+'px Arial',
+		            fill: new ol.style.Fill({color: shipStyle.color}),
+		            stroke: new ol.style.Stroke({color:'#ffffff', width:0}),
+		            text: shipNameText,
+		            offsetX: 0,
+		            offsetY: -25,
+		            overflow:true,
+		        })
+			})
+		);		
+		
+		try{
+			ship_layer.getSource().addFeature(pointFeature);
+		}catch(e){
+			console.log(e);
+			console.log("shipList[i] error : "+shipList[i].mmsi);
+		}
+	}
+}
+
+function getShipList() {
+	var str = "<table style='width: 100%'  border='1' cellspacing='0'><colgroup><col width='50%'><col width='50%'></colgroup>";
+	for(var i=0;i<shipList.length;i++){
+		var item = shipList[i];
+		str += "<tr onclick='getShipCenter("+item.lon+","+item.lat+");'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'>"+item.shipname+"</td>";
+		str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'>"+item.mmsi+"</td></tr>";
+	}
+	str += "</table>";
+
+	$("#ship_resultlist").html(str);
+}
+
+function getShipCenter(lon, lat){
+	var pointFeature = new ol.Feature({
+		geometry: new ol.geom.Point([Number(lon),Number(lat)])
+	});				
+	let c_geometry = pointFeature.getGeometry().transform( 'EPSG:4326',  'EPSG:3857');
+	var lyrCenter = ol.extent.getCenter(pointFeature.getGeometry().getExtent());
+	map.getView().setCenter(lyrCenter);
+    map.getView().setZoom(14);
+}
