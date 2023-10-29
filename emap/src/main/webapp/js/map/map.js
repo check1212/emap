@@ -65,6 +65,38 @@ function mapInit(){
 		controls: new ol.control.defaults().extend([mouseControlCoordinate]),
 	});		
     map.on('moveend', onMoveEnd);
+	
+	map.on('singleclick', function (evt) {
+		var str_html = "<table class='featureInfo'>";
+	    var viewResolution = view.getResolution();
+	    for(var i=0; i<map.getLayers().getArray().length; i++) {
+	    	var layer = map.getLayers().getArray()[i]
+	    	if (layer.type == "TILE" && layer.getSource().serverType_ == "geoserver") {
+		    	console.log(url);
+			    var url = layer.getSource().getGetFeatureInfoUrl(
+			        evt.coordinate, viewResolution, 'EPSG:4326',
+			        { 'INFO_FORMAT': 'text/html' }
+			    );
+			    if (url) {
+			    	fetch(url)
+			        	.then((response) => response.text())
+			        	.then((html) => {
+			        		console.log(html);
+			        		var s = html.indexOf('<tr>');
+			        		var e = html.lastIndexOf('</tr>');
+			        		if(s > -1) {
+			        			str_html += html.substring(s, e);
+			        		}
+			        		
+			        		document.getElementById('detail_table').innerHTML = str_html;
+			            	$("#div_detail").show();
+			        	});
+			    }
+	    	}
+	    }
+
+	    
+	});
 
 	// 해도 레이어
 	wmsInit();
@@ -74,6 +106,10 @@ function mapInit(){
 
 	// 날씨 레이어
 	wmsWeatherInit();
+	
+	//선박 선택 이벤트
+	shipSelectEvent();
+	modStyleSelectInteraction.setActive(true);
 	
 	getShipSearch(); //선박정보
 }
@@ -117,6 +153,16 @@ function mapEvent(){
 			getShipList();
 		}
 		setSize();
+	});
+	
+	//선박상세정보 닫기
+	$("#close_ship_detail").on('click',function(e){
+		$("#div_ship_detail").hide();
+	});
+	
+	//tile layer 상세 정보 닫기
+	$("#close_detail").on('click',function(e){
+		$("#div_detail").hide();
 	});
 	
 	//프린트
@@ -475,7 +521,7 @@ function route_detail_save() {
 function detail_add() {
 	var str = "";
 	if($("#route_detail_list table").length == 0) {
-		str = "<table style='width: 100%'  border='1' cellspacing='0'><colgroup><col width='15%'><col width='25%'><col width='30%'><col width='30%'></colgroup>";
+		str = "<table style='width: 100%' border='1' cellspacing='0'><colgroup><col width='15%'><col width='25%'><col width='30%'><col width='30%'></colgroup>";
 		str += "<tr id='detail_tr_0'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'></td>";
 		str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' style='width: 105px;'></td>";
 		str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' id='rt_"+$("#hd_routeid").val()+"_0_lat' style='width: 128px;'></td>";
@@ -641,6 +687,7 @@ function getShipList() {
 	});
 }
 
+//선박정보 위치 이동
 function getShipCenter(id,lon, lat){
 	var pointFeature = new ol.Feature({
 		geometry: new ol.geom.Point([Number(lon),Number(lat)])
@@ -651,6 +698,46 @@ function getShipCenter(id,lon, lat){
     map.getView().setZoom(14);
     $("#select_ship").val(id);
     wfs_layer.getSource().clear();	
+    
+}
+
+//선박정보 상세 정보
+function getShipSearch_Detail(mmsi) {
+	getShipClean();
+	for(var i=0; i<shipList.length; i++) {
+		if(shipList[i].mmsi == mmsi) {
+			$("#txt_mmsi").text(shipList[i].mmsi);
+			$("#txt_shipname").text(shipList[i].shipname);
+			$("#txt_latlot").text(shipList[i].lat + " / " +shipList[i].lon);
+			$("#txt_gathertime").text(shipList[i].gathertime);
+			$("#txt_sog").text(shipList[i].sog);
+			$("#txt_cog").text(shipList[i].cog);
+			$("#txt_theading").text(shipList[i].theading);
+			$("#txt_rateturn").text(shipList[i].rateturn);
+			$("#txt_shipton").text(shipList[i].shipton);
+			$("#txt_navistatus").text(shipList[i].navistatus);
+			$("#txt_shiptype").text(shipList[i].shiptype);
+			$("#txt_ackname").text(shipList[i].ackname);
+			
+			$("#div_ship_detail").show();
+		}
+	}
+}
+
+//선박정보 상세 정보 초기화
+function getShipClean() {
+	$("#txt_mmsi").text("");
+	$("#txt_shipname").text("");
+	$("#txt_latlot").text("");
+	$("#txt_gathertime").text("");
+	$("#txt_sog").text("");
+	$("#txt_cog").text("");
+	$("#txt_theading").text("");
+	$("#txt_rateturn").text("");
+	$("#txt_shipton").text("");
+	$("#txt_navistatus").text("");
+	$("#txt_shiptype").text("");
+	$("#txt_ackname").text("");
 }
 
 function drawShipRoute() {

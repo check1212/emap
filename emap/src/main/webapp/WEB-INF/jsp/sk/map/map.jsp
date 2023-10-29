@@ -168,17 +168,7 @@ window.onload = function(){
 						</tr>
 					</table>
 				</div>
-				<div id="route_detail_list" style="width: 480px;">
-					<!-- <table style="width: 480px;" border="1" cellspacing="0">
-						<colgroup><col width="15%"><col width="25%"><col width="30%"><col width="30%"></colgroup>
-						<tr>
-							<th style="padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;"><input type="text" style="width: 51px;"></th>
-							<th style="padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;"><input type="text" style="width: 105px;"></th>
-							<th style="padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;"><input type="text" style="width: 128px;"></th>
-							<th style="padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;"><input type="text" style="width: 128px;"></th>
-						</tr>
-					</table> -->
-				</div>
+				<div id="route_detail_list" style="width: 480px;"></div>
 				<input type="hidden" id="select_detail">
 				<div style="float:right;width: 100%;margin: 0 10px 6px;">
 					<button id="wp_delete" style="float:right;">WP 삭제</button>
@@ -188,8 +178,55 @@ window.onload = function(){
 				<!-- <button id="route_detail_add">추가</button> -->
 				<button id="route_detail_delete">삭제</button>
 			</div>
-			<div class="scale"> <span id="mouseLocationStat" style="width:210px;float:left;"></span>  <span id="mapZoomLevelStat" style="width:200px;float:left;">SCALE=>1:10.000[LEVEL:27]</span></div>
-
+			
+			<div id="div_ship_detail">
+				<table border='1' cellspacing='0'>
+					<colgroup><col width="20%"><col width="30%"><col width="20%"><col width="30%"></colgroup>
+					<tr>
+						<th>MMSI</th>
+						<td><span id="txt_mmsi"></span></td>
+						<th>선박명</th>
+						<td><span id="txt_shipname"></span></td>
+					</tr>
+					<tr>
+						<th>위/경도</th>
+						<td><span id="txt_latlot"></span></td>
+						<th>수신시간</th>
+						<td><span id="txt_gathertime"></span></td>
+					</tr>
+					<tr>
+						<th>대지속력</th>
+						<td><span id="txt_sog"></span></td>
+						<th>대지방향</th>
+						<td><span id="txt_cog"></span></td>
+					</tr>
+					<tr>
+						<th>선수방위</th>
+						<td><span id="txt_theading"></span></td>
+						<th>회전각</th>
+						<td><span id="txt_rateturn"></span></td>
+					</tr>
+					<tr>
+						<th>선박크기</th>
+						<td><span id="txt_shipton"></span></td>
+						<th>항행상태</th>
+						<td><span id="txt_navistatus"></span></td>
+					</tr>
+					<tr>
+						<th>선박형태</th>
+						<td><span id="txt_shiptype"></span></td>
+						<th>도착정보</th>
+						<td><span id="txt_ackname"></span></td>
+					</tr>
+				</table>
+				<button id="close_ship_detail">닫기</button>
+			</div>
+			
+			<div id="div_detail">
+				<div id="detail_table" style="height: 295px;overflow: auto;"></div>
+				<button id="close_detail">닫기</button>
+			</div>		
+			<div cass="scale"> <span id="mouseLocationStat" style="width:210px;float:left;"></span>  <span id="mapZoomLevelStat" style="width:200px;float:left;">SCALE=>1:10.000[LEVEL:27]</span></div>
 <!-- 			<div class="leftMenu">
 				<table style="border-collapse: separate; border-spacing: 5px;">
 					<tr>

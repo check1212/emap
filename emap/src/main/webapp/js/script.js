@@ -41,6 +41,7 @@
 		Ps.initialize(document.getElementById('route_resultlist'));
 		Ps.initialize(document.getElementById('route_detail_list'));
 		Ps.initialize(document.getElementById('ship_resultlist'));
+		Ps.initialize(document.getElementById('div_detail'));
 		
 		$(".map_tool li img").on("click",function(){
 			if($(this).attr("src").indexOf("btn7") == -1) {
@@ -87,6 +88,7 @@ function setSize() {
 		Ps.update(document.getElementById('route_resultlist'));
 		Ps.update(document.getElementById('route_detail_list'));
 		Ps.update(document.getElementById('ship_resultlist'));
+		Ps.update(document.getElementById('div_detail'));
 		
 		if(map != null){
 			map.updateSize();

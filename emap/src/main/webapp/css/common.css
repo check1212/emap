@@ -235,6 +235,67 @@ table input[type='checkbox'] {
     background: #d4d4d4;
 }
 
+#div_ship_detail {
+	width: 400px;
+	height: 190px;
+	left: 400px;
+	top: 100px;
+	border: 1px solid;
+	background: #ffffff;
+	position: absolute;
+	display: none;
+}
+
+#div_ship_detail table {
+	margin: 10px 10px 5px;	
+	border: 1px solid #d4d4d4;
+}
+
+#div_ship_detail table th{
+	text-align: center;
+}
+
+#div_detail {
+	width: 500px;
+	height: 320px;
+	left: 400px;
+	top: 100px;
+	border: 1px solid;
+	background: #ffffff;
+	position: absolute;
+	display: none;
+}
+
+table.featureInfo, table.featureInfo td, table.featureInfo th {
+	border:1px solid #ddd;
+	border-collapse:collapse;
+	margin:0;
+	padding:0;
+	font-size: 90%;
+	padding:.2em .1em;
+}
+
+table.featureInfo th {
+	padding:.2em .2em;
+	font-weight:bold;
+	background:#eee;
+}
+
+table.featureInfo td{
+	background:#fff;
+}
+
+table.featureInfo tr.odd td{
+	background:#eee;
+}
+
+table.featureInfo caption{
+	text-align:left;
+	font-size:100%;
+	font-weight:bold;
+	padding:.2em .2em;
+}
+
 .scale {
 	width: 420px;
 	height: 25px;
