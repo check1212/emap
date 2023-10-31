@@ -62,6 +62,7 @@
 <script type="text/javascript" src="<c:url value="/js/map/interaction.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/measure.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/mapEvent.js?version=${nowDate}"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/map/layer_style.js?version=${nowDate}"/>"></script>
 
 <!-- RGB색상표 -->
 <script type="text/javascript" src="<c:url value="/js/libs/colorpicker/js/colorpicker.js"/>"></script>
