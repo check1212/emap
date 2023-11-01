@@ -124,6 +124,12 @@ table input[type='checkbox'] {
 	cursor: default;
 }
 
+.div_left2 #div_left_weather table {
+	width: 275px; 
+	border: 1px solid #d4d4d4;
+	cursor: default;
+}
+
 .div_left #div_left_ship #ship_resultlist table{
     width: 100%;
     border: 0px;
@@ -143,8 +149,9 @@ table input[type='checkbox'] {
 
 .logo {
 	width: 51px;
-	height: 50px;
-	margin: 10px auto;
+	/*height: 50px;*/
+	height: 105px;
+	/*margin: 10px auto;*/
 	cursor: pointer;
 	/* background-image: url(../images/sk/logo.jpg); */
 }
@@ -233,6 +240,67 @@ table input[type='checkbox'] {
 
 #div_route_detail #route_detail_list tr:hover {
     background: #d4d4d4;
+}
+
+#div_ship_detail {
+	width: 400px;
+	height: 190px;
+	left: 400px;
+	top: 100px;
+	border: 1px solid;
+	background: #ffffff;
+	position: absolute;
+	display: none;
+}
+
+#div_ship_detail table {
+	margin: 10px 10px 5px;	
+	border: 1px solid #d4d4d4;
+}
+
+#div_ship_detail table th{
+	text-align: center;
+}
+
+#div_detail {
+	width: 500px;
+	height: 320px;
+	left: 400px;
+	top: 100px;
+	border: 1px solid;
+	background: #ffffff;
+	position: absolute;
+	display: none;
+}
+
+table.featureInfo, table.featureInfo td, table.featureInfo th {
+	border:1px solid #ddd;
+	border-collapse:collapse;
+	margin:0;
+	padding:0;
+	font-size: 90%;
+	padding:.2em .1em;
+}
+
+table.featureInfo th {
+	padding:.2em .2em;
+	font-weight:bold;
+	background:#eee;
+}
+
+table.featureInfo td{
+	background:#fff;
+}
+
+table.featureInfo tr.odd td{
+	background:#eee;
+}
+
+table.featureInfo caption{
+	text-align:left;
+	font-size:100%;
+	font-weight:bold;
+	padding:.2em .2em;
 }
 
 .scale {

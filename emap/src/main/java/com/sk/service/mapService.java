@@ -29,4 +29,6 @@ public interface mapService {
 	public int RouteDelete(RouteDetailVO vo) throws Exception;
 	
 	public List<ShipInfoVO> getShipSearch() throws Exception;
+	
+	public List<ShipInfoVO> getShipOne(ShipInfoVO vo) throws Exception;
 }

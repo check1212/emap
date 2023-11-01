@@ -224,6 +224,22 @@ public class WebController {
 			json.Json(res, slist);
 		}
 	}
+	
+	//선박정보
+	@RequestMapping("getShipOne.do")
+	public void getShipOne(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		System.out.println("getShipOne : start!");
+		
+		ShipInfoVO vo = new ShipInfoVO();
+		vo.setMmsi(req.getParameter("mmsi"));
+		System.out.println("vo.getMmsi : "+vo.getMmsi());
+		List<ShipInfoVO> slist = mapService.getShipOne(vo);		
+		System.out.println("slist.size() : "+slist.size());
+		if(slist.size() > 0) {			
+			/*json으로 정보 전달*/
+			json.Json(res, slist);
+		}
+	}
 
 	@RestController
 	public class FileController {

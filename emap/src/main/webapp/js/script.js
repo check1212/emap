@@ -41,6 +41,7 @@
 		Ps.initialize(document.getElementById('route_resultlist'));
 		Ps.initialize(document.getElementById('route_detail_list'));
 		Ps.initialize(document.getElementById('ship_resultlist'));
+		Ps.initialize(document.getElementById('div_detail'));
 		
 		$(".map_tool li img").on("click",function(){
 			if($(this).attr("src").indexOf("btn7") == -1) {
@@ -80,13 +81,14 @@ function setSize() {
 		$(".con_center").width(window_w-left_w-l_div-4+"px");
 		$(".con_center").height(window_h+"px");
 		$("#route_resultlist").height(window_h-135+"px");
-		$("#ship_resultlist").height(window_h-55+"px");
+		$("#ship_resultlist").height(window_h-75+"px");
 		
 		$(".scale").css({'left': 115+l_div+"px"});
 		
 		Ps.update(document.getElementById('route_resultlist'));
 		Ps.update(document.getElementById('route_detail_list'));
 		Ps.update(document.getElementById('ship_resultlist'));
+		Ps.update(document.getElementById('div_detail'));
 		
 		if(map != null){
 			map.updateSize();
