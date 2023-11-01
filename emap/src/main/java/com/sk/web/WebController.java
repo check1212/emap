@@ -15,6 +15,7 @@
  */
 package com.sk.web;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -24,9 +25,17 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import com.sk.SkShipVO;
@@ -214,5 +223,58 @@ public class WebController {
 			/*json으로 정보 전달*/
 			json.Json(res, slist);
 		}
+	}
+
+	@RestController
+	public class FileController {
+	    @GetMapping("getCSV.do")
+	    public ResponseEntity<byte[]> getCsvFile(@RequestParam("url") String url) throws IOException {
+	        byte[] fileData = null;
+	        HttpHeaders headers = new HttpHeaders();
+	        String fileName = "weather.csv"; // 기본 파일 이름
+
+	        // URL에 따라 다른 응답을 생성
+	        if (url.equals("0")) {
+	            ClassPathResource resource = new ClassPathResource("weather.csv");
+	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
+	            fileName = "weather.csv";
+	        } else if (url.equals("1")) {
+	            ClassPathResource resource = new ClassPathResource("weather1.csv");
+	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
+	            fileName = "weather1.csv";
+	        } else if (url.equals("2")) {
+	            ClassPathResource resource = new ClassPathResource("weather2.csv");
+	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
+	            fileName = "weather2.csv";
+	        } else if (url.equals("3")) {
+	            ClassPathResource resource = new ClassPathResource("weather3.csv");
+	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
+	            fileName = "weather3.csv";
+	        } else if (url.equals("4")) {
+	            ClassPathResource resource = new ClassPathResource("weather4.csv");
+	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
+	            fileName = "weather4.csv";
+	        } else if (url.equals("5")) {
+	            ClassPathResource resource = new ClassPathResource("weather5.csv");
+	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
+	            fileName = "weather5.csv";
+	        } else if (url.equals("6")) {
+	            ClassPathResource resource = new ClassPathResource("weather6.csv");
+	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
+	            fileName = "weather6.csv";
+	        }
+
+	        headers.add("Content-Disposition", "attachment; filename=" + fileName);
+
+	        if (fileData != null) {
+	            return ResponseEntity.ok()
+	                .headers(headers)
+	                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+	                .body(fileData);
+	        } else {
+	            // URL에 해당하는 파일이 없는 경우 404 응답을 반환
+	            return ResponseEntity.notFound().build();
+	        }
+	    }
 	}
 }

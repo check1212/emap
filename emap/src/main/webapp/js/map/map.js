@@ -63,6 +63,7 @@ function mapInit(){
 		target: 'dvMap',
 		view: view,
 		controls: new ol.control.defaults().extend([mouseControlCoordinate]),
+  		//renderer: 'webgl' // WebGL 렌더러 사용 설정
 	});		
     map.on('moveend', onMoveEnd);
 

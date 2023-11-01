@@ -50,6 +50,9 @@
 <script type="text/javascript" src="<c:url value="/js/map/customDragInteraction.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/libs/perfect-scrollbar.min.js"/>"></script>
 
+<!-- csv 로딩용 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
 <script>    
 	var ctx = "${ctx}";
 </script>
@@ -224,11 +227,19 @@ window.onload = function(){
 			</div> -->
 
 			<div class="leftMenu3">
-				<br>
-				&nbsp;<input type="checkbox" id="checkWindspeed" checked> 풍향/풍속&nbsp;<br>
-				&nbsp;<input type="checkbox" id="checkFlowspeed" checked> 유향/유속&nbsp;<br>
+				&nbsp;<input type="checkbox" id="checkWind" checked> 풍향/풍속&nbsp;<br>
+				&nbsp;<input type="checkbox" id="checkFlow" checked> 유향/유속&nbsp;<br>
 				&nbsp;<input type="checkbox" id="checkWaveheight" checked> 파향/파고&nbsp;<br>
 				&nbsp;<input type="checkbox" id="checkTemp" checked> 기온&nbsp;<br>
+				<select id="daySelect">
+					<option value=2>2일</option>
+					<option value=3>3일</option>
+					<option value=4>4일</option>
+					<option value=5>5일</option>
+					<option value=6>6일</option>
+					<option value=7 selected>7일</option>
+				</select><br>
+				&nbsp;<button id="stopAnimation">정지</button> <button id="startAnimation">시작</button><br>
 			</div>
 		</div>
 	</div>
