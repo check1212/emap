@@ -1,5 +1,43 @@
 var geoserverWmsUrl = "http://141.164.62.150:8089/geoserver/wms";
 function wmsInit(){
+
+	// 전체 회색 - 기존 범위 외의 바다 회색 처리 위함
+	var ocean = new ol.layer.Tile({
+		id : 'ocean',
+    	title: 'ocean',
+    	opacity: 1,
+        source: new ol.source.TileWMS({
+            url: geoserverWmsUrl,
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous',
+            params: { 
+            	'VERSION': '1.1.0' , 
+                'LAYERS': 'skemap:ocean',
+                'CRS' : 'EPSG:3857',
+            },            
+        })
+    });
+    map.addLayer(ocean);
+
+	// 국경 검정색 테두리 처리
+	var worldcountries = new ol.layer.Tile({
+		id : 'worldcountries',
+    	title: 'worldcountries',
+    	opacity: 1,
+        source: new ol.source.TileWMS({
+            url: geoserverWmsUrl,
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous',
+            params: {
+            	'VERSION': '1.1.0',
+                'LAYERS': 'skemap:worldcountries',
+                'CRS' : 'EPSG:3857',
+                //'STYLES': 'worldcountries_noborder', // 테두리 없애기
+            },            
+        })
+    });
+    map.addLayer(worldcountries);
+
 	//wms 바다(기본맵처럼사용)
 	var DEPAREA = new ol.layer.Tile({
 		id : 'DEPAREA',
@@ -35,7 +73,6 @@ function wmsInit(){
         })
     });
     map.addLayer(lev6_DEPARE_A);
-    
     
     //wms 대지(기본맵처럼사용)
     var LNDAREA_A = new ol.layer.Tile({
@@ -253,6 +290,23 @@ function wmsInit(){
     });
     map.addLayer(lev6_SLCONS_L);
 
+	/*var seaarea = new ol.layer.Tile({
+		id : 'seaarea',
+    	title: 'seaarea',
+    	opacity: 1,
+        source: new ol.source.TileWMS({
+            url: geoserverWmsUrl,
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous',
+            params: { 
+            	'VERSION': '1.1.0' , 
+                'LAYERS': 'skemap:seaarea',
+                'CRS' : 'EPSG:3857',
+            },            
+        })
+    });
+    map.addLayer(seaarea);*/
+
     //wms 닷 anchor
     var anchor = new ol.layer.Tile({
 		id : 'anchor',
@@ -270,6 +324,23 @@ function wmsInit(){
         })
     });
     map.addLayer(anchor);
+
+	/*var world = new ol.layer.Tile({
+		id : 'world',
+    	title: 'world',
+    	opacity: 1,
+        source: new ol.source.TileWMS({
+            url: geoserverWmsUrl,
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous',
+            params: { 
+            	'VERSION': '1.1.0' , 
+                'LAYERS': 'skemap:world',
+                'CRS' : 'EPSG:3857',
+            },            
+        })
+    });
+    map.addLayer(world);*/
 
     
          

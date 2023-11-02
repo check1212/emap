@@ -50,6 +50,9 @@
 <script type="text/javascript" src="<c:url value="/js/map/customDragInteraction.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/libs/perfect-scrollbar.min.js"/>"></script>
 
+<!-- csv 로딩용 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
 <script>    
 	var ctx = "${ctx}";
 </script>
@@ -91,6 +94,7 @@ window.onload = function(){
 							<li class="tool3" id="mapZoomOut"><img alt="" src="images/sk/maptool/btn3.jpg"></li>
 							<li class="tool4" id="mapMove"><img alt="" src="images/sk/maptool/btn4.jpg"></li>
 							<li class="tool5" id="mapSearch1"><img alt="" src="images/sk/maptool/btn5.jpg"></li> -
+							<!-- <li class="toolweather" id="mapWeather"><img alt="" src="images/sk/maptool/btn_weather.png"></li>-->
 							<!-- <li class="tool6" id="mapSearch2"><img alt="" src="images/sk/maptool/btn6.jpg"></li>  -->
 							<li class="tool7" id="mapSearch3"><img alt="" src="images/sk/maptool/btn7.jpg"></li>
 							<!-- <li class="tool6" id="mapSearch2">항로계획</li> -->
@@ -140,6 +144,17 @@ window.onload = function(){
 					<input type="hidden" id="select_ship">
 				</div>
 			</div>
+			<!-- <div class="div_left2">
+				<div id="div_left_weather" style="display: none;">
+					<table style="margin: 10px 10px 0;">
+						<colgroup><col width="50%"><col width="50%"></colgroup>
+						<tr>
+							<th style="padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;">1선명</th>
+							<th style="padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;">IMO 번호</th>
+						</tr>
+					</table>
+				</div>
+			</div> -->
 			<div class="con_center">
 				<div class="map" id="dvMap" style="width:100%; height:100%;"></div>
 			</div>
@@ -264,11 +279,19 @@ window.onload = function(){
 			</div> -->
 
 			<div class="leftMenu3">
-				<br>
-				&nbsp;<input type="checkbox" id="checkWindspeed" checked> 풍향/풍속&nbsp;<br>
-				&nbsp;<input type="checkbox" id="checkFlowspeed" checked> 유향/유속&nbsp;<br>
+				&nbsp;<input type="checkbox" id="checkWind" checked> 풍향/풍속&nbsp;<br>
+				&nbsp;<input type="checkbox" id="checkFlow" checked> 유향/유속&nbsp;<br>
 				&nbsp;<input type="checkbox" id="checkWaveheight" checked> 파향/파고&nbsp;<br>
 				&nbsp;<input type="checkbox" id="checkTemp" checked> 기온&nbsp;<br>
+				<select id="daySelect">
+					<option value=2>2일</option>
+					<option value=3>3일</option>
+					<option value=4>4일</option>
+					<option value=5>5일</option>
+					<option value=6>6일</option>
+					<option value=7 selected>7일</option>
+				</select><br>
+				&nbsp;<button id="stopAnimation">정지</button> <button id="startAnimation">시작</button><br>
 			</div>
 		</div>
 	</div>

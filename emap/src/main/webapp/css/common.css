@@ -124,6 +124,12 @@ table input[type='checkbox'] {
 	cursor: default;
 }
 
+.div_left2 #div_left_weather table {
+	width: 275px; 
+	border: 1px solid #d4d4d4;
+	cursor: default;
+}
+
 .div_left #div_left_ship #ship_resultlist table{
     width: 100%;
     border: 0px;
@@ -143,8 +149,9 @@ table input[type='checkbox'] {
 
 .logo {
 	width: 51px;
-	height: 50px;
-	margin: 10px auto;
+	/*height: 50px;*/
+	height: 105px;
+	/*margin: 10px auto;*/
 	cursor: pointer;
 	/* background-image: url(../images/sk/logo.jpg); */
 }

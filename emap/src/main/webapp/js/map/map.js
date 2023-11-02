@@ -63,6 +63,7 @@ function mapInit(){
 		target: 'dvMap',
 		view: view,
 		controls: new ol.control.defaults().extend([mouseControlCoordinate]),
+  		//renderer: 'webgl' // WebGL 렌더러 사용 설정
 	});		
     map.on('moveend', onMoveEnd);
 	
@@ -151,6 +152,20 @@ function mapEvent(){
 			$(".div_left").show();
 			$("#div_left_ship").show();
 			getShipList();
+		}
+		setSize();
+	});
+
+	//기상정보
+	$("#mapWeather").on('click',function(e){	
+	 	deactiveInteractions();
+	 	let dis = $("#div_left_weather").css("display");
+		if(dis == "block") {
+			$("#div_left_weather").hide();
+			$(".div_left2").hide();
+		} else {
+			$(".div_left2").show();
+			$("#div_left_weather").show();
 		}
 		setSize();
 	});
