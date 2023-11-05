@@ -1,4 +1,4 @@
-var geoserverWmsUrl = "http://141.164.62.150:8089/geoserver/wms";
+var geoserverWmsUrl = "http://141.164.59.52:8089/geoserver/wms";
 function wmsInit(){
 
 	// 전체 회색 - 기존 범위 외의 바다 회색 처리 위함

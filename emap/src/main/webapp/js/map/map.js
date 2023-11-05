@@ -1,5 +1,6 @@
 var googlemap;
-var drawInteration_route;
+var drawInteration_route = null;
+var drawInteration_search = null;
 var choice_idx="";
 var date = new Date();
 var year = date.getFullYear();
@@ -68,36 +69,35 @@ function mapInit(){
     map.on('moveend', onMoveEnd);
 	
 	map.on('singleclick', function (evt) {
-		if($("#div_route_detail").css(display) != "block"){
-		var str_html = "<table class='featureInfo'>";
-	    var viewResolution = view.getResolution();
-	    for(var i=0; i<map.getLayers().getArray().length; i++) {
-	    	var layer = map.getLayers().getArray()[i]
-	    	if (layer.type == "TILE" && layer.getSource().serverType_ == "geoserver") {
-		    	//console.log(url);
-			    var url = layer.getSource().getGetFeatureInfoUrl(
-			        evt.coordinate, viewResolution, 'EPSG:4326',
-			        { 'INFO_FORMAT': 'text/html' }
-			    );
-			    if (url) {
-			    	fetch(url)
-			        	.then((response) => response.text())
-			        	.then((html) => {
-			        		//console.log(html);
-			        		var s = html.indexOf('<tr>');
-			        		var e = html.lastIndexOf('</tr>');
-			        		if(s > -1) {
-			        			str_html += html.substring(s, e);
-			        		}
-			        		
-			        		document.getElementById('detail_table').innerHTML = str_html;
-			            	$("#div_detail").show();
-			        	});
-			    }
-	    	}
-	    }
+		if($("#div_route_detail").css("display") != "block" && drawInteration_route == null && drawInteration_search == null){
+			var str_html = "<table class='featureInfo'>";
+		    var viewResolution = view.getResolution();
+		    for(var i=0; i<map.getLayers().getArray().length; i++) {
+		    	var layer = map.getLayers().getArray()[i]
+		    	if (layer.type == "TILE" && layer.getSource().serverType_ == "geoserver") {
+			    	//console.log(url);
+				    var url = layer.getSource().getGetFeatureInfoUrl(
+				        evt.coordinate, viewResolution, 'EPSG:4326',
+				        { 'INFO_FORMAT': 'text/html' }
+				    );
+				    if (url) {
+				    	fetch(url)
+				        	.then((response) => response.text())
+				        	.then((html) => {
+				        		//console.log(html);
+				        		var s = html.indexOf('<tr>');
+				        		var e = html.lastIndexOf('</tr>');
+				        		if(s > -1) {
+				        			str_html += html.substring(s, e);
+				        		}
+				        		
+				        		document.getElementById('detail_table').innerHTML = str_html;
+				            	$("#div_detail").show();
+				        	});
+				    }
+		    	}
+		    }
 		}
-	    
 	});
 
 	// 해도 레이어
@@ -156,6 +156,12 @@ function mapEvent(){
 		}
 		setSize();
 	});
+	
+	//항로범위
+	$("#mapSearch2").on('click',function(e){	
+	 	deactiveInteractions(); 	
+	 	setActiveDrawToolSearch('circle');
+	});
 
 	//기상정보
 	$("#mapWeather").on('click',function(e){	
@@ -184,13 +190,6 @@ function mapEvent(){
 	//프린트
 	$("#mapPrint").on('click',function(e){	
 	 	fn_printPopup();
-	});
-	
-	//항로계획
-	$("#mapSearch2").on('click',function(e){	
-		deactiveInteractions();
-		search_plan();
-		//fn_addInteractions();
 	});
 	
 	//항로계획
@@ -328,7 +327,6 @@ function fn_addInteractions() {
 		
 		DrawRoute();
 		deactiveInteractions();
-		drawInteration_route.setActive(false);
 	});
 	map.addInteraction(drawInteration_route);
 }

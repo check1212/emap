@@ -47,6 +47,9 @@ function shipSelectEvent(){
 //interaction 비활성화
 function deactiveInteractions() {
     map.removeInteraction(drawInteration_route);
+    map.removeInteraction(drawInteration_search);
+    drawInteration_route = null;
+    drawInteration_search = null;
     shipSelectEvent();
     var layers = map.getLayers().getArray();
 	for(let i in layers) {
@@ -66,6 +69,9 @@ function deactiveInteractions() {
             l.getSource().clear();
         }
         if("shipMoveLayer" === thisLayerId) { //항적레이어
+            l.getSource().clear();
+        }
+        if("mapSearch2" === thisLayerId) {
             l.getSource().clear();
         }
     }
@@ -94,7 +100,7 @@ function setActiveDrawToolSearch(type) {
             break;
         }
     }
-    
+	
     if(lyr != null){
     	const source = lyr.getSource();
     	
