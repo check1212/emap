@@ -1,5 +1,5 @@
-//var geoserverWmsUrl = "http://141.164.62.150:8089/geoserver/wms";
 var geoserverWmsUrl = "http://141.164.59.52:8089/geoserver/wms";
+var geoserverGwcUrl = "http://141.164.59.52:8089/geoserver/gwc/service/wmts";
 function wmsInit(){
 
 	// 세계 바다
@@ -24,7 +24,7 @@ function wmsInit(){
 	var worldcountries = new ol.layer.Tile({
 		id : 'worldcountries',
     	title: 'worldcountries',
-    	opacity: 1,
+    	opacity: 0.5,
         source: new ol.source.TileWMS({
             url: geoserverWmsUrl,
             serverType: 'geoserver',
@@ -38,9 +38,36 @@ function wmsInit(){
         })
     });
     map.addLayer(worldcountries);
+    
+    //wms 	Day(기본맵처럼사용)
+    var DAY = new ol.layer.Tile({
+		id : 'Day',
+    	title: 'Day',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
+    map.addLayer(DAY);
 
 	//wms 바다(기본맵처럼사용) : 한국
-	var DEPAREA = new ol.layer.Tile({
+	/*var DEPAREA = new ol.layer.Tile({
 		id : 'DEPAREA',
     	title: 'DEPAREA',
     	opacity: 1,
@@ -55,10 +82,10 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(DEPAREA);
+    map.addLayer(DEPAREA);*/
     
     //wms 바다(lev6_DEPARE_A)
-	var lev6_DEPARE_A = new ol.layer.Tile({
+	/*var lev6_DEPARE_A = new ol.layer.Tile({
 		id : 'lev6_DEPARE_A',
     	title: 'lev6_DEPARE_A',
     	opacity: 1,
@@ -73,10 +100,10 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_DEPARE_A);
+    map.addLayer(lev6_DEPARE_A);*/
     
     //wms 대지(기본맵처럼사용) : 한국
-    var LNDAREA_A = new ol.layer.Tile({
+    /*var LNDAREA_A = new ol.layer.Tile({
 		id : 'LNDAREA_A',
     	title: 'LNDAREA_A',
     	opacity: 1,
@@ -91,10 +118,10 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(LNDAREA_A);
+    map.addLayer(LNDAREA_A);*/
     
     //wms lev6_LNDARE_A(기본맵처럼사용)
-    var lev6_LNDARE_A = new ol.layer.Tile({
+    /*var lev6_LNDARE_A = new ol.layer.Tile({
 		id : 'lev6_LNDARE_A',
     	title: 'lev6_LNDARE_A',
     	opacity: 1,
@@ -109,7 +136,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_LNDARE_A);
+    map.addLayer(lev6_LNDARE_A);*/
     
     //wms 강(기본맵처럼사용)
     var rivers = new ol.layer.Tile({

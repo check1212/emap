@@ -77,7 +77,7 @@ function vectorInit(){
 	});
     map.addLayer(wfs_layer);
     
-    /*
+    
 	//항로범위
     const mapSearch2 = new ol.layer.Vector({
         id: "mapSearch2",
@@ -94,7 +94,7 @@ function vectorInit(){
       	})
     });
     map.addLayer(mapSearch2);
-    
+    /*
     //항로검색용
     const mapSearch1 = new ol.layer.Vector({
         id: "mapSearch1",

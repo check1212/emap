@@ -116,7 +116,7 @@ window.onload = function(){
 							<li class="tool4" id="mapMove"><img alt="" src="images/sk/maptool/btn4.jpg"></li>
 							<li class="tool5" id="mapSearch1"><img alt="" src="images/sk/maptool/btn5.jpg"></li> -
 							<!-- <li class="toolweather" id="mapWeather"><img alt="" src="images/sk/maptool/btn_weather.png"></li>-->
-							<!-- <li class="tool6" id="mapSearch2"><img alt="" src="images/sk/maptool/btn6.jpg"></li>  -->
+							<li class="tool6" id="mapSearch2"><img alt="" src="images/sk/maptool/btn6.jpg"></li>
 							<li class="tool7" id="mapSearch3"><img alt="" src="images/sk/maptool/btn7.jpg"></li>
 							<!-- <li class="tool6" id="mapSearch2">항로계획</li> -->
 						</ul>
