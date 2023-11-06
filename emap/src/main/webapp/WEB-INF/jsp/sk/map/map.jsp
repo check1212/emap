@@ -85,7 +85,28 @@ window.onload = function(){
 <div id="wrapper">
 		<div id="container">
 			<div class="con_left">
-				<div class="logo"></div>
+				<!-- <div class="logo"></div> -->
+				<div class="leftMenu3">
+					&nbsp;<input type="checkbox" id="checkWind" checked> 풍향/풍속&nbsp;<br>
+					&nbsp;<input type="checkbox" id="checkFlow" checked> 유향/유속&nbsp;<br>
+					&nbsp;<input type="checkbox" id="checkWaveheight" checked> 파향/파고&nbsp;<br>
+					&nbsp;<input type="checkbox" id="checkTemp" checked> 기온&nbsp;<br>
+					<select id="daySelect">
+						<option value=2>2일</option>
+						<option value=3>3일</option>
+						<option value=4>4일</option>
+						<option value=5>5일</option>
+						<option value=6>6일</option>
+						<option value=7 selected>7일</option>
+					</select><br>
+					&nbsp;<button id="stopAnimation">정지</button> <button id="startAnimation">시작</button><br>
+					<br>
+					<select id="brightSelect">
+						<option value=1 selected>주간</option>
+						<option value=2>야간</option>
+						<option value=3>새벽/일몰</option>
+					</select><br>
+				</div>
 				<div class="nav">
 					<div class="map_tool">
 						<ul>
@@ -277,22 +298,17 @@ window.onload = function(){
 					</tr>
 				</table>
 			</div> -->
-
-			<div class="leftMenu3">
-				&nbsp;<input type="checkbox" id="checkWind" checked> 풍향/풍속&nbsp;<br>
-				&nbsp;<input type="checkbox" id="checkFlow" checked> 유향/유속&nbsp;<br>
-				&nbsp;<input type="checkbox" id="checkWaveheight" checked> 파향/파고&nbsp;<br>
-				&nbsp;<input type="checkbox" id="checkTemp" checked> 기온&nbsp;<br>
-				<select id="daySelect">
-					<option value=2>2일</option>
-					<option value=3>3일</option>
-					<option value=4>4일</option>
-					<option value=5>5일</option>
-					<option value=6>6일</option>
-					<option value=7 selected>7일</option>
-				</select><br>
-				&nbsp;<button id="stopAnimation">정지</button> <button id="startAnimation">시작</button><br>
+			
+			<div id="popup" class="ol-popup">
+				<a href="#" onclick="popupClose()" id="popup-closer" class="ol-popup-closer"></a>
+				<div id="popup-content"></div>
 			</div>
+			<script>
+				function popupClose() {
+					//popup.style.display = 'none'; // 팝업 숨김
+					$("#popup").hide();
+				}
+			</script>
 		</div>
 	</div>
 

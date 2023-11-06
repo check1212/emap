@@ -66,14 +66,15 @@ function mapInit(){
   		//renderer: 'webgl' // WebGL 렌더러 사용 설정
 	});		
     map.on('moveend', onMoveEnd);
-	
+
 	map.on('singleclick', function (evt) {
+		if($("#div_route_detail").css(display) != "block"){
 		var str_html = "<table class='featureInfo'>";
 	    var viewResolution = view.getResolution();
 	    for(var i=0; i<map.getLayers().getArray().length; i++) {
 	    	var layer = map.getLayers().getArray()[i]
 	    	if (layer.type == "TILE" && layer.getSource().serverType_ == "geoserver") {
-		    	console.log(url);
+		    	//console.log(url);
 			    var url = layer.getSource().getGetFeatureInfoUrl(
 			        evt.coordinate, viewResolution, 'EPSG:4326',
 			        { 'INFO_FORMAT': 'text/html' }
@@ -82,7 +83,7 @@ function mapInit(){
 			    	fetch(url)
 			        	.then((response) => response.text())
 			        	.then((html) => {
-			        		console.log(html);
+			        		//console.log(html);
 			        		var s = html.indexOf('<tr>');
 			        		var e = html.lastIndexOf('</tr>');
 			        		if(s > -1) {
@@ -95,7 +96,7 @@ function mapInit(){
 			    }
 	    	}
 	    }
-
+		}
 	    
 	});
 
@@ -228,15 +229,14 @@ function mapEvent(){
 
 	//항로계획 상세  wp 추가
 	$("#wp_add").on('click',function(e){
-		let data = $("#select_detail").val();
-		if(data == "") alert("WP 선택 후 사용 바랍니다.");
-		else detail_add();
-		
+		detail_add();		
 	});
 	
 	//항로계획 상세  wp 수정
 	$("#wp_update").on('click',function(e){
-		route_update();
+		let data = $("#select_detail").val();
+		if(data == "") alert("WP 선택 후 사용 바랍니다.");
+		else route_update();
 	});
 	
 	//항로계획 상세 wp 삭제
@@ -289,7 +289,7 @@ function scheduleShipInfo(){
 
 //WP Control
 function fn_addInteractions() {
-	
+	map.removeInteraction(modStyleSelectInteraction);
 	let lyr=getLayer("route_p");
 	var source = lyr.getSource();
 	drawInteration_route = new ol.interaction.Draw({
@@ -328,6 +328,7 @@ function fn_addInteractions() {
 		
 		DrawRoute();
 		deactiveInteractions();
+		drawInteration_route.setActive(false);
 	});
 	map.addInteraction(drawInteration_route);
 }
@@ -535,7 +536,7 @@ function route_detail_save() {
 //항로계획 상세 추가
 function detail_add() {
 	var str = "";
-	if($("#route_detail_list table").length == 0) {
+	if($("#route_detail_list table tr").length == 0) {
 		str = "<table style='width: 100%' border='1' cellspacing='0'><colgroup><col width='15%'><col width='25%'><col width='30%'><col width='30%'></colgroup>";
 		str += "<tr id='detail_tr_0'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'></td>";
 		str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' style='width: 105px;'></td>";
@@ -556,36 +557,41 @@ function detail_add() {
 		});
 		$("#detail_tr_0").css("background","#d4d4d4");
 		$("#select_detail").val(0);
+		fn_addInteractions();
 	} else {
-		var select_id = $("#select_detail").val();
-		var len = $("#route_detail_list table tr").length;
-		str = "<tr id='detail_tr_"+(Number(select_id)+1)+"'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'></td>";
-		str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' style='width: 105px;'></td>";
-		str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' id='rt_"+$("#hd_routeid").val()+"_"+(Number(select_id)+1)+"_lat' style='width: 128px;'></td>";
-		str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' id='rt_"+$("#hd_routeid").val()+"_"+(Number(select_id)+1)+"_lon' style='width: 128px;'></td>";
-		str += "</tr>";
-		if(select_id == "") {
-			if(len != 0) select_id=len-1;
-		}
-		if(Number(select_id) <= len) {
-			for(var i = len; i>Number(select_id); i--) {
-				$("#rt_"+$("#hd_routeid").val()+"_"+i+"_lat").attr("id","rt_"+$("#hd_routeid").val()+"_"+(i+1)+"_lat");
-				$("#rt_"+$("#hd_routeid").val()+"_"+i+"_lon").attr("id","rt_"+$("#hd_routeid").val()+"_"+(i+1)+"_lon");
-				$("#detail_tr_"+i).attr("id","detail_tr_"+(i+1));
+		let data = $("#select_detail").val();
+		if(data == "") alert("WP 선택 후 사용 바랍니다.");
+		else {
+			var select_id = $("#select_detail").val();
+			var len = $("#route_detail_list table tr").length;
+			str = "<tr id='detail_tr_"+(Number(select_id)+1)+"'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'></td>";
+			str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' style='width: 105px;'></td>";
+			str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' id='rt_"+$("#hd_routeid").val()+"_"+(Number(select_id)+1)+"_lat' style='width: 128px;'></td>";
+			str += "<td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'><input type='text' id='rt_"+$("#hd_routeid").val()+"_"+(Number(select_id)+1)+"_lon' style='width: 128px;'></td>";
+			str += "</tr>";
+			if(select_id == "") {
+				if(len != 0) select_id=len-1;
 			}
-		}
-		$("#route_detail_list table tr:eq("+(select_id)+")").after(str);
+			if(Number(select_id) <= len) {
+				for(var i = len; i>Number(select_id); i--) {
+					$("#rt_"+$("#hd_routeid").val()+"_"+i+"_lat").attr("id","rt_"+$("#hd_routeid").val()+"_"+(i+1)+"_lat");
+					$("#rt_"+$("#hd_routeid").val()+"_"+i+"_lon").attr("id","rt_"+$("#hd_routeid").val()+"_"+(i+1)+"_lon");
+					$("#detail_tr_"+i).attr("id","detail_tr_"+(i+1));
+				}
+			}
+			$("#route_detail_list table tr:eq("+(select_id)+")").after(str);
 		
-		for(var i=0; i<$("#route_detail_list table tr").length; i++) {
-			var tr = $("#route_detail_list table tr")[i];
-			$(tr).css("background","#ffffff");
-		}
+			for(var i=0; i<$("#route_detail_list table tr").length; i++) {
+				var tr = $("#route_detail_list table tr")[i];
+				$(tr).css("background","#ffffff");
+			}
 		
-		select_id = Number(select_id)+1;
-		$("#detail_tr_"+select_id).css("background","#d4d4d4");
-		$("#select_detail").val(select_id);
+			select_id = Number(select_id)+1;
+			$("#detail_tr_"+select_id).css("background","#d4d4d4");
+			$("#select_detail").val(select_id);
+			fn_addInteractions();
+		}
 	}
-	fn_addInteractions();
 }
 
 //WP 수정

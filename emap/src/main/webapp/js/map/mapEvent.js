@@ -47,7 +47,7 @@ function shipSelectEvent(){
 //interaction 비활성화
 function deactiveInteractions() {
     map.removeInteraction(drawInteration_route);
-    
+    shipSelectEvent();
     var layers = map.getLayers().getArray();
 	for(let i in layers) {
         let l = layers[i];

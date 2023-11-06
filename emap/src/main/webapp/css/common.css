@@ -150,7 +150,7 @@ table input[type='checkbox'] {
 .logo {
 	width: 51px;
 	/*height: 50px;*/
-	height: 105px;
+	height: 130px;
 	/*margin: 10px auto;*/
 	cursor: pointer;
 	/* background-image: url(../images/sk/logo.jpg); */
@@ -187,6 +187,30 @@ table input[type='checkbox'] {
 .option li img {
 	margin: 1px auto;
 	cursor:pointer;
+}
+
+.ol-popup {
+  position: absolute;
+  width: 80px;
+  height: 125px;
+  background-color: white;
+  -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  z-index: 10;
+}
+
+.ol-popup-closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+}
+
+.ol-popup-closer:after {
+  content: "✖";
 }
 
 .slide1 {
@@ -323,13 +347,13 @@ table.featureInfo caption{
 }
 
 .leftMenu3 {
-	position: absolute;
+	/* position: absolute; */
 	/* height: 100%; */
 	/* top: 65px;
 	left: 71px; */
 	/* color: white; */
 	text-align: left;
-	font-size: 8pt;
+	font-size: 7pt;
 	/* background-color: #487295 */
 }
 
