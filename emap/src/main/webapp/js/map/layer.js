@@ -2,7 +2,7 @@ var geoserverWmsUrl = "http://141.164.59.52:8089/geoserver/wms";
 var geoserverGwcUrl = "http://141.164.59.52:8089/geoserver/gwc/service/wmts";
 function wmsInit(){
 
-	// 전체 회색 - 기존 범위 외의 바다 회색 처리 위함
+	// 세계 바다
 	var ocean = new ol.layer.Tile({
 		id : 'ocean',
     	title: 'ocean',
@@ -15,12 +15,12 @@ function wmsInit(){
             	'VERSION': '1.1.0' , 
                 'LAYERS': 'skemap:ocean',
                 'CRS' : 'EPSG:3857',
-            },            
+            },
         })
     });
     map.addLayer(ocean);
 
-	// 국경 검정색 테두리 처리
+	// 세계 나라
 	var worldcountries = new ol.layer.Tile({
 		id : 'worldcountries',
     	title: 'worldcountries',
@@ -66,7 +66,7 @@ function wmsInit(){
     });
     map.addLayer(DAY);
 
-	//wms 바다(기본맵처럼사용)
+	//wms 바다(기본맵처럼사용) : 한국
 	/*var DEPAREA = new ol.layer.Tile({
 		id : 'DEPAREA',
     	title: 'DEPAREA',
@@ -102,7 +102,7 @@ function wmsInit(){
     });
     map.addLayer(lev6_DEPARE_A);*/
     
-    //wms 대지(기본맵처럼사용)
+    //wms 대지(기본맵처럼사용) : 한국
     /*var LNDAREA_A = new ol.layer.Tile({
 		id : 'LNDAREA_A',
     	title: 'LNDAREA_A',
@@ -154,7 +154,7 @@ function wmsInit(){
             },            
         })
     });
-    //map.addLayer(rivers);
+    map.addLayer(rivers);
     
     //wms 	lev6_DEPCNT_L(기본맵처럼사용)
     var lev6_DEPCNT_L = new ol.layer.Tile({
@@ -369,6 +369,42 @@ function wmsInit(){
         })
     });
     map.addLayer(world);*/
+
+    //wms light01
+    var light01 = new ol.layer.Tile({
+		id : 'light01',
+    	title: 'light01',
+    	opacity: 1,
+        source: new ol.source.TileWMS({
+            url: geoserverWmsUrl,
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous',            
+            params: { 
+            	'VERSION': '1.1.0' , 
+                'LAYERS': 'skemap:light01',               
+                'CRS' : 'EPSG:3857',
+            },
+        })
+    });
+    map.addLayer(light01);
+
+    //wms light02
+    var light02 = new ol.layer.Tile({
+		id : 'light02',
+    	title: 'light02',
+    	opacity: 1,
+        source: new ol.source.TileWMS({
+            url: geoserverWmsUrl,
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous',            
+            params: { 
+            	'VERSION': '1.1.0' , 
+                'LAYERS': 'skemap:light02',               
+                'CRS' : 'EPSG:3857',
+            },
+        })
+    });
+    map.addLayer(light02);
 
     
          

@@ -67,7 +67,7 @@ function mapInit(){
   		//renderer: 'webgl' // WebGL 렌더러 사용 설정
 	});		
     map.on('moveend', onMoveEnd);
-	
+
 	map.on('singleclick', function (evt) {
 		if($("#div_route_detail").css("display") != "block" && drawInteration_route == null && drawInteration_search == null){
 			var str_html = "<table class='featureInfo'>";
@@ -327,6 +327,7 @@ function fn_addInteractions() {
 		
 		DrawRoute();
 		deactiveInteractions();
+		drawInteration_route.setActive(false);
 	});
 	map.addInteraction(drawInteration_route);
 }
