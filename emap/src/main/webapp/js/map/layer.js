@@ -37,9 +37,27 @@ function wmsInit(){
         })
     });
     map.addLayer(worldcountries);
+    
+    //wms 	Day(기본맵처럼사용)
+    var DAY = new ol.layer.Tile({
+		id : 'Day',
+    	title: 'Day',
+    	opacity: 1,
+        source: new ol.source.TileWMS({
+            url: geoserverWmsUrl,
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous',            
+            params: { 
+            	'VERSION': '1.1.0' , 
+                'LAYERS': 'Day',               
+                'CRS' : 'EPSG:3857',
+            },            
+        })
+    });
+    map.addLayer(DAY);
 
 	//wms 바다(기본맵처럼사용)
-	var DEPAREA = new ol.layer.Tile({
+	/*var DEPAREA = new ol.layer.Tile({
 		id : 'DEPAREA',
     	title: 'DEPAREA',
     	opacity: 1,
@@ -54,10 +72,10 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(DEPAREA);
+    map.addLayer(DEPAREA);*/
     
     //wms 바다(lev6_DEPARE_A)
-	var lev6_DEPARE_A = new ol.layer.Tile({
+	/*var lev6_DEPARE_A = new ol.layer.Tile({
 		id : 'lev6_DEPARE_A',
     	title: 'lev6_DEPARE_A',
     	opacity: 1,
@@ -72,10 +90,10 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_DEPARE_A);
+    map.addLayer(lev6_DEPARE_A);*/
     
     //wms 대지(기본맵처럼사용)
-    var LNDAREA_A = new ol.layer.Tile({
+    /*var LNDAREA_A = new ol.layer.Tile({
 		id : 'LNDAREA_A',
     	title: 'LNDAREA_A',
     	opacity: 1,
@@ -90,10 +108,10 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(LNDAREA_A);
+    map.addLayer(LNDAREA_A);*/
     
     //wms lev6_LNDARE_A(기본맵처럼사용)
-    var lev6_LNDARE_A = new ol.layer.Tile({
+    /*var lev6_LNDARE_A = new ol.layer.Tile({
 		id : 'lev6_LNDARE_A',
     	title: 'lev6_LNDARE_A',
     	opacity: 1,
@@ -108,7 +126,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_LNDARE_A);
+    map.addLayer(lev6_LNDARE_A);*/
     
     //wms 강(기본맵처럼사용)
     var rivers = new ol.layer.Tile({
