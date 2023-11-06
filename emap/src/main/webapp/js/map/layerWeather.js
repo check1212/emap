@@ -82,7 +82,7 @@ function wmsWeatherInit(){
 
 	// CSV에서 JSON 데이터를 가져오는 함수
 	function fetchCSVData(url, callback) {
-		fetch('/emap/getCSV.do?url=' + url)
+		fetch('/getCSV.do?url=' + url)
 		    .then(response => {
 		        if (response.ok) {
 		            return response.text(); // 텍스트 형태로 읽음
