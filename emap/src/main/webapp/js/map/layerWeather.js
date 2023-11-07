@@ -1,5 +1,5 @@
 function wmsWeatherInit(){
-	make_sld("rivers", "Polygon1", "070707", null); // 강 색상 최초 1회 적용
+	make_sld("rivers", "Polygon1", "0089ff", null); // 강 색상 최초 1회 적용
 
 	var apiKey1 = '874718354841f0e0250b4b06a05a971e';
 
@@ -82,7 +82,8 @@ function wmsWeatherInit(){
 
 	// CSV에서 JSON 데이터를 가져오는 함수
 	function fetchCSVData(url, callback) {
-		fetch('/getCSV.do?url=' + url)
+		//fetch('/getCSV.do?url=' + url)
+		fetch('/emap/getCSV.do?url=' + url)
 		    .then(response => {
 		        if (response.ok) {
 		            return response.text(); // 텍스트 형태로 읽음
@@ -245,7 +246,7 @@ function wmsWeatherInit(){
 			make_sld("DEPAREA", "Polygon2", "73b5ee", "d3e9ed");
 			make_sld("worldcountries", "Polygon1", "c5b578", null);
 			make_sld("LNDAREA_A", "Polygon1", "c5b578", null);
-			make_sld("rivers", "Polygon1", "070707", null);
+			make_sld("rivers", "Polygon1", "0089ff", null);
 		} else if (brightRange == 2) {
 			make_sld("ocean", "Polygon1", "070707", null);
 			make_sld("DEPAREA", "Polygon2", "16232f", "070707");

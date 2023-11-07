@@ -224,7 +224,7 @@ function fn_printPopup(){
 		
 			popupWindow.document.write("<div id='printHead'>")
 				popupWindow.document.write("<div id='title' style='padding:10px;background:#f3f3f3;'>")
-				popupWindow.document.write("SK 지도 프린트 미리보기")
+				popupWindow.document.write("지도 프린트 미리보기")
 				popupWindow.document.write("<button id='printBtn' style='padding:4px 10px 6px 10px;border-radius:5px;border:none;background:#24356E;font-size:12px;color:#fff;float:right;' onclick='fn_print()'>")
 				popupWindow.document.write("인 쇄")
 			    popupWindow.document.write("</button>")
