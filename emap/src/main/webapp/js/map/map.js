@@ -327,7 +327,6 @@ function fn_addInteractions() {
 		
 		DrawRoute();
 		deactiveInteractions();
-		drawInteration_route.setActive(false);
 	});
 	map.addInteraction(drawInteration_route);
 }
