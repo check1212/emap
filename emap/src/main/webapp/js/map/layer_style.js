@@ -115,6 +115,7 @@ function make_sld(lynm, type, color1, color2) {
 				</StyledLayerDescriptor>\
 				"
 
-    var source = getLayer(lynm).getSource();
+	var source = getLayer(lynm).getSource();
+    //var source = getLayerGroup(lynm).getSource();
     source.updateParams({ 'STYLES': '' ,'SLD_BODY': text_SLD });
 }

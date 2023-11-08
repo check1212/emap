@@ -1,5 +1,5 @@
 function wmsWeatherInit(){
-	make_sld("rivers", "Polygon1", "070707", null); // 강 색상 최초 1회 적용
+	make_sld("rivers", "Polygon1", "0089ff", null); // 강 색상 최초 1회 적용
 
 	var apiKey1 = '874718354841f0e0250b4b06a05a971e';
 
@@ -82,6 +82,7 @@ function wmsWeatherInit(){
 
 	// CSV에서 JSON 데이터를 가져오는 함수
 	function fetchCSVData(url, callback) {
+		//fetch('/getCSV.do?url=' + url)
 		fetch('/emap/getCSV.do?url=' + url)
 		    .then(response => {
 		        if (response.ok) {
@@ -245,13 +246,14 @@ function wmsWeatherInit(){
 			make_sld("DEPAREA", "Polygon2", "73b5ee", "d3e9ed");
 			make_sld("worldcountries", "Polygon1", "c5b578", null);
 			make_sld("LNDAREA_A", "Polygon1", "c5b578", null);
-			make_sld("rivers", "Polygon1", "070707", null);
+			make_sld("rivers", "Polygon1", "0089ff", null);
 		} else if (brightRange == 2) {
-			make_sld("ocean", "Polygon1", "070707", null);
-			make_sld("DEPAREA", "Polygon2", "16232f", "070707");
-			make_sld("worldcountries", "Polygon1", "2c291b", null);
-			make_sld("LNDAREA_A", "Polygon1", "2c291b", null);
-			make_sld("rivers", "Polygon1", "292e2e", null);
+			//make_sld("ocean", "Polygon1", "070707", null);
+			make_sld("DAY", "Polygon1", "070707", null);
+			//make_sld("DEPAREA", "Polygon2", "16232f", "070707");
+			//make_sld("worldcountries", "Polygon1", "2c291b", null);
+			//make_sld("LNDAREA_A", "Polygon1", "2c291b", null);
+			//make_sld("rivers", "Polygon1", "292e2e", null);
 		} else {
 			make_sld("ocean", "Polygon1", "070707", null);
 			make_sld("DEPAREA", "Polygon2", "030413", "070707");
@@ -585,15 +587,20 @@ var tempFlag = false;
 							popup.setPosition(coordinate_);
 							document.getElementById('popup-content').innerHTML = content;
 							//goPopup = true;
+							isPopupOpen = true; // 다른 팝업이 실행되지 않도록 처리
+							setTimeout(function() { // 팝업 닫은 이후 다른 위치 클릭시 기존 팝업 노출 후 이동되는 현상 해결
+								$("#popup").show();
+							}, 500);
 							break;
 						}
 					};
 				});
-				setTimeout(function() { // 팝업 닫은 이후 다른 위치 클릭시 기존 팝업 노출 후 이동되는 현상 해결
-				//if (goPopup)
-					$("#popup").show();
+				setTimeout(function() { // 추후 클릭시 다른 팝업이 실행될 수도 있도록 초기화
+					isPopupOpen = false;
 				}, 500);
+				//event.stopPropagation();
 			});
+			//}, null, 1);
 
 		    // 애니메이션 업데이트 함수를 반복 호출하여 번갈아가며 표시
 		    currentCSVIndex = (currentCSVIndex + 1) % csvURLs.length;

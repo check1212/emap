@@ -69,7 +69,7 @@ function mapInit(){
     map.on('moveend', onMoveEnd);
 
 	map.on('singleclick', function (evt) {
-		if($("#div_route_detail").css("display") != "block" && drawInteration_route == null && drawInteration_search == null){
+		if($("#div_route_detail").css("display") != "block" && drawInteration_route == null && drawInteration_search == null && isPopupOpen == false){
 			var str_html = "<table class='featureInfo'>";
 		    var viewResolution = view.getResolution();
 		    for(var i=0; i<map.getLayers().getArray().length; i++) {
