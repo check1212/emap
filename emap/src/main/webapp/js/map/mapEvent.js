@@ -47,6 +47,7 @@ function shipSelectEvent(){
 //interaction 비활성화
 function deactiveInteractions() {
     map.removeInteraction(drawInteration_search);
+    map.removeInteraction(drawInteration_route);
     drawInteration_route = null;
     drawInteration_search = null;
     shipSelectEvent();
