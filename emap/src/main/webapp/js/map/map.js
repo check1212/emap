@@ -534,6 +534,9 @@ function route_detail_save() {
 //항로계획 상세 추가
 function detail_add() {
 	var str = "";
+	if($("#hd_routeid").val() == "") {
+		alert("저장 후 WP추가 하시기 바랍니다.");
+	} else {
 	if($("#route_detail_list table tr").length == 0) {
 		str = "<table style='width: 100%' border='1' cellspacing='0'><colgroup><col width='15%'><col width='25%'><col width='30%'><col width='30%'></colgroup>";
 		str += "<tr id='detail_tr_0'><td style='padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;'></td>";
@@ -589,6 +592,7 @@ function detail_add() {
 			$("#select_detail").val(select_id);
 			fn_addInteractions();
 		}
+	}
 	}
 }
 
