@@ -3,7 +3,7 @@ var geoserverGwcUrl = "http://141.164.59.52:8089/geoserver/gwc/service/wmts";
 function wmsInit(){
 
 	// 세계 바다
-	var ocean = new ol.layer.Tile({
+	/*var ocean = new ol.layer.Tile({
 		id : 'ocean',
     	title: 'ocean',
     	opacity: 1,
@@ -37,16 +37,16 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(worldcountries);
-    
-    //wms 	Day(기본맵처럼사용)
-    var DAY = new ol.layer.Tile({
-		id : 'Day',
-    	title: 'Day',
+    map.addLayer(worldcountries);*/
+
+    //wms Day 주간(기본맵처럼사용)
+	var DAY1 = new ol.layer.Tile({
+		id : 'Day1',
+    	title: 'Day1',
     	opacity: 1,
         source: new ol.source.WMTS({
             url: geoserverGwcUrl,
-            layer: 'Day',
+            layer: 'Day1',
             matrixSet: 'EPSG:4326',
             format: 'image/png',
             projection: new ol.proj.Projection({
@@ -64,7 +64,104 @@ function wmsInit(){
             wrapX: true
           })
     });
-    map.addLayer(DAY);
+    map.addLayer(DAY1);
+
+    //wms Day 야간(기본맵처럼사용)
+	var DAY2 = new ol.layer.Tile({
+		id : 'Day2',
+    	title: 'Day2',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day2',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
+
+    //wms Day 새벽/일몰(기본맵처럼사용)
+	var DAY3 = new ol.layer.Tile({
+		id : 'Day3',
+    	title: 'Day3',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day3',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
+
+	// 밝기 선택시 동작
+	var brightSelect = document.getElementById("brightSelect");
+
+	brightSelect.addEventListener("change", function() {
+		var brightRange = brightSelect.value;
+
+		if (brightRange == 1) {
+			if (DAY2)
+    			map.removeLayer(DAY2);
+			else if (DAY3)
+				map.removeLayer(DAY3);
+    		map.addLayer(DAY1);
+			DAY1.setZIndex(-1);
+			/*make_sld("ocean", "Polygon1", "d3e9ed", null);
+			make_sld("DEPAREA", "Polygon2", "73b5ee", "d3e9ed");
+			make_sld("worldcountries", "Polygon1", "c5b578", null);
+			make_sld("LNDAREA_A", "Polygon1", "c5b578", null);
+			make_sld("rivers", "Polygon1", "0089ff", null);*/
+		} else if (brightRange == 2) {
+			if (DAY1)
+    			map.removeLayer(DAY1);
+			else if (DAY3)
+				map.removeLayer(DAY3);
+			map.addLayer(DAY2);
+			DAY2.setZIndex(-1);
+			/*make_sld("ocean", "Polygon1", "070707", null);
+			make_sld("DEPAREA", "Polygon2", "16232f", "070707");
+			make_sld("worldcountries", "Polygon1", "2c291b", null);
+			make_sld("LNDAREA_A", "Polygon1", "2c291b", null);
+			make_sld("rivers", "Polygon1", "292e2e", null);*/
+		} else {
+			if (DAY1)
+    			map.removeLayer(DAY1);
+			else if (DAY2)
+				map.removeLayer(DAY2);
+    		map.addLayer(DAY3);
+			DAY3.setZIndex(-1);
+			/*make_sld("ocean", "Polygon1", "070707", null);
+			make_sld("DEPAREA", "Polygon2", "030413", "070707");
+			make_sld("worldcountries", "Polygon1", "0d0a08", null);
+			make_sld("LNDAREA_A", "Polygon1", "0d0a08", null);
+			make_sld("rivers", "Polygon1", "292e2e", null);*/
+		}
+	});
 
 	//wms 바다(기본맵처럼사용) : 한국
 	/*var DEPAREA = new ol.layer.Tile({
@@ -139,7 +236,7 @@ function wmsInit(){
     map.addLayer(lev6_LNDARE_A);*/
     
     //wms 강(기본맵처럼사용)
-    var rivers = new ol.layer.Tile({
+    /*var rivers = new ol.layer.Tile({
 		id : 'rivers',
     	title: 'rivers',
     	opacity: 1,
@@ -154,7 +251,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(rivers);
+    map.addLayer(rivers);*/
     
     //wms 	lev6_DEPCNT_L(기본맵처럼사용)
     var lev6_DEPCNT_L = new ol.layer.Tile({
@@ -172,7 +269,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_DEPCNT_L);       
+	map.addLayer(lev6_DEPCNT_L);       
     
     //wms 수심텍스트(기본맵처럼사용)
     var lev6_SOUNDG_P = new ol.layer.Tile({
@@ -190,7 +287,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_SOUNDG_P);   
+	map.addLayer(lev6_SOUNDG_P);   
     
     //wms lev6_OBSTRN_A(기본맵처럼사용)
     var lev6_OBSTRN_A = new ol.layer.Tile({
@@ -208,7 +305,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_OBSTRN_A);      
+	map.addLayer(lev6_OBSTRN_A);      
     
    //wms lev6_OILBAR_L(기본맵처럼사용)
     var lev6_OILBAR_L = new ol.layer.Tile({
@@ -226,7 +323,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_OILBAR_L);   
+	map.addLayer(lev6_OILBAR_L);   
     
     //wms lev6_ACHBRT_A(기본맵처럼사용)
     var lev6_ACHBRT_A = new ol.layer.Tile({
@@ -244,7 +341,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_ACHBRT_A);  
+	map.addLayer(lev6_ACHBRT_A);  
     
     //wms lev6_BRIDGE_A(기본맵처럼사용)
     var lev6_BRIDGE_A = new ol.layer.Tile({
@@ -262,7 +359,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_BRIDGE_A);       
+	map.addLayer(lev6_BRIDGE_A);       
     
     //wms lev6_BUISGL_A(기본맵처럼사용)
     var lev6_BUISGL_A = new ol.layer.Tile({
@@ -280,7 +377,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_BUISGL_A);   
+	map.addLayer(lev6_BUISGL_A);   
     
     //wms lev6_SEAARE_A(기본맵처럼사용)
     var lev6_SEAARE_A = new ol.layer.Tile({
@@ -298,7 +395,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_SEAARE_A);  
+	map.addLayer(lev6_SEAARE_A);  
     
     //wms lev6_SLCONS_L(기본맵처럼사용)
     var lev6_SLCONS_L = new ol.layer.Tile({
@@ -316,7 +413,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_SLCONS_L);
+	map.addLayer(lev6_SLCONS_L);
 
 	/*var seaarea = new ol.layer.Tile({
 		id : 'seaarea',
@@ -336,7 +433,7 @@ function wmsInit(){
     map.addLayer(seaarea);*/
 
     //wms 닷 anchor
-    var anchor = new ol.layer.Tile({
+    /*var anchor = new ol.layer.Tile({
 		id : 'anchor',
     	title: 'anchor',
     	opacity: 1,
@@ -351,7 +448,7 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(anchor);
+    map.addLayer(anchor);*/
 
 	/*var world = new ol.layer.Tile({
 		id : 'world',
@@ -371,7 +468,7 @@ function wmsInit(){
     map.addLayer(world);*/
 
     //wms light01
-    var light01 = new ol.layer.Tile({
+    /*var light01 = new ol.layer.Tile({
 		id : 'light01',
     	title: 'light01',
     	opacity: 1,
@@ -404,7 +501,7 @@ function wmsInit(){
             },
         })
     });
-    map.addLayer(light02);
+    map.addLayer(light02);*/
 
     
          
@@ -430,8 +527,8 @@ function lightIconlayer(){
                 'CRS' : 'EPSG:3857',
             },            
         })
-    });   
-    map.addLayer(lev6_BUOY_P); 
+    });
+	map.addLayer(lev6_BUOY_P); 
          
 	//부표
    var lev6_FOGSIG_P = new ol.layer.Tile({
@@ -452,7 +549,7 @@ function lightIconlayer(){
             },            
         })
     });   
-    map.addLayer(lev6_FOGSIG_P);    
+	map.addLayer(lev6_FOGSIG_P);    
     
     //등표
     var lev6_LIGHTS_P = new ol.layer.Tile({
@@ -470,7 +567,7 @@ function lightIconlayer(){
             },            
         })
     });   
-    map.addLayer(lev6_LIGHTS_P);    
+	map.addLayer(lev6_LIGHTS_P);    
     
      //등대
      var lev6_LNDMARK_P = new ol.layer.Tile({
@@ -488,7 +585,7 @@ function lightIconlayer(){
             },            
         })
     });   
-    map.addLayer(lev6_LNDMARK_P);        
+	map.addLayer(lev6_LNDMARK_P);        
     
     //lev6_WRECKS_P
      var lev6_WRECKS_P = new ol.layer.Tile({
@@ -506,7 +603,7 @@ function lightIconlayer(){
             },            
         })
     });   
-    map.addLayer(lev6_WRECKS_P);       
+	map.addLayer(lev6_WRECKS_P);       
 }  
 
 //표지 레이어 on/off  (등대,등표,부표)

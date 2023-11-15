@@ -17,7 +17,9 @@ body,div,ul,li,dl,dt,dd,ol,p,h1,h2,h3,h4,h5,h6,form {
 	margin:0; padding:0;
 }
 body {
-	font:normal 15px 'Nanum Gothic', '나눔 고딕', '맑은 고딕', '돋움', dotum; color:#000000;
+	font:normal 15px 'Nanum Gothic', '나눔 고딕', '맑은 고딕', '돋움', dotum;
+	color:#000000;
+    overflow-y: hidden;
 }
 h1 {
 	font-family:"굴림", Gulim, AppleGothic, Sans-serif; font-size:13pt;
@@ -150,7 +152,7 @@ table input[type='checkbox'] {
 .logo {
 	width: 51px;
 	/*height: 50px;*/
-	height: 130px;
+	height: 10px;
 	/*margin: 10px auto;*/
 	cursor: pointer;
 	/* background-image: url(../images/sk/logo.jpg); */
@@ -191,7 +193,7 @@ table input[type='checkbox'] {
 
 .ol-popup {
   position: absolute;
-  width: 80px;
+  width: 145px;
   height: 125px;
   background-color: white;
   -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
@@ -200,6 +202,7 @@ table input[type='checkbox'] {
   border-radius: 10px;
   border: 1px solid #ccc;
   z-index: 10;
+  display: none;
 }
 
 .ol-popup-closer {
@@ -330,8 +333,8 @@ table.featureInfo caption{
 .scale {
 	width: 420px;
 	height: 25px;
-	left: 85px;
-	top: 20px;
+	left: 90px;
+	top: 30px;
 	position: absolute;
 	background-color: rgba(213, 213, 213, 0.5);
 	text-align: center;
@@ -355,6 +358,12 @@ table.featureInfo caption{
 	text-align: left;
 	font-size: 7pt;
 	/* background-color: #487295 */
+}
+
+.menuBar {
+	width: 100%;
+	height: 30px;
+	background-color: #24281c;
 }
 
 /* .popup {

@@ -1,6 +1,6 @@
 function onMoveEnd(evt) {
 	  var map1 = evt.map;  
-	  var lev =map1.getView().getZoom();
+	  var lev = map1.getView().getZoom();
 	  var resol = map1.getView().getResolutionForZoom(lev);	  
 	  
 	  var INCHES_PER_UNIT = 39.37;
@@ -41,7 +41,7 @@ function shipSelectEvent(){
 				getShipSearch_Detail(mmsi); //선박 상세정보     
             }
         });
-        map.addInteraction(modStyleSelectInteraction);
+		map.addInteraction(modStyleSelectInteraction);
 }
 
 //interaction 비활성화

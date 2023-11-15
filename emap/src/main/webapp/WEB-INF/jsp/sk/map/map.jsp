@@ -12,6 +12,9 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/js/libs/colorpicker/css/colorpicker.css"/>"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/js/libs/colorpicker/css/layout.css"/>"/>
 <link rel="stylesheet" href="<c:url value="/js/libs/openlayers/ol-v5.30/ol.css"/>">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v5.3.0/css/ol.css"> -->
+<!-- <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css"> -->
+<%-- <link rel="stylesheet" href="<c:url value="/js/libs/openlayers/ol-v5.30-pkg/ol.css"/>"> --%>
 <link rel="stylesheet" href="<c:url value="/js/libs/openlayers/ol-ext/ol-ext.min.css"/>"/>
 <link rel="stylesheet" href="<c:url value="/css/common.css?version=${nowDate}"/>"/>
 <link type="text/css" href="<c:url value="/css/perfect-scrollbar.css"/>" rel="stylesheet"/>
@@ -36,6 +39,8 @@
 
 <!-- openlayers -->
 <script type="text/javascript" src="<c:url value="/js/libs/openlayers/ol-v5.30/ol.js"/>"></script>
+<%-- <script type="text/javascript" src="<c:url value="/js/libs/openlayers/ol-v5.30-pkg/ol.js"/>"></script> --%>
+<!-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v5.3.0/build/ol.js"></script> -->
 <!-- openlayers -->
 <script type="text/javascript" src="<c:url value="/js/libs/openlayers/ol-ext/ol-ext.min.js"/>"></script>
 
@@ -82,31 +87,12 @@ window.onload = function(){
 </script>
 </head>
 <body>
+<script type="text/javascript" src="js/map/canvasLayer/bundle.js"></script>
+
 <div id="wrapper">
 		<div id="container">
 			<div class="con_left">
-				<!-- <div class="logo"></div> -->
-				<div class="leftMenu3">
-					&nbsp;<input type="checkbox" id="checkWind" checked> 풍향/풍속&nbsp;<br>
-					&nbsp;<input type="checkbox" id="checkFlow" checked> 유향/유속&nbsp;<br>
-					&nbsp;<input type="checkbox" id="checkWaveheight" checked> 파향/파고&nbsp;<br>
-					&nbsp;<input type="checkbox" id="checkTemp" checked> 기온&nbsp;<br>
-					<select id="daySelect">
-						<option value=2>2일</option>
-						<option value=3>3일</option>
-						<option value=4>4일</option>
-						<option value=5>5일</option>
-						<option value=6>6일</option>
-						<option value=7 selected>7일</option>
-					</select><br>
-					&nbsp;<button id="stopAnimation">정지</button> <button id="startAnimation">시작</button><br>
-					<br>
-					<select id="brightSelect">
-						<option value=1 selected>주간</option>
-						<option value=2>야간</option>
-						<option value=3>새벽/일몰</option>
-					</select><br>
-				</div>
+				<div class="logo"></div>
 				<div class="nav">
 					<div class="map_tool">
 						<ul>
@@ -177,6 +163,49 @@ window.onload = function(){
 				</div>
 			</div> -->
 			<div class="con_center">
+				<div class="menuBar">
+					<table>
+						<tr>
+							<td width="20px"></td>
+							<td style="color: white;">
+								&nbsp;<input type="checkbox" id="checkWind"> 풍향/풍속&nbsp;
+								&nbsp;<input type="checkbox" id="checkFlow"> 유향/유속&nbsp;
+								&nbsp;<input type="checkbox" id="checkWaveheight"> 파향/파고&nbsp;
+								&nbsp;<input type="checkbox" id="checkTemp"> 기온&nbsp;
+							</td>
+							<td width="10px"></td>
+							<td>
+								<select id="daySelect">
+									<option value=2>2일</option>
+									<option value=3>3일</option>
+									<option value=4>4일</option>
+									<option value=5>5일</option>
+									<option value=6>6일</option>
+									<option value=7 selected>7일</option>
+								</select>
+							</td>
+							<td width="10px"></td>
+							<td>
+								<table>
+									<tr height="2px"><td></td></tr>
+									<tr>
+										<td>
+											<button id="stopAnimation" style="width: 35px; height: 25px;">정지</button> <button id="startAnimation" style="width: 35px; height: 25px;">시작</button>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td width="30px"></td>
+							<td>
+								<select id="brightSelect">
+									<option value=1 selected>주간</option>
+									<option value=2>야간</option>
+									<option value=3>새벽/일몰</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</div>
 				<div class="map" id="dvMap" style="width:100%; height:100%;"></div>
 			</div>
 			<div id="div_route_detail">
@@ -263,7 +292,7 @@ window.onload = function(){
 				<div id="detail_table" style="height: 295px;overflow: auto;"></div>
 				<button id="close_detail">닫기</button>
 			</div>		
-			<div cass="scale"> <span id="mouseLocationStat" style="width:210px;float:left;"></span>  <span id="mapZoomLevelStat" style="width:200px;float:left;">SCALE=>1:10.000[LEVEL:27]</span></div>
+			<div class="scale"> <span id="mouseLocationStat" style="width:210px;float:left;"></span>  <span id="mapZoomLevelStat" style="width:200px;float:left;">SCALE=>1:10.000[LEVEL:27]</span></div>
 <!-- 			<div class="leftMenu">
 				<table style="border-collapse: separate; border-spacing: 5px;">
 					<tr>
@@ -298,7 +327,7 @@ window.onload = function(){
 					</tr>
 				</table>
 			</div> -->
-			
+
 			<div id="popup" class="ol-popup">
 				<a href="#" onclick="popupClose()" id="popup-closer" class="ol-popup-closer"></a>
 				<div id="popup-content"></div>
