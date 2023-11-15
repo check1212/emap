@@ -1,7 +1,7 @@
 function wmsWeatherInit(){
-	make_sld("rivers", "Polygon1", "0089ff", null); // 강 색상 최초 1회 적용
+	//make_sld("rivers", "Polygon1", "0089ff", null); // 강 색상 최초 1회 적용
 
-	var apiKey1 = '874718354841f0e0250b4b06a05a971e';
+	//var apiKey1 = '874718354841f0e0250b4b06a05a971e';
 
     // openweathermap 온도
     /*var weatherTemp = new ol.layer.Tile({
@@ -109,7 +109,7 @@ function wmsWeatherInit(){
 		        });
 		    })
 		    .catch(error => {
-		        console.error('CSV 파싱 에러 :', error);
+				console.error('CSV 파싱 에러 :', error);
 		    });
 	}
 
@@ -236,33 +236,6 @@ function wmsWeatherInit(){
 		}
 	});
 
-	var brightSelect = document.getElementById("brightSelect");
-
-	brightSelect.addEventListener("change", function() {
-		var brightRange = brightSelect.value;
-
-		if (brightRange == 1) {
-			make_sld("ocean", "Polygon1", "d3e9ed", null);
-			make_sld("DEPAREA", "Polygon2", "73b5ee", "d3e9ed");
-			make_sld("worldcountries", "Polygon1", "c5b578", null);
-			make_sld("LNDAREA_A", "Polygon1", "c5b578", null);
-			make_sld("rivers", "Polygon1", "0089ff", null);
-		} else if (brightRange == 2) {
-			//make_sld("ocean", "Polygon1", "070707", null);
-			make_sld("DAY", "Polygon1", "070707", null);
-			//make_sld("DEPAREA", "Polygon2", "16232f", "070707");
-			//make_sld("worldcountries", "Polygon1", "2c291b", null);
-			//make_sld("LNDAREA_A", "Polygon1", "2c291b", null);
-			//make_sld("rivers", "Polygon1", "292e2e", null);
-		} else {
-			make_sld("ocean", "Polygon1", "070707", null);
-			make_sld("DEPAREA", "Polygon2", "030413", "070707");
-			make_sld("worldcountries", "Polygon1", "0d0a08", null);
-			make_sld("LNDAREA_A", "Polygon1", "0d0a08", null);
-			make_sld("rivers", "Polygon1", "292e2e", null);
-		}
-	});
-
 	/*daySelect.addEventListener("change", function() {
 		var dayRange = daySelect.value;
 
@@ -328,9 +301,9 @@ function wmsWeatherInit(){
 	let flowLayer = null; // 유향/유속 레이어
 	let tempLayer = null; // 기온 레이어
 
-	let addLayerWind = 1;
-	let addLayerFlow = 1;
-	let addLayerTemp = 1;
+	let addLayerWind = 0;
+	let addLayerFlow = 0;
+	let addLayerTemp = 0;
 	
 	// 애니메이션 시작
 	updateAnimation();
@@ -343,17 +316,18 @@ function wmsWeatherInit(){
 		//fetchCSVData(function(jsonData) {
 		fetchCSVData(csvURLs[currentCSVIndex], function(jsonData) {
 		    if (windLayer)
-		    	map.removeLayer(windLayer); // 이전 레이어 제거
+				map.removeLayer(windLayer); // 이전 레이어 제거
 		    if (flowLayer)
-		    	map.removeLayer(flowLayer);
+				map.removeLayer(flowLayer);
 		    if (tempLayer)
-		    	map.removeLayer(tempLayer);
+				map.removeLayer(tempLayer);
 
 		    const featuresWind = [];
 		    const featuresFlow = [];
 		    const featuresTemp = [];
+/* 기온 클러스터링
 const tempClusters = {};
-var tempFlag = false;
+var tempFlag = false;*/
 
 			jsonData.slice(0, -1).forEach(function(data) { // CSV to Json 과정에서 맨 마지막 배열에 쓰레기값 있으므로 제거
 				var lon = parseFloat(data.Longitude); // 경도
@@ -364,7 +338,7 @@ var tempFlag = false;
 				//var currentSpeed = parseInt(data.waterspeed); // 유속
 				var flowSpeed = parseFloat(data.waterspeed); // 유속
 				var temp = parseFloat(data.temp); // 기온
-				/*var tempImg;
+				var tempImg;
 				if (temp <= 0)
 					tempImg = 'images/sk/icon_temp0.png';
 				else if (temp < 10)
@@ -374,10 +348,8 @@ var tempFlag = false;
 				else if (temp < 30)
 					tempImg = 'images/sk/icon_temp20.png';
 				else // 30도 이상
-					tempImg = 'images/sk/icon_temp30.png';*/
+					tempImg = 'images/sk/icon_temp30.png';
 					
-					
-
 				var windOpacity = windSpeed / 100;
 				var flowOpacity = flowSpeed / 100;
 
@@ -406,14 +378,14 @@ var tempFlag = false;
 				});
 
 				// 기온 아이콘 스타일 정의
-				/*var tempStyle = new ol.style.Style({
+				var tempStyle = new ol.style.Style({
 					image: new ol.style.Icon({
 						src: tempImg,
 						anchor: [0.5, 0.5],
-						opacity: 0.01,
+						opacity: 0.1,
 						scale: 10
 					})
-				});*/
+				});
 
 				// 풍향/풍속 아이콘 위치 설정
 				var windFeature = new ol.Feature({
@@ -426,18 +398,19 @@ var tempFlag = false;
 		        });
 
 				// 기온 포인트 위치 설정
-				/*var tempFeature = new ol.Feature({
+				var tempFeature = new ol.Feature({
 		            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
-		        });*/
+		        });
 
 		        windFeature.setStyle(windStyle);
 		        flowFeature.setStyle(flowStyle);
-		        //tempFeature.setStyle(tempStyle);
+		        tempFeature.setStyle(tempStyle);
 
 		        featuresWind.push(windFeature);
 		        featuresFlow.push(flowFeature);
-		        //featuresTemp.push(tempFeature);
+		        featuresTemp.push(tempFeature);
 
+				/* 기온 클러스터링
 				if (!isNaN(temp)) {
 					tempFlag = true;
 				
@@ -452,6 +425,7 @@ var tempFlag = false;
 					// 데이터 포인트를 클러스터에 추가합니다.
 					tempClusters[tempClusterKey].push(data);
 				}
+				*/
 			});
 
 			// 풍향/풍속 레이어 생성
@@ -469,12 +443,13 @@ var tempFlag = false;
 			});
 
 			// 기온 레이어 생성
-			/*tempLayer = new ol.layer.Vector({
+			tempLayer = new ol.layer.Vector({
 	        	source: new ol.source.Vector({
 	            	features: featuresTemp
 				})
-			});*/
+			});
 
+			/* 기온 클러스터링
 			//var iconSize;
 			if (tempFlag) {
 				// 클러스터 레이어 생성
@@ -545,19 +520,22 @@ var tempFlag = false;
 				
 				// 클러스터 레이어 스타일 설정
 				tempLayer.setStyle(clusterStyle);
-			}
+			}*/
 
-			// 레이어 추가
-			if (addLayerWind == 1)
-				if (addLayerFlow == 1)
-					map.addLayer(flowLayer); // 속도 향상을 위해 둘 모두의 레이어 On 일 때 유향/유속만 보여줌
-				else
-					map.addLayer(windLayer);
+			// 레이어 추가 (속도 향상을 위해 레이어 2개 이상일 때 하나의 레이어만 보여줌)
+			if (addLayerTemp == 1)
+				map.addLayer(tempLayer);
+			else if (addLayerFlow == 1)
+				map.addLayer(flowLayer);
+			else if (addLayerWind == 1)
+				map.addLayer(windLayer);
 			/*if (addLayerFlow == 1)
 				map.addLayer(flowLayer);*/
 			//console.log(iconSize);
+			/* 기온 클러스터링
 			if (tempFlag && addLayerTemp == 1)
 				map.addLayer(tempLayer);
+			*/
 
 			// 클릭시 정보 레이어 팝업
 			var popup = new ol.Overlay({
@@ -576,13 +554,13 @@ var tempFlag = false;
 						//console.log(Math.abs(coordinate[1] - parseFloat(data[i].Latitude)));
 						if (Math.abs(coordinate[1] - parseFloat(data[i].Latitude)) <= tolerance && Math.abs(coordinate[0] - parseFloat(data[i].Longitude)) <= tolerance) {
 							var content =
-										'<p>위도 : ' + parseFloat(data[i].Latitude).toFixed(2) + '</p>' +
-										'<p>경도 : ' + parseFloat(data[i].Longitude).toFixed(2) + '</p>' +
+										'<p>위도 : ' + convertToDMS(parseFloat(data[i].Latitude).toFixed(2)) + '</p>' +
+										'<p>경도 : ' + convertToDMS(parseFloat(data[i].Longitude).toFixed(2)) + '</p>' +
 										'<p>풍향 : ' + parseFloat(data[i].winddirecttion) + '</p>' +
 										'<p>풍속 : ' + parseFloat(data[i].windspeed) + '</p>' +
 										'<p>유향 : ' + parseFloat(data[i].waterdirecttion) + '</p>' +
 										'<p>유속 : ' + parseFloat(data[i].waterspeed) + '</p>' +
-										'<p>기온 : ' + parseFloat(data[i].temp) + '</p>'
+										'<p>기온 : ' + parseFloat(data[i].temp) + '°C</p>'
 										;
 							popup.setPosition(coordinate_);
 							document.getElementById('popup-content').innerHTML = content;
@@ -646,7 +624,7 @@ var tempFlag = false;
 			
 				// 풍향 아이콘 위치 설정
 				var flowFeature = new ol.Feature({
-		            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])) // 경도와 위도로 위치 설정
+		            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])) // 경도/위도로 위치 설정
 		        });
 		        flowFeature.setStyle(flowStyle);
 		
@@ -684,8 +662,6 @@ var tempFlag = false;
 		stopNow = 0;
 		animationId = requestAnimationFrame(updateAnimation);
 	});
-
-
 	
 	// GeoJSON 데이터 로드
 	var vectorSource = new ol.source.Vector({
@@ -729,7 +705,7 @@ var tempFlag = false;
 
 
 	// 도시의 위경도 - 파고
-	var cities2 = [
+	/*var cities2 = [
 	  { no: 'TW_0088', name: '감천항', lat: 35.052, lon: 129.003 },
 	  { no: 'TW_0089', name: '경포대해수욕장', lat: 37.808, lon: 128.931 },
 	  { no: 'TW_0095', name: '고래불해수욕장', lat: 36.58, lon: 129.454 },
@@ -801,7 +777,7 @@ var tempFlag = false;
     
 			    overlayWaveheights.push(overlayWaveheight); // 모든 오버레이를 배열에 추가
 	    	});
-	});
+	});*/
 
 
 	// 기상정보 체크박스
@@ -813,13 +789,14 @@ var tempFlag = false;
 	windCheckbox.addEventListener('change', function() {
 	    if (windCheckbox.checked) {
 			addLayerWind = 1;
-			if (addLayerFlow == 1)
-				map.removeLayer(flowLayer); // 속도 향상을 위해 유향/유속 레이어 On 일 때 삭제
-			map.addLayer(windLayer);
+			/*if (addLayerFlow == 1)
+				map.removeLayer(flowLayer); // 속도 향상을 위해 유향/유속 레이어 On 일 때 삭제*/
+			if (addLayerTemp == 0 && addLayerFlow == 0)
+				map.addLayer(windLayer);
 	    } else {
 			map.removeLayer(windLayer);
 			addLayerWind = 0;
-			if (addLayerFlow == 1)
+			if (addLayerTemp == 0 && addLayerFlow == 1)
 				map.addLayer(flowLayer); // 유향/유속 레이어 원복
 	    }
 	});
@@ -827,9 +804,12 @@ var tempFlag = false;
 	flowCheckbox.addEventListener('change', function() {
 	    if (flowCheckbox.checked) {
 			addLayerFlow = 1;
+			/*if (addLayerWind == 1)
+				map.removeLayer(windLayer); // 속도 향상을 위해 풍향/풍속 레이어 On 일 때 삭제*/
 			if (addLayerWind == 1)
-				map.removeLayer(windLayer); // 속도 향상을 위해 풍향/풍속 레이어 On 일 때 삭제
-			map.addLayer(flowLayer);
+				map.removeLayer(windLayer);
+			if (addLayerTemp == 0)
+				map.addLayer(flowLayer);
 	    } else {
 			addLayerFlow = 0;
 			map.removeLayer(flowLayer);
@@ -857,10 +837,18 @@ var tempFlag = false;
 	tempCheckbox.addEventListener('change', function() {
 	    if (tempCheckbox.checked) {
 			addLayerTemp = 1;
+			if (addLayerFlow == 1)
+				map.removeLayer(flowLayer);
+			else if (addLayerWind == 1)
+				map.removeLayer(windLayer);
 			map.addLayer(tempLayer);
 	    } else {
 			addLayerTemp = 0;
 			map.removeLayer(tempLayer);
+			if (addLayerFlow == 1)
+				map.addLayer(flowLayer);
+			else if (addLayerWind == 1)
+				map.addLayer(windLayer);
 	    }
 	});
 }

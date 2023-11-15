@@ -26,7 +26,7 @@ function vectorInit(){
       	}),
       	zIndex : 9999
     });
-    map.addLayer(plan_p);
+	map.addLayer(plan_p);
     
 	const plan_l = new ol.layer.Vector({
         id: "route_l",
@@ -41,7 +41,7 @@ function vectorInit(){
             })
       	})
     });
-    map.addLayer(plan_l);
+	map.addLayer(plan_l);
     
     //선박 벡터레이어
     ship_layer = new ol.layer.Vector({
@@ -58,7 +58,7 @@ function vectorInit(){
         }),
         zIndex : 9999
 	});
-    map.addLayer(ship_layer);
+	map.addLayer(ship_layer);
     
     //항적 벡터레이어
     wfs_layer = new ol.layer.Vector({
@@ -75,7 +75,7 @@ function vectorInit(){
         }),
         zIndex : 9999
 	});
-    map.addLayer(wfs_layer);
+	map.addLayer(wfs_layer);
     
     
 	//항로범위
@@ -93,7 +93,7 @@ function vectorInit(){
             })
       	})
     });
-    map.addLayer(mapSearch2);
+	map.addLayer(mapSearch2);
     /*
     //항로검색용
     const mapSearch1 = new ol.layer.Vector({

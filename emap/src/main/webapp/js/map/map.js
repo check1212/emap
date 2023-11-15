@@ -31,6 +31,8 @@ var shipMoveList = [];		//선박항적리스트
 var chocieShipMmsi="";  //상세선박정보 id
 var featTest;
 
+
+
 //35.5468629,129.3005359 울산
 // 중앙
 function mapInit(){
@@ -44,19 +46,18 @@ function mapInit(){
 	
 	googlemap = new ol.layer.Tile({
 		source: new ol.source.OSM(),
-	});	
-    
+	});
+
     //마우스 좌표
     var mouseControlCoordinate = new ol.control.MousePosition({        
         coordinateFormat: function(coordinate) {
-            return ol.coordinate.format(coordinate, '위도: {y}, 경도: {x}', 3);
+			return ol.coordinate.format(coordinate, '위도: {y}, 경도: {x}', 3);
         },
         projection: 'EPSG:4326',//좌표계 설정
         className: 'scale1', //css 클래스 이름
         target: document.getElementById('mouseLocationStat'),//좌표를 뿌릴 element
     });
 
-    
 	map = new ol.Map({
 		layers: [
 			googlemap
@@ -64,8 +65,9 @@ function mapInit(){
 		target: 'dvMap',
 		view: view,
 		controls: new ol.control.defaults().extend([mouseControlCoordinate]),
+		//controls: ol.control.defaults.defaults().extend([mouseControlCoordinate]), // OpenLayers 최신 버전으로 업그레이드시 수정 필요
   		//renderer: 'webgl' // WebGL 렌더러 사용 설정
-	});		
+	});
     map.on('moveend', onMoveEnd);
 
 	map.on('singleclick', function (evt) {
@@ -102,7 +104,7 @@ function mapInit(){
 
 	// 해도 레이어
 	wmsInit();
-    map.removeLayer(googlemap); //배경맵 삭제
+	map.removeLayer(googlemap); //배경맵 삭제
     vectorInit(); //베이스 vector레이어
     mapEvent(); //맵 버튼이벤트 설정
 
@@ -838,4 +840,15 @@ function drawShipRoute() {
 			}
 		}
 	});
+}
+
+// 위도/경도를 도분초 단위로 변환
+function convertToDMS(data) {
+	const sign = (data < 0) ? 'W' : 'E'; // 부호 처리
+	const absData = Math.abs(data); // 절대값 변환
+	const degrees = Math.floor(absData); // 도
+	const minutesDecimal = (absData - degrees) * 60; // 분
+	const minutes = Math.floor(minutesDecimal);
+	const seconds = ((minutesDecimal - minutes) * 60).toFixed(2); // 초
+	return `${degrees}° ${minutes}' ${seconds}" ${sign}`;
 }
