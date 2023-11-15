@@ -308,6 +308,8 @@ window.onload = function(){
 					//popup.style.display = 'none'; // 팝업 숨김
 					$("#popup").hide();
 				}
+				
+				var isPopupOpen = false;
 			</script>
 		</div>
 	</div>

@@ -82,10 +82,10 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(DEPAREA);*/
+    map.addLayer(DEPAREA);
     
     //wms 바다(lev6_DEPARE_A)
-	/*var lev6_DEPARE_A = new ol.layer.Tile({
+	var lev6_DEPARE_A = new ol.layer.Tile({
 		id : 'lev6_DEPARE_A',
     	title: 'lev6_DEPARE_A',
     	opacity: 1,
@@ -100,10 +100,10 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(lev6_DEPARE_A);*/
+    map.addLayer(lev6_DEPARE_A);
     
     //wms 대지(기본맵처럼사용) : 한국
-    /*var LNDAREA_A = new ol.layer.Tile({
+    var LNDAREA_A = new ol.layer.Tile({
 		id : 'LNDAREA_A',
     	title: 'LNDAREA_A',
     	opacity: 1,
@@ -118,10 +118,10 @@ function wmsInit(){
             },            
         })
     });
-    map.addLayer(LNDAREA_A);*/
+    map.addLayer(LNDAREA_A);
     
     //wms lev6_LNDARE_A(기본맵처럼사용)
-    /*var lev6_LNDARE_A = new ol.layer.Tile({
+    var lev6_LNDARE_A = new ol.layer.Tile({
 		id : 'lev6_LNDARE_A',
     	title: 'lev6_LNDARE_A',
     	opacity: 1,
