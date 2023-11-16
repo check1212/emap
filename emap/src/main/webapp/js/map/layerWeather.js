@@ -820,17 +820,14 @@ var tempFlag = false;*/
 
 	waveheightCheckbox.addEventListener('change', function() {
 	    if (waveheightCheckbox.checked) {
-			//map.addLayer(weatherWave);
-			//map.addOverlay(overlayWaveheight);
-		    overlayWaveheights.forEach(function(overlay) {
+		    /*overlayWaveheights.forEach(function(overlay) {
 		        map.addOverlay(overlay);
-		    });
+		    });*/
 	    } else {
-			//map.removeLayer(weatherFlowspeed);
-			//map.removeOverlay(overlayWaveheight);
-		    overlayWaveheights.forEach(function(overlay) {
+			map.removeLayer(arrowLayer);
+		    /*overlayWaveheights.forEach(function(overlay) {
 		        map.removeOverlay(overlay);
-		    });
+		    });*/
 	    }
 	});
 

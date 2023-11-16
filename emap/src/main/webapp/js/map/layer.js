@@ -502,8 +502,6 @@ function wmsInit(){
         })
     });
     map.addLayer(light02);*/
-
-    
          
     lightIconlayer(); //등대,등표,부표 호출
 }
@@ -584,8 +582,9 @@ function lightIconlayer(){
                 'CRS' : 'EPSG:3857',
             },            
         })
-    });   
-	map.addLayer(lev6_LNDMARK_P);        
+    });
+    // 등대 레이어 제거
+	//map.addLayer(lev6_LNDMARK_P);
     
     //lev6_WRECKS_P
      var lev6_WRECKS_P = new ol.layer.Tile({

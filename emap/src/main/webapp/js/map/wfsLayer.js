@@ -58,7 +58,8 @@ function vectorInit(){
         }),
         zIndex : 9999
 	});
-	map.addLayer(ship_layer);
+	// 선박 레이어 제거
+	//map.addLayer(ship_layer);
     
     //항적 벡터레이어
     wfs_layer = new ol.layer.Vector({
