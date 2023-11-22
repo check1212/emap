@@ -31,6 +31,10 @@ var shipMoveList = [];		//선박항적리스트
 var chocieShipMmsi="";  //상세선박정보 id
 var featTest;
 
+var windParticlesLayer; // 풍향/풍속
+var arrowLayer; // 파향/파고
+var windGradientLayer; // 기온/수온
+
 
 
 //35.5468629,129.3005359 울산

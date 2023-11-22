@@ -791,13 +791,15 @@ var tempFlag = false;*/
 			addLayerWind = 1;
 			/*if (addLayerFlow == 1)
 				map.removeLayer(flowLayer); // 속도 향상을 위해 유향/유속 레이어 On 일 때 삭제*/
-			if (addLayerTemp == 0 && addLayerFlow == 0)
-				map.addLayer(windLayer);
+			/*if (addLayerTemp == 0 && addLayerFlow == 0)
+				map.addLayer(windLayer);*/
+			map.addLayer(windParticlesLayer);
 	    } else {
-			map.removeLayer(windLayer);
+			//map.removeLayer(windLayer);
 			addLayerWind = 0;
-			if (addLayerTemp == 0 && addLayerFlow == 1)
-				map.addLayer(flowLayer); // 유향/유속 레이어 원복
+			/*if (addLayerTemp == 0 && addLayerFlow == 1)
+				map.addLayer(flowLayer); // 유향/유속 레이어 원복*/
+			map.removeLayer(windParticlesLayer);
 	    }
 	});
 
@@ -806,46 +808,112 @@ var tempFlag = false;*/
 			addLayerFlow = 1;
 			/*if (addLayerWind == 1)
 				map.removeLayer(windLayer); // 속도 향상을 위해 풍향/풍속 레이어 On 일 때 삭제*/
-			if (addLayerWind == 1)
+			/*if (addLayerWind == 1)
 				map.removeLayer(windLayer);
-			if (addLayerTemp == 0)
+			if (addLayerTemp == 0)*/
 				map.addLayer(flowLayer);
 	    } else {
 			addLayerFlow = 0;
 			map.removeLayer(flowLayer);
-			if (addLayerWind == 1)
-				map.addLayer(windLayer); // 풍향/풍속 레이어 원복
+			/*if (addLayerWind == 1)
+				map.addLayer(windLayer); // 풍향/풍속 레이어 원복*/
 	    }
 	});
 
+	var topWaveheight;
 	waveheightCheckbox.addEventListener('change', function() {
 	    if (waveheightCheckbox.checked) {
+			map.addLayer(arrowLayer);
+
+			// 범주 레이어 생성
+			const layer = document.createElement('div');
+			layer.id = 'waveheight';
+			layer.style.position = 'absolute';
+			//if (existingLayer) {
+			if (topTemp == 1) {
+				layer.style.top = '300px';
+				topWaveheight = 2;
+			} else {
+				layer.style.top = '30px';
+				topWaveheight = 1;
+			}
+			layer.style.right = '0px';
+			layer.style.width = '180px';
+			layer.style.height = '204px';
+			layer.style.backgroundImage = 'url(../images/sk/legend_waveheight.png)';
+			layer.style.opacity = '0.4';
+
+			document.body.appendChild(layer);
+   
 		    /*overlayWaveheights.forEach(function(overlay) {
 		        map.addOverlay(overlay);
 		    });*/
 	    } else {
 			map.removeLayer(arrowLayer);
+
+			const existingLayerWaveheight = document.querySelector('#waveheight');
+			const existingLayerTemp = document.querySelector('#temp');
+	        existingLayerWaveheight.remove();
+	        topWaveheight = 0;
+			if (topTemp == 2) {
+				existingLayerTemp.style.top = '30px';
+				topTemp = 1;
+			}
+
 		    /*overlayWaveheights.forEach(function(overlay) {
 		        map.removeOverlay(overlay);
 		    });*/
 	    }
 	});
 
+	var topTemp;
 	tempCheckbox.addEventListener('change', function() {
 	    if (tempCheckbox.checked) {
 			addLayerTemp = 1;
-			if (addLayerFlow == 1)
+			map.addLayer(windGradientLayer);
+
+			// 범주 레이어 생성
+			const layer = document.createElement('div');
+			layer.id = 'temp';
+			layer.style.position = 'absolute';
+			if (topWaveheight == 1) {
+			//if (existingLayer) {
+				layer.style.top = '300px';
+				topTemp = 2;
+			} else {
+				layer.style.top = '30px';
+				topTemp = 1;
+			}
+			layer.style.right = '0px';
+			layer.style.width = '180px';
+			layer.style.height = '204px';
+			layer.style.backgroundImage = 'url(../images/sk/legend_temp.png)';
+			layer.style.opacity = '0.4';
+
+			document.body.appendChild(layer);
+			/*if (addLayerFlow == 1)
 				map.removeLayer(flowLayer);
 			else if (addLayerWind == 1)
 				map.removeLayer(windLayer);
-			map.addLayer(tempLayer);
+			map.addLayer(tempLayer);*/
 	    } else {
 			addLayerTemp = 0;
-			map.removeLayer(tempLayer);
+			map.removeLayer(windGradientLayer);
+
+			const existingLayerWaveheight = document.querySelector('#waveheight');
+			const existingLayerTemp = document.querySelector('#temp');
+	        existingLayerTemp.remove();
+	        topTemp = 0;
+			if (topWaveheight == 2) {
+				existingLayerWaveheight.style.top = '30px';
+				topWaveheight = 1;
+			}
+			
+			/*map.removeLayer(tempLayer);
 			if (addLayerFlow == 1)
 				map.addLayer(flowLayer);
 			else if (addLayerWind == 1)
-				map.addLayer(windLayer);
+				map.addLayer(windLayer);*/
 	    }
 	});
 }

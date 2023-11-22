@@ -171,7 +171,7 @@ window.onload = function(){
 								&nbsp;<input type="checkbox" id="checkWind"> 풍향/풍속&nbsp;
 								&nbsp;<input type="checkbox" id="checkFlow"> 유향/유속&nbsp;
 								&nbsp;<input type="checkbox" id="checkWaveheight"> 파향/파고&nbsp;
-								&nbsp;<input type="checkbox" id="checkTemp"> 기온&nbsp;
+								&nbsp;<input type="checkbox" id="checkTemp"> 기온/수온&nbsp;
 							</td>
 							<td width="10px"></td>
 							<td>
