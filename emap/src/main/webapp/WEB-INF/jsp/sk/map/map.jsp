@@ -80,14 +80,18 @@
 <script type="text/javascript" src="<c:url value="/js/script.js?version=${nowDate}"/>"></script>
 
 <script>    
-let map;      
+let map;
 window.onload = function(){
 	mapInit();
+	// bundle.js가 먼저 로드되어 map 오류 발생 해결
+    const bundleScript = document.createElement('script');
+    bundleScript.src = 'js/map/canvasLayer/bundle.js';
+    document.head.appendChild(bundleScript);
 }
 </script>
 </head>
 <body>
-<script type="text/javascript" src="js/map/canvasLayer/bundle.js"></script>
+<!-- <script type="text/javascript" src="js/map/canvasLayer/bundle.js"></script> -->
 
 <div id="wrapper">
 		<div id="container">
