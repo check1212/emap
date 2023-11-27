@@ -82,6 +82,15 @@
 <script>    
 let map;
 window.onload = function(){
+    var DAY1_1;
+    var DAY1_400;
+    var DAY1_100;
+    var DAY1_30;
+    var DAY1_5;
+    var DAY1_05;
+    var DAY1_u05;
+    var DAY2;
+    var DAY3;
 	mapInit();
 	// bundle.js가 먼저 로드되어 map 오류 발생 해결
     const bundleScript = document.createElement('script');

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.sk.SkShipVO;
+import com.sk.WeatherVO;
 import com.sk.RouteDetailVO;
 import com.sk.RouteVO;
 import com.sk.ShipInfoVO;
@@ -95,5 +96,10 @@ public class mapDAO extends EgovComAbstractDAO {
     @SuppressWarnings("unchecked")
    	public List<ShipInfoVO> getShipOne(ShipInfoVO vo) throws Exception {
     	return (List<ShipInfoVO>) list("map.getShipOne", vo);
+    }
+    
+    @SuppressWarnings("unchecked")
+   	public List<WeatherVO> getWeather() throws Exception {
+    	return (List<WeatherVO>) list("map.getWeather");
     }
 }

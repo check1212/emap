@@ -7,6 +7,7 @@
 	<typeAlias  alias="RouteVO" type="com.sk.RouteVO"/>
 	<typeAlias  alias="RouteDetailVO" type="com.sk.RouteDetailVO"/>
 	<typeAlias  alias="ShipInfoVO" type="com.sk.ShipInfoVO"/>
+	<typeAlias  alias="WeatherVO" type="com.sk.WeatherVO"/>
 	
 	<select id="map.test" resultClass="RouteVO">
 		<![CDATA[ 
@@ -86,4 +87,15 @@
 			 order by "GatherTime"
 		]]>
 	</select>
-</sqlMap>            
+	
+	<select id="map.getWeather" resultClass="WeatherVO">
+		<![CDATA[
+			SELECT * FROM "tb_20231127"
+			 WHERE time = '2023-11-27 00:00:00.000'
+			 and lat >= 32
+			 and lat <= 39
+			 and lon >= 122
+			 and lon <= 132
+		]]>
+	</select>
+</sqlMap>

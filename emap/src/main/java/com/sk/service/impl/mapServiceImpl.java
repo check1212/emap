@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.sk.SkShipVO;
+import com.sk.WeatherVO;
 import com.sk.RouteDetailVO;
 import com.sk.RouteVO;
 import com.sk.ShipInfoVO;
@@ -96,6 +97,11 @@ public class mapServiceImpl extends EgovAbstractServiceImpl implements mapServic
 	@Override
 	public List<ShipInfoVO> getShipOne(ShipInfoVO vo) throws Exception {
 		return mapDAO.getShipOne(vo);
+	}
+	
+	@Override
+	public List<WeatherVO> getWeather() throws Exception {
+		return mapDAO.getWeather();
 	}
 
 }

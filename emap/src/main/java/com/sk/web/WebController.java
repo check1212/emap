@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import com.sk.SkShipVO;
+import com.sk.WeatherVO;
 import com.sk.RouteDetailVO;
 import com.sk.RouteVO;
 import com.sk.ShipInfoVO;
@@ -292,5 +293,14 @@ public class WebController {
 	            return ResponseEntity.notFound().build();
 	        }
 	    }
+	}
+	
+	// 기상 정보
+	@RequestMapping("getWeather.do")
+	public void getWeather(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		List<WeatherVO> slist = mapService.getWeather();		
+		if(slist.size() > 0) {			
+			json.Json(res, slist);
+		}
 	}
 }
