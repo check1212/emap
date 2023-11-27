@@ -80,14 +80,27 @@
 <script type="text/javascript" src="<c:url value="/js/script.js?version=${nowDate}"/>"></script>
 
 <script>    
-let map;      
+let map;
 window.onload = function(){
+    var DAY1_1;
+    var DAY1_400;
+    var DAY1_100;
+    var DAY1_30;
+    var DAY1_5;
+    var DAY1_05;
+    var DAY1_u05;
+    var DAY2;
+    var DAY3;
 	mapInit();
+	// bundle.js가 먼저 로드되어 map 오류 발생 해결
+    const bundleScript = document.createElement('script');
+    bundleScript.src = 'js/map/canvasLayer/bundle.js';
+    document.head.appendChild(bundleScript);
 }
 </script>
 </head>
 <body>
-<script type="text/javascript" src="js/map/canvasLayer/bundle.js"></script>
+<!-- <script type="text/javascript" src="js/map/canvasLayer/bundle.js"></script> -->
 
 <div id="wrapper">
 		<div id="container">
@@ -171,7 +184,7 @@ window.onload = function(){
 								&nbsp;<input type="checkbox" id="checkWind"> 풍향/풍속&nbsp;
 								&nbsp;<input type="checkbox" id="checkFlow"> 유향/유속&nbsp;
 								&nbsp;<input type="checkbox" id="checkWaveheight"> 파향/파고&nbsp;
-								&nbsp;<input type="checkbox" id="checkTemp"> 기온&nbsp;
+								&nbsp;<input type="checkbox" id="checkTemp"> 기온/수온&nbsp;
 							</td>
 							<td width="10px"></td>
 							<td>

@@ -40,7 +40,7 @@ function wmsInit(){
     map.addLayer(worldcountries);*/
 
     //wms Day 주간(기본맵처럼사용)
-	var DAY1 = new ol.layer.Tile({
+	/*var DAY1 = new ol.layer.Tile({
 		id : 'Day1',
     	title: 'Day1',
     	opacity: 1,
@@ -64,10 +64,181 @@ function wmsInit(){
             wrapX: true
           })
     });
-    map.addLayer(DAY1);
+    map.addLayer(DAY1);*/
+    
+    // 6,999,999 이상일 때의 레이어 그룹
+    DAY1_700 = new ol.layer.Tile({
+		id : 'Day1_700',
+    	title: 'Day1_700',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day1_700',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
+    DAY1_400 = new ol.layer.Tile({
+		id : 'Day1_400',
+    	title: 'Day1_400',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day1_400',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
+    DAY1_100 = new ol.layer.Tile({
+		id : 'Day1_100',
+    	title: 'Day1_100',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day1_100',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
+    map.addLayer(DAY1_100); // 기본값이라 추가
+    DAY1_30 = new ol.layer.Tile({
+		id : 'Day1_30',
+    	title: 'Day1_30',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day1_30',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
+    DAY1_5 = new ol.layer.Tile({
+		id : 'Day1_5',
+    	title: 'Day1_5',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day1_5',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
+    DAY1_05 = new ol.layer.Tile({
+		id : 'Day1_05',
+    	title: 'Day1_05',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day1_05',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
+    DAY1_u05 = new ol.layer.Tile({
+		id : 'Day1_u05',
+    	title: 'Day1_u05',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day1_u05',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
 
     //wms Day 야간(기본맵처럼사용)
-	var DAY2 = new ol.layer.Tile({
+	DAY2 = new ol.layer.Tile({
 		id : 'Day2',
     	title: 'Day2',
     	opacity: 1,
@@ -93,7 +264,7 @@ function wmsInit(){
     });
 
     //wms Day 새벽/일몰(기본맵처럼사용)
-	var DAY3 = new ol.layer.Tile({
+	DAY3 = new ol.layer.Tile({
 		id : 'Day3',
     	title: 'Day3',
     	opacity: 1,
@@ -123,23 +294,61 @@ function wmsInit(){
 
 	brightSelect.addEventListener("change", function() {
 		var brightRange = brightSelect.value;
+		var allLayers = map.getLayers().getArray(); // 모든 추가된 레이어 정보 확인
 
 		if (brightRange == 1) {
-			if (DAY2)
-    			map.removeLayer(DAY2);
-			else if (DAY3)
+			if (allLayers.includes(DAY2))
+				map.removeLayer(DAY2);
+			else if (allLayers.includes(DAY3))
 				map.removeLayer(DAY3);
-    		map.addLayer(DAY1);
-			DAY1.setZIndex(-1);
+				
+			// 레벨 값 얻어오기
+			var lev = map.getView().getZoom();
+			console.log(lev);
+			
+			if (lev < 6) {
+	    		map.addLayer(DAY1_700);
+				DAY1_700.setZIndex(-1);
+			} else if (lev == 6) {
+	    		map.addLayer(DAY1_400);
+				DAY1_400.setZIndex(-1);
+			} else if (lev < 9) {
+	    		map.addLayer(DAY1_100);
+				DAY1_100.setZIndex(-1);
+			} else if (lev < 11) {
+	    		map.addLayer(DAY1_30);
+				DAY1_30.setZIndex(-1);
+			} else if (lev < 14) {
+	    		map.addLayer(DAY1_5);
+				DAY1_5.setZIndex(-1);
+			} else if (lev < 17) {
+	    		map.addLayer(DAY1_05);
+				DAY1_05.setZIndex(-1);
+			} else {
+	    		map.addLayer(DAY1_u05);
+				DAY1_u05.setZIndex(-1);
+			}
 			/*make_sld("ocean", "Polygon1", "d3e9ed", null);
 			make_sld("DEPAREA", "Polygon2", "73b5ee", "d3e9ed");
 			make_sld("worldcountries", "Polygon1", "c5b578", null);
 			make_sld("LNDAREA_A", "Polygon1", "c5b578", null);
 			make_sld("rivers", "Polygon1", "0089ff", null);*/
 		} else if (brightRange == 2) {
-			if (DAY1)
-    			map.removeLayer(DAY1);
-			else if (DAY3)
+			if (allLayers.includes(DAY1_700))
+				map.removeLayer(DAY1_700);
+			else if (allLayers.includes(DAY1_400))
+				map.removeLayer(DAY1_400);
+			else if (allLayers.includes(DAY1_100))
+				map.removeLayer(DAY1_100);
+			else if (allLayers.includes(DAY1_30))
+				map.removeLayer(DAY1_30);
+			else if (allLayers.includes(DAY1_5))
+				map.removeLayer(DAY1_5);
+			else if (allLayers.includes(DAY1_05))
+				map.removeLayer(DAY1_05);
+			else if (allLayers.includes(DAY1_u05))
+				map.removeLayer(DAY1_u05);
+			else if (allLayers.includes(DAY3))
 				map.removeLayer(DAY3);
 			map.addLayer(DAY2);
 			DAY2.setZIndex(-1);
@@ -149,9 +358,21 @@ function wmsInit(){
 			make_sld("LNDAREA_A", "Polygon1", "2c291b", null);
 			make_sld("rivers", "Polygon1", "292e2e", null);*/
 		} else {
-			if (DAY1)
-    			map.removeLayer(DAY1);
-			else if (DAY2)
+			if (allLayers.includes(DAY1_700))
+				map.removeLayer(DAY1_700);
+			else if (allLayers.includes(DAY1_400))
+				map.removeLayer(DAY1_400);
+			else if (allLayers.includes(DAY1_100))
+				map.removeLayer(DAY1_100);
+			else if (allLayers.includes(DAY1_30))
+				map.removeLayer(DAY1_30);
+			else if (allLayers.includes(DAY1_5))
+				map.removeLayer(DAY1_5);
+			else if (allLayers.includes(DAY1_05))
+				map.removeLayer(DAY1_05);
+			else if (allLayers.includes(DAY1_u05))
+				map.removeLayer(DAY1_u05);
+			else if (allLayers.includes(DAY2))
 				map.removeLayer(DAY2);
     		map.addLayer(DAY3);
 			DAY3.setZIndex(-1);
@@ -502,8 +723,6 @@ function wmsInit(){
         })
     });
     map.addLayer(light02);*/
-
-    
          
     lightIconlayer(); //등대,등표,부표 호출
 }
@@ -584,8 +803,9 @@ function lightIconlayer(){
                 'CRS' : 'EPSG:3857',
             },            
         })
-    });   
-	map.addLayer(lev6_LNDMARK_P);        
+    });
+    // 등대 레이어 제거
+	//map.addLayer(lev6_LNDMARK_P);
     
     //lev6_WRECKS_P
      var lev6_WRECKS_P = new ol.layer.Tile({

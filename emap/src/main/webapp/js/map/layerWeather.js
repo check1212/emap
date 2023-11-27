@@ -297,9 +297,9 @@ function wmsWeatherInit(){
 
 	let currentCSVIndex = 0; // 현재 표시할 JSON 데이터 인덱스
 	let currentJSONIndex = 0; // 현재 표시할 JSON 데이터 인덱스
-	let windLayer = null; // 풍향/풍속 레이어
+	//let windLayer = null; // 풍향/풍속 레이어
 	let flowLayer = null; // 유향/유속 레이어
-	let tempLayer = null; // 기온 레이어
+	//let tempLayer = null; // 기온 레이어
 
 	let addLayerWind = 0;
 	let addLayerFlow = 0;
@@ -388,9 +388,9 @@ var tempFlag = false;*/
 				});
 
 				// 풍향/풍속 아이콘 위치 설정
-				var windFeature = new ol.Feature({
+				/*var windFeature = new ol.Feature({
 		            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])) // 경도와 위도로 위치 설정
-		        });
+		        });*/
 
 				// 유향/유속 아이콘 위치 설정
 				var flowFeature = new ol.Feature({
@@ -429,11 +429,11 @@ var tempFlag = false;*/
 			});
 
 			// 풍향/풍속 레이어 생성
-			windLayer = new ol.layer.Vector({
+			/*windLayer = new ol.layer.Vector({
 	        	source: new ol.source.Vector({
 	            	features: featuresWind
 				})
-			});
+			});*/
 
 			// 유향/유속 레이어 생성
 			flowLayer = new ol.layer.Vector({
@@ -781,23 +781,27 @@ var tempFlag = false;*/
 
 
 	// 기상정보 체크박스
-	var windCheckbox = document.getElementById('checkWind');
-	var flowCheckbox = document.getElementById('checkFlow');
-	var waveheightCheckbox = document.getElementById('checkWaveheight');
-	var tempCheckbox = document.getElementById('checkTemp');
+	var windCheckbox = document.getElementById('checkWind'); // 풍향/풍속
+	var flowCheckbox = document.getElementById('checkFlow'); // 유향/유속
+	var waveheightCheckbox = document.getElementById('checkWaveheight'); // 파향/파고
+	var tempCheckbox = document.getElementById('checkTemp'); // 기온/수온
 
 	windCheckbox.addEventListener('change', function() {
 	    if (windCheckbox.checked) {
 			addLayerWind = 1;
 			/*if (addLayerFlow == 1)
 				map.removeLayer(flowLayer); // 속도 향상을 위해 유향/유속 레이어 On 일 때 삭제*/
-			if (addLayerTemp == 0 && addLayerFlow == 0)
-				map.addLayer(windLayer);
+			/*if (addLayerTemp == 0 && addLayerFlow == 0)
+				map.addLayer(windLayer);*/
+			//map.addLayer(windParticlesLayer);
+			map.addLayer(layerWind);
 	    } else {
-			map.removeLayer(windLayer);
+			//map.removeLayer(windLayer);
 			addLayerWind = 0;
-			if (addLayerTemp == 0 && addLayerFlow == 1)
-				map.addLayer(flowLayer); // 유향/유속 레이어 원복
+			/*if (addLayerTemp == 0 && addLayerFlow == 1)
+				map.addLayer(flowLayer); // 유향/유속 레이어 원복*/
+			//map.removeLayer(windParticlesLayer);
+			map.removeLayer(layerWind);
 	    }
 	});
 
@@ -806,49 +810,131 @@ var tempFlag = false;*/
 			addLayerFlow = 1;
 			/*if (addLayerWind == 1)
 				map.removeLayer(windLayer); // 속도 향상을 위해 풍향/풍속 레이어 On 일 때 삭제*/
-			if (addLayerWind == 1)
+			/*if (addLayerWind == 1)
 				map.removeLayer(windLayer);
-			if (addLayerTemp == 0)
-				map.addLayer(flowLayer);
+			if (addLayerTemp == 0)*/
+				//map.addLayer(flowLayer);
+			map.addLayer(layerFlow);
 	    } else {
 			addLayerFlow = 0;
-			map.removeLayer(flowLayer);
-			if (addLayerWind == 1)
-				map.addLayer(windLayer); // 풍향/풍속 레이어 원복
+			//map.removeLayer(flowLayer);
+			map.removeLayer(layerFlow);
+			/*if (addLayerWind == 1)
+				map.addLayer(windLayer); // 풍향/풍속 레이어 원복*/
 	    }
 	});
 
+	var topWaveheight;
 	waveheightCheckbox.addEventListener('change', function() {
 	    if (waveheightCheckbox.checked) {
-			//map.addLayer(weatherWave);
-			//map.addOverlay(overlayWaveheight);
-		    overlayWaveheights.forEach(function(overlay) {
+			map.addLayer(arrowLayer);
+
+			// 범주 레이어 생성
+			const layer = document.createElement('div');
+			layer.id = 'waveheight';
+			layer.style.position = 'absolute';
+			//if (existingLayer) {
+			if (topTemp == 1) {
+				layer.style.top = '300px';
+				topWaveheight = 2;
+			} else {
+				layer.style.top = '30px';
+				topWaveheight = 1;
+			}
+			layer.style.right = '0px';
+			layer.style.width = '180px';
+			layer.style.height = '204px';
+			layer.style.backgroundImage = 'url(../images/sk/legend_waveheight.png)';
+			layer.style.opacity = '0.4';
+
+			document.body.appendChild(layer);
+   
+		    /*overlayWaveheights.forEach(function(overlay) {
 		        map.addOverlay(overlay);
-		    });
+		    });*/
 	    } else {
-			//map.removeLayer(weatherFlowspeed);
-			//map.removeOverlay(overlayWaveheight);
-		    overlayWaveheights.forEach(function(overlay) {
+			map.removeLayer(arrowLayer);
+
+			const existingLayerWaveheight = document.querySelector('#waveheight');
+			const existingLayerTemp = document.querySelector('#temp');
+	        existingLayerWaveheight.remove();
+	        topWaveheight = 0;
+			if (topTemp == 2) {
+				existingLayerTemp.style.top = '30px';
+				topTemp = 1;
+			}
+
+		    /*overlayWaveheights.forEach(function(overlay) {
 		        map.removeOverlay(overlay);
-		    });
+		    });*/
 	    }
 	});
 
+	var topTemp;
 	tempCheckbox.addEventListener('change', function() {
 	    if (tempCheckbox.checked) {
 			addLayerTemp = 1;
-			if (addLayerFlow == 1)
+			map.addLayer(windGradientLayer);
+
+			// 범주 레이어 생성
+			const layer = document.createElement('div');
+			layer.id = 'temp';
+			layer.style.position = 'absolute';
+			if (topWaveheight == 1) {
+			//if (existingLayer) {
+				layer.style.top = '300px';
+				topTemp = 2;
+			} else {
+				layer.style.top = '30px';
+				topTemp = 1;
+			}
+			layer.style.right = '0px';
+			layer.style.width = '180px';
+			layer.style.height = '204px';
+			layer.style.backgroundImage = 'url(../images/sk/legend_temp.png)';
+			layer.style.opacity = '0.4';
+
+			document.body.appendChild(layer);
+			/*if (addLayerFlow == 1)
 				map.removeLayer(flowLayer);
 			else if (addLayerWind == 1)
 				map.removeLayer(windLayer);
-			map.addLayer(tempLayer);
+			map.addLayer(tempLayer);*/
 	    } else {
 			addLayerTemp = 0;
-			map.removeLayer(tempLayer);
+			
+			// WebGL 컨텍스트를 가져옵니다.
+const gl = canvas.getContext("webgl");
+
+// Shader 프로그램 초기화
+gl.useProgram(null);
+
+// 버퍼와 텍스처 초기화
+gl.bindBuffer(gl.ARRAY_BUFFER, null);
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+gl.bindTexture(gl.TEXTURE_2D, null);
+
+// 렌더링 상태 초기화
+gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+
+			
+			map.removeLayer(windGradientLayer);
+
+			const existingLayerWaveheight = document.querySelector('#waveheight');
+			const existingLayerTemp = document.querySelector('#temp');
+	        existingLayerTemp.remove();
+	        topTemp = 0;
+			if (topWaveheight == 2) {
+				existingLayerWaveheight.style.top = '30px';
+				topWaveheight = 1;
+			}
+			
+			/*map.removeLayer(tempLayer);
 			if (addLayerFlow == 1)
 				map.addLayer(flowLayer);
 			else if (addLayerWind == 1)
-				map.addLayer(windLayer);
+				map.addLayer(windLayer);*/
 	    }
 	});
 }

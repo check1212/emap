@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sk.SkShipVO;
+import com.sk.WeatherVO;
 import com.sk.RouteDetailVO;
 import com.sk.RouteVO;
 import com.sk.ShipInfoVO;
@@ -31,4 +32,6 @@ public interface mapService {
 	public List<ShipInfoVO> getShipSearch() throws Exception;
 	
 	public List<ShipInfoVO> getShipOne(ShipInfoVO vo) throws Exception;
+
+	public List<WeatherVO> getWeather() throws Exception;
 }

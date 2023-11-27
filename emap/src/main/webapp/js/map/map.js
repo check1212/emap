@@ -31,6 +31,12 @@ var shipMoveList = [];		//선박항적리스트
 var chocieShipMmsi="";  //상세선박정보 id
 var featTest;
 
+//var windParticlesLayer; // 풍향/풍속
+var layerWind // 풍향/풍속 레이어
+var layerFlow // 유향/유속 레이어
+var arrowLayer; // 파향/파고
+var windGradientLayer; // 기온/수온
+
 
 
 //35.5468629,129.3005359 울산
@@ -69,6 +75,191 @@ function mapInit(){
   		//renderer: 'webgl' // WebGL 렌더러 사용 설정
 	});
     map.on('moveend', onMoveEnd);
+
+    // 배율 변경 이벤트에 따라 레이어 변경
+    //var previousScale = 34466743;
+	map.getView().on('change:resolution', function() {
+		var allLayers = map.getLayers().getArray(); // 모든 추가된 레이어 정보 확인
+		
+		if (!allLayers.includes(DAY2) && !allLayers.includes(DAY3)) { // 밝기가 주간인 경우에만 동작
+			var lev = map.getView().getZoom();
+			var resol = map.getView().getResolutionForZoom(lev);	  
+	
+			var INCHES_PER_UNIT = 39.37;
+			var DOTS_PER_INCH = 72;
+	
+			var currentScale = INCHES_PER_UNIT * DOTS_PER_INCH * resol;
+			currentScale = Math.round(currentScale);
+	
+			//console.log("previousScale : " + previousScale);	
+	
+			if (currentScale > 6999999) { // 특정 배율 이상일 때 레이어 추가
+		    //if (currentScale > 6999999 && previousScale != currentScale) { // 특정 배율 이상일 때 레이어 추가
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_700)) {
+		            map.addLayer(DAY1_700);
+					DAY1_700.setZIndex(-1);
+		        }
+			} else if (currentScale > 4000000) {
+		    //} else if (currentScale > 4000000 && previousScale != currentScale) {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_400)) {
+		            map.addLayer(DAY1_400);
+					DAY1_400.setZIndex(-1);
+		        }
+			} else if (currentScale > 1000000) {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_100)) {
+		            map.addLayer(DAY1_100);
+					DAY1_100.setZIndex(-1);
+		        }
+			} else if (currentScale > 300000) {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_30)) {
+		            map.addLayer(DAY1_30);
+					DAY1_30.setZIndex(-1);
+		        }
+			} else if (currentScale > 50000) {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_5)) {
+		            map.addLayer(DAY1_5);
+					DAY1_5.setZIndex(-1);
+		        }
+			} else if (currentScale > 5000) {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_05)) {
+		            map.addLayer(DAY1_05);
+					DAY1_05.setZIndex(-1);
+		        }
+			} else {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.addLayer(DAY1_u05);
+					DAY1_u05.setZIndex(-1);
+		        }
+			} 
+		    //previousScale = currentScale;
+		}
+	});
 
 	map.on('singleclick', function (evt) {
 		if($("#div_route_detail").css("display") != "block" && drawInteration_route == null && drawInteration_search == null && isPopupOpen == false){
@@ -110,7 +301,7 @@ function mapInit(){
 
 	// 날씨 레이어
 	wmsWeatherInit();
-	
+
 	//선박 선택 이벤트
 	shipSelectEvent();
 	modStyleSelectInteraction.setActive(true);
