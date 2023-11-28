@@ -82,7 +82,7 @@
 <script>    
 let map;
 window.onload = function(){
-    var DAY1_1;
+    var Day1_Base1;
     var DAY1_400;
     var DAY1_100;
     var DAY1_30;
@@ -162,6 +162,39 @@ window.onload = function(){
 					<div id="ship_resultlist"></div>
 					<button id="ship_search">항적 조회</button>					
 					<input type="hidden" id="select_ship">
+				</div>
+				<div id="div_left_mapSetting" style="display: none">
+					<table width="100%">
+						<tr height="50px">
+							<td></td>
+						<tr>
+							<td>보기 설정</td>
+						</tr>
+						<tr height="10px">
+							<td></td>
+						<tr>
+						<tr height="1px">
+							<td style="background-color: black"></td>
+						<tr>
+						<tr height="10px">
+							<td></td>
+						<tr>
+						<tr>
+							<td>Base <input type="radio" name="ShipView" value="1" checked></td>
+						</tr>
+						<tr height="5px">
+							<td></td>
+						<tr>
+						<tr>
+							<td>Standard <input type="radio" name="ShipView" value="2" checked></td>
+						</tr>
+						<tr height="5px">
+							<td></td>
+						<tr>
+						<tr>
+							<td>Detail <input type="radio" name="ShipView" value="3"></td>
+						</tr>
+					</table>
 				</div>
 			</div>
 			<!-- <div class="div_left2">

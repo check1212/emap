@@ -66,8 +66,32 @@ function wmsInit(){
     });
     map.addLayer(DAY1);*/
     
+    Day1_Base1 = new ol.layer.Tile({
+		id : 'Day1_Base1',
+    	title: 'Day1_Base1',
+    	opacity: 1,
+        source: new ol.source.WMTS({
+            url: geoserverGwcUrl,
+            layer: 'Day1_Base1',
+            matrixSet: 'EPSG:4326',
+            format: 'image/png',
+            projection: new ol.proj.Projection({
+            	code: 'EPSG:4326',
+            	units: 'degrees',
+            	axisOrientation: 'neu'
+            	}),
+            tileGrid: new ol.tilegrid.WMTS({
+              tileSize: [256,256],
+              extent: [-180.0,-90.0,180.0,90.0],
+              origin: [-180.0, 90.0],
+              resolutions: [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7],
+              matrixIds: ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21']
+            }),
+            wrapX: true
+          })
+    });
     // 6,999,999 이상일 때의 레이어 그룹
-    DAY1_700 = new ol.layer.Tile({
+    /*DAY1_700 = new ol.layer.Tile({
 		id : 'Day1_700',
     	title: 'Day1_700',
     	opacity: 1,
@@ -90,7 +114,7 @@ function wmsInit(){
             }),
             wrapX: true
           })
-    });
+    });*/
     DAY1_400 = new ol.layer.Tile({
 		id : 'Day1_400',
     	title: 'Day1_400',
@@ -306,9 +330,9 @@ function wmsInit(){
 			var lev = map.getView().getZoom();
 			console.log(lev);
 			
-			if (lev < 6) {
-	    		map.addLayer(DAY1_700);
-				DAY1_700.setZIndex(-1);
+			if (lev <= 3) {
+	    		map.addLayer(Day1_Base1);
+				Day1_Base1.setZIndex(-1);
 			} else if (lev == 6) {
 	    		map.addLayer(DAY1_400);
 				DAY1_400.setZIndex(-1);
@@ -328,14 +352,9 @@ function wmsInit(){
 	    		map.addLayer(DAY1_u05);
 				DAY1_u05.setZIndex(-1);
 			}
-			/*make_sld("ocean", "Polygon1", "d3e9ed", null);
-			make_sld("DEPAREA", "Polygon2", "73b5ee", "d3e9ed");
-			make_sld("worldcountries", "Polygon1", "c5b578", null);
-			make_sld("LNDAREA_A", "Polygon1", "c5b578", null);
-			make_sld("rivers", "Polygon1", "0089ff", null);*/
 		} else if (brightRange == 2) {
-			if (allLayers.includes(DAY1_700))
-				map.removeLayer(DAY1_700);
+			if (allLayers.includes(Day1_Base1))
+				map.removeLayer(Day1_Base1);
 			else if (allLayers.includes(DAY1_400))
 				map.removeLayer(DAY1_400);
 			else if (allLayers.includes(DAY1_100))
@@ -358,8 +377,8 @@ function wmsInit(){
 			make_sld("LNDAREA_A", "Polygon1", "2c291b", null);
 			make_sld("rivers", "Polygon1", "292e2e", null);*/
 		} else {
-			if (allLayers.includes(DAY1_700))
-				map.removeLayer(DAY1_700);
+			if (allLayers.includes(Day1_Base1))
+				map.removeLayer(Day1_Base1);
 			else if (allLayers.includes(DAY1_400))
 				map.removeLayer(DAY1_400);
 			else if (allLayers.includes(DAY1_100))

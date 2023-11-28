@@ -903,22 +903,6 @@ var tempFlag = false;*/
 	    } else {
 			addLayerTemp = 0;
 			
-			// WebGL 컨텍스트를 가져옵니다.
-const gl = canvas.getContext("webgl");
-
-// Shader 프로그램 초기화
-gl.useProgram(null);
-
-// 버퍼와 텍스처 초기화
-gl.bindBuffer(gl.ARRAY_BUFFER, null);
-gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-gl.bindTexture(gl.TEXTURE_2D, null);
-
-// 렌더링 상태 초기화
-gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-gl.bindRenderbuffer(gl.RENDERBUFFER, null);
-
-			
 			map.removeLayer(windGradientLayer);
 
 			const existingLayerWaveheight = document.querySelector('#waveheight');

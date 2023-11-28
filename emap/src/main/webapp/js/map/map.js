@@ -83,15 +83,177 @@ function mapInit(){
 		
 		if (!allLayers.includes(DAY2) && !allLayers.includes(DAY3)) { // 밝기가 주간인 경우에만 동작
 			var lev = map.getView().getZoom();
-			var resol = map.getView().getResolutionForZoom(lev);	  
+	
+			if (lev <= 3) { // 특정 레벨 이상일 때 레이어 추가
+		        if (map.getLayers().getArray().includes(Day1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(Day1_Base1)) {
+		            map.addLayer(Day1_Base1);
+					Day1_Base1.setZIndex(-1);
+		        }
+			} else if (currentScale > 4000000) {
+		        if (map.getLayers().getArray().includes(Day1_Base1)) {
+		            map.removeLayer(Day1_Base1);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_400)) {
+		            map.addLayer(DAY1_400);
+					DAY1_400.setZIndex(-1);
+		        }
+			} else if (currentScale > 1000000) {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_100)) {
+		            map.addLayer(DAY1_100);
+					DAY1_100.setZIndex(-1);
+		        }
+			} else if (currentScale > 300000) {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_30)) {
+		            map.addLayer(DAY1_30);
+					DAY1_30.setZIndex(-1);
+		        }
+			} else if (currentScale > 50000) {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_5)) {
+		            map.addLayer(DAY1_5);
+					DAY1_5.setZIndex(-1);
+		        }
+			} else if (currentScale > 5000) {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_05)) {
+		            map.addLayer(DAY1_05);
+					DAY1_05.setZIndex(-1);
+		        }
+			} else {
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_100)) {
+		            map.removeLayer(DAY1_100);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_30)) {
+		            map.removeLayer(DAY1_30);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_5)) {
+		            map.removeLayer(DAY1_5);
+		        }
+		        if (map.getLayers().getArray().includes(DAY1_05)) {
+		            map.removeLayer(DAY1_05);
+		        }
+		        if (!map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.addLayer(DAY1_u05);
+					DAY1_u05.setZIndex(-1);
+		        }
+			}
+			
+			/*var resol = map.getView().getResolutionForZoom(lev);	  
 	
 			var INCHES_PER_UNIT = 39.37;
 			var DOTS_PER_INCH = 72;
 	
 			var currentScale = INCHES_PER_UNIT * DOTS_PER_INCH * resol;
 			currentScale = Math.round(currentScale);
-	
-			//console.log("previousScale : " + previousScale);	
 	
 			if (currentScale > 6999999) { // 특정 배율 이상일 때 레이어 추가
 		    //if (currentScale > 6999999 && previousScale != currentScale) { // 특정 배율 이상일 때 레이어 추가
@@ -256,8 +418,8 @@ function mapInit(){
 		            map.addLayer(DAY1_u05);
 					DAY1_u05.setZIndex(-1);
 		        }
-			} 
-		    //previousScale = currentScale;
+			}
+		    //previousScale = currentScale;*/
 		}
 	});
 
@@ -341,6 +503,8 @@ function mapEvent(){
 		if(dis == "block") {
 			$("#div_left_ship").hide();
 			$(".div_left").hide();
+			//TTEST
+			$("#div_left_mapSetting").hide();
 		} else {
 			$("#div_left_route").hide();
 			$(".div_left").show();
@@ -379,12 +543,41 @@ function mapEvent(){
 	$("#close_detail").on('click',function(e){
 		$("#div_detail").hide();
 	});
+
+	//TTEST
+	//레이어 설정
+	$("#mapSetting").on('click',function(e){
+		//deactiveInteractions();		
+		wfs_layer.getSource().clear();
+		let dis = $("#div_left_mapSetting").css("display");
+		let disShip = $("#div_left_ship").css("display");
+		let disRoute = $("#div_left_route").css("display");
+		if(dis == "block" && disShip != "block" && disRoute != "block") {
+			$("#div_left_ship").hide();
+			$("#div_left_route").hide();
+			//$("#div_route_detail").hide();
+			$("#div_left_mapSetting").hide();
+			$(".div_left").hide();
+			$("#mapSetting img").attr("src",$("#mapSetting img").attr("src").replace("_on.jpg",".jpg"));
+		} else {
+			$("#div_left_ship").hide();
+			$("#div_left_route").hide();
+			//$("#div_route_detail").hide();
+			$(".div_left").show();
+			$("#div_left_mapSetting").show();
+			$("#mapSetting img").attr("src",$("#mapSetting img").attr("src").replace(".jpg","_on.jpg"));
+			for(let i=0; i<$(".map_tool li img").length; i++) {
+				$(".map_tool li img").eq(i).attr("src",$(".map_tool li img").eq(i).attr("src").replace("_on.jpg",".jpg"));
+			}
+		}
+		setSize();	
+	});
 	
 	//프린트
 	$("#mapPrint").on('click',function(e){	
 	 	fn_printPopup();
 	});
-	
+
 	//항로계획
 	$("#mapSearch3").on('click',function(e){
 		deactiveInteractions();
@@ -396,6 +589,8 @@ function mapEvent(){
 			$("#div_route_detail").hide();
 			$(".div_left").hide();
 			$('#div_route_detail').hide();
+			//TTEST
+			$("#div_left_mapSetting").hide();
 		} else {
 			$("#div_left_ship").hide();
 			$("#div_left_route").show();
