@@ -26,7 +26,8 @@ var searchBox = {
 	kind : "",
 	text : ""
 };
-var shipList = [];		//선박리스트	
+var shipList = [];		//선박리스트
+var choose_shipList = [];		//선택 선박	
 var shipMoveList = [];		//선박항적리스트			
 var chocieShipMmsi="";  //상세선박정보 id
 var featTest;
@@ -651,9 +652,17 @@ function mapEvent(){
 	
 	//항로 조회
 	$("#ship_search").on('click',function(e){
-		let data = $("#select_ship").val();
-		if(data == "") alert("선박 선택 후 사용 바랍니다.");
+		if(choose_shipList.length == 0) alert("선박 선택 후 사용 바랍니다.");
 		else drawShipRoute();
+	});
+	
+	//항로 초기화
+	$("#ship_clean").on('click',function(e){
+		for(var i=0; i<$("#ship_resultlist table tr").length; i++) {
+			var tr = $("#ship_resultlist table tr")[i];
+			$(tr).css("background","#ffffff");
+		}
+		wfs_layer.getSource().clear();	
 	});
 }
 
@@ -1078,7 +1087,7 @@ function makeShipFeature() {
 }
 
 function getShipList() {
-	$("#select_ship").val("");
+	choose_shipList = [];
 	var str = "<table style='width: 100%'  border='1' cellspacing='0'><colgroup><col width='50%'><col width='50%'></colgroup>";
 	for(var i=0;i<shipList.length;i++){
 		var item = shipList[i];
@@ -1089,13 +1098,11 @@ function getShipList() {
 
 	$("#ship_resultlist").html(str);
 	
-	$("#ship_resultlist table tr").on('click',function(e){
-		for(var i=0; i<$("#ship_resultlist table tr").length; i++) {
-			var tr = $("#ship_resultlist table tr")[i];
-			$(tr).css("background","#ffffff");
-		}
-		$(this).css("background","#d4d4d4");				
+	$("#ship_resultlist table tr").on('click',function(e){		
+		$(this).css("background","#d4d4d4");
 	});
+	
+	
 }
 
 //선박정보 위치 이동
@@ -1107,9 +1114,7 @@ function getShipCenter(id,lon, lat){
 	var lyrCenter = ol.extent.getCenter(pointFeature.getGeometry().getExtent());
 	map.getView().setCenter(lyrCenter);
     map.getView().setZoom(14);
-    $("#select_ship").val(id);
-    wfs_layer.getSource().clear();	
-    
+    choose_shipList.push(id);
 }
 
 //선박정보 상세 정보
@@ -1152,14 +1157,14 @@ function getShipClean() {
 }
 
 function drawShipRoute() {
+	for(var j=0; j<choose_shipList.length; j++) {
 	$.ajax({
 		type: "POST",
 		dataType: "json",
 		url: "getShipOne.do",
 		asyn: false,
-		data : { mmsi : $("#select_ship").val() },
-		success: function(data) { 
-			wfs_layer.getSource().clear();	   
+		data : { mmsi : choose_shipList[j] },
+		success: function(data) {    
 			if(data != null){
 				var arr_line = new Array();
 				for(var i=0; i<data.length; i++) {				
@@ -1226,6 +1231,7 @@ function drawShipRoute() {
 			}
 		}
 	});
+	}
 }
 
 // 위도/경도를 도분초 단위로 변환
