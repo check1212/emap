@@ -161,7 +161,8 @@ window.onload = function(){
 						</tr>
 					</table>
 					<div id="ship_resultlist"></div>
-					<button id="ship_search">항적 조회</button>					
+					<button id="ship_search">항적 조회</button>
+					<button id="ship_clean">초기화</button>					
 					<input type="hidden" id="select_ship">
 				</div>
 				<div id="div_left_mapSetting" style="display: none">
