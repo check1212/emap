@@ -303,10 +303,11 @@ function wmsWeatherInit(){
 
 	let addLayerWind = 0;
 	let addLayerFlow = 0;
-	let addLayerTemp = 0;
+	let addLayerTempair = 0;
+	let addLayerTempwater = 0;
 	
 	// 애니메이션 시작
-	updateAnimation();
+	//updateAnimation();
 
 	var stopNow;
 
@@ -542,7 +543,7 @@ var tempFlag = false;*/
 				element: document.getElementById('popup'),
 			});
 			map.addOverlay(popup);
-			
+
 			map.on('click', function (event) {
 				var coordinate_ = event.coordinate; // 클릭한 좌표
 				var coordinate = ol.proj.transform(coordinate_, 'EPSG:3857', 'EPSG:4326');
@@ -784,7 +785,8 @@ var tempFlag = false;*/
 	var windCheckbox = document.getElementById('checkWind'); // 풍향/풍속
 	var flowCheckbox = document.getElementById('checkFlow'); // 유향/유속
 	var waveheightCheckbox = document.getElementById('checkWaveheight'); // 파향/파고
-	var tempCheckbox = document.getElementById('checkTemp'); // 기온/수온
+	var tempairCheckbox = document.getElementById('checkTempair'); // 기온
+	var tempwaterCheckbox = document.getElementById('checkTempwater'); // 수온
 
 	windCheckbox.addEventListener('change', function() {
 	    if (windCheckbox.checked) {
@@ -827,66 +829,32 @@ var tempFlag = false;*/
 	var topWaveheight;
 	waveheightCheckbox.addEventListener('change', function() {
 	    if (waveheightCheckbox.checked) {
-			map.addLayer(arrowLayer);
+			addLayerWaveheight = 1;
+			map.addLayer(layerWaveheight);
 
 			// 범주 레이어 생성
 			const layer = document.createElement('div');
 			layer.id = 'waveheight';
 			layer.style.position = 'absolute';
-			//if (existingLayer) {
-			if (topTemp == 1) {
-				layer.style.top = '300px';
-				topWaveheight = 2;
+			if (topTempair == 1) {
+				if (topTempwater == 2) {
+					layer.style.top = '570px';
+					topWaveheight = 3;
+				} else {
+					layer.style.top = '300px';
+					topWaveheight = 2;
+				}
+			} else if (topTempwater == 1) {
+				if (topTempair == 2) {
+					layer.style.top = '570px';
+					topWaveheight = 3;
+				} else {
+					layer.style.top = '300px';
+					topWaveheight = 2;
+				}
 			} else {
 				layer.style.top = '30px';
 				topWaveheight = 1;
-			}
-			layer.style.right = '0px';
-			layer.style.width = '180px';
-			layer.style.height = '204px';
-			layer.style.backgroundImage = 'url(../images/sk/legend_waveheight.png)';
-			layer.style.opacity = '0.4';
-
-			document.body.appendChild(layer);
-   
-		    /*overlayWaveheights.forEach(function(overlay) {
-		        map.addOverlay(overlay);
-		    });*/
-	    } else {
-			map.removeLayer(arrowLayer);
-
-			const existingLayerWaveheight = document.querySelector('#waveheight');
-			const existingLayerTemp = document.querySelector('#temp');
-	        existingLayerWaveheight.remove();
-	        topWaveheight = 0;
-			if (topTemp == 2) {
-				existingLayerTemp.style.top = '30px';
-				topTemp = 1;
-			}
-
-		    /*overlayWaveheights.forEach(function(overlay) {
-		        map.removeOverlay(overlay);
-		    });*/
-	    }
-	});
-
-	var topTemp;
-	tempCheckbox.addEventListener('change', function() {
-	    if (tempCheckbox.checked) {
-			addLayerTemp = 1;
-			map.addLayer(windGradientLayer);
-
-			// 범주 레이어 생성
-			const layer = document.createElement('div');
-			layer.id = 'temp';
-			layer.style.position = 'absolute';
-			if (topWaveheight == 1) {
-			//if (existingLayer) {
-				layer.style.top = '300px';
-				topTemp = 2;
-			} else {
-				layer.style.top = '30px';
-				topTemp = 1;
 			}
 			layer.style.right = '0px';
 			layer.style.width = '180px';
@@ -895,30 +863,164 @@ var tempFlag = false;*/
 			layer.style.opacity = '0.4';
 
 			document.body.appendChild(layer);
-			/*if (addLayerFlow == 1)
-				map.removeLayer(flowLayer);
-			else if (addLayerWind == 1)
-				map.removeLayer(windLayer);
-			map.addLayer(tempLayer);*/
 	    } else {
-			addLayerTemp = 0;
+			addLayerWaveheight = 0;
 			
-			map.removeLayer(windGradientLayer);
+			map.removeLayer(layerWaveheight);
 
 			const existingLayerWaveheight = document.querySelector('#waveheight');
-			const existingLayerTemp = document.querySelector('#temp');
-	        existingLayerTemp.remove();
-	        topTemp = 0;
+			const existingLayerTempair = document.querySelector('#tempair');
+			const existingLayerTempwater = document.querySelector('#tempwater');
+	        existingLayerWaveheight.remove();
+
+	        topWaveheight = 0;
+			if (topTempair == 2) {
+				existingLayerTempair.style.top = '30px';
+				topTempair = 1;
+			} else if (topTempair == 3) {
+				existingLayerTempair.style.top = '300px';
+				topTempair = 2;
+			}
+			
+			if (topTempwater == 2) {
+				existingLayerTempwater.style.top = '30px';
+				topTempwater = 1;
+			} else if (topTempwater == 3) {
+				existingLayerTempwater.style.top = '300px';
+				topTempwater = 2;
+			}
+	    }
+	});
+
+	var topTempair;
+	tempairCheckbox.addEventListener('change', function() {
+	    if (tempairCheckbox.checked) {
+			addLayerTempair = 1;
+			map.addLayer(layerTempair);
+
+			// 범주 레이어 생성
+			const layer = document.createElement('div');
+			layer.id = 'tempair';
+			layer.style.position = 'absolute';
+			if (topWaveheight == 1) {
+				if (topTempwater == 2) {
+					layer.style.top = '570px';
+					topTempair = 3;
+				} else {
+					layer.style.top = '300px';
+					topTempair = 2;
+				}
+			} else if (topTempwater == 1) {
+				if (topWaveheight = 2) {
+					layer.style.top = '570px';
+					topTempair = 3;
+				} else {
+					layer.style.top = '300px';
+					topTempair = 2;
+				}
+			} else {
+				layer.style.top = '30px';
+				topTempair = 1;
+			}
+			layer.style.right = '0px';
+			layer.style.width = '180px';
+			layer.style.height = '204px';
+			layer.style.backgroundImage = 'url(../images/sk/legend_temp.png)';
+			layer.style.opacity = '0.4';
+
+			document.body.appendChild(layer);
+	    } else {
+			addLayerTempair = 0;
+			
+			map.removeLayer(layerTempair);
+
+			const existingLayerWaveheight = document.querySelector('#waveheight');
+			const existingLayerTempair = document.querySelector('#tempair');
+			const existingLayerTempwater = document.querySelector('#tempwater');
+	        existingLayerTempair.remove();
+	        
+	        topTempair = 0;
 			if (topWaveheight == 2) {
 				existingLayerWaveheight.style.top = '30px';
 				topWaveheight = 1;
+			} else if (topWaveheight == 3) {
+				existingLayerWaveheight.style.top = '300px';
+				topWaveheight = 2;
 			}
 			
-			/*map.removeLayer(tempLayer);
-			if (addLayerFlow == 1)
-				map.addLayer(flowLayer);
-			else if (addLayerWind == 1)
-				map.addLayer(windLayer);*/
+			if (topTempwater == 2) {
+				existingLayerTempwater.style.top = '30px';
+				topTempwater = 1;
+			} else if (topTempwater == 3) {
+				existingLayerTempwater.style.top = '300px';
+				topTempwater = 2;
+			}
+	    }
+	});
+
+	var topTempwater;
+	tempwaterCheckbox.addEventListener('change', function() {
+	    if (tempwaterCheckbox.checked) {
+			addLayerTempwater = 1;
+			map.addLayer(layerTempwater);
+
+			// 범주 레이어 생성
+			const layer = document.createElement('div');
+			layer.id = 'tempwater';
+			layer.style.position = 'absolute';
+			if (topWaveheight == 1) {
+				if (topTempair == 2) {
+					layer.style.top = '570px';
+					topTempwater = 3;
+				} else {
+					layer.style.top = '300px';
+					topTempwater = 2;
+				}
+			} else if (topTempair == 1) {
+				if (topWaveheight == 2) {
+					layer.style.top = '570px';
+					topTempwater = 3;
+				} else {
+					layer.style.top = '300px';
+					topTempwater = 2;
+				}
+			} else {
+				layer.style.top = '30px';
+				topTempwater = 1;
+			}
+			layer.style.right = '0px';
+			layer.style.width = '180px';
+			layer.style.height = '204px';
+			layer.style.backgroundImage = 'url(../images/sk/legend_temp.png)';
+			layer.style.opacity = '0.4';
+
+			document.body.appendChild(layer);
+	    } else {
+			addLayerTempwater = 0;
+			
+			map.removeLayer(layerTempwater);
+
+			const existingLayerWaveheight = document.querySelector('#waveheight');
+			const existingLayerTempair = document.querySelector('#tempair');
+			const existingLayerTempwater = document.querySelector('#tempwater');
+	        existingLayerTempwater.remove();
+	        
+	        topTempwater = 0;
+			if (topWaveheight == 2) {
+				existingLayerWaveheight.style.top = '30px';
+				topWaveheight = 1;
+			} else if (topWaveheight == 3) {
+				existingLayerWaveheight.style.top = '300px';
+				topWaveheight = 2;
+			}
+			
+			if (topTempair == 2) {
+				existingLayerTempair.style.top = '30px';
+				topTempair = 1;
+			} else if (topTempair == 3) {
+				existingLayerTempair.style.top = '300px';
+				topTempair = 2;
+			}
 	    }
 	});
 }

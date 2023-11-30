@@ -34,8 +34,10 @@ var featTest;
 //var windParticlesLayer; // 풍향/풍속
 var layerWind // 풍향/풍속 레이어
 var layerFlow // 유향/유속 레이어
-var arrowLayer; // 파향/파고
-var windGradientLayer; // 기온/수온
+//var arrowLayer; // 파향/파고
+var layerWaveheight; // 파향/파고
+var layerTempair; // 기온
+var layerTempwater; // 수온
 
 
 
@@ -80,14 +82,36 @@ function mapInit(){
     //var previousScale = 34466743;
 	map.getView().on('change:resolution', function() {
 		var allLayers = map.getLayers().getArray(); // 모든 추가된 레이어 정보 확인
-		
+
 		if (!allLayers.includes(DAY2) && !allLayers.includes(DAY3)) { // 밝기가 주간인 경우에만 동작
 			var lev = map.getView().getZoom();
-	
-			if (lev <= 3) { // 특정 레벨 이상일 때 레이어 추가
-		        if (map.getLayers().getArray().includes(Day1_400)) {
-		            map.removeLayer(DAY1_400);
+
+			if (lev < 4) { // 특정 레벨 이상일 때 레이어 추가
+		        if (map.getLayers().getArray().includes(layerTempair)) {
+					if (lev == 3)
+		            	layerTempair.setRadius(5);
+		            else if (lev == 2)
+		            	layerTempair.setRadius(3.5);
+		            else if (lev == 1)
+		            	layerTempair.setRadius(2.5);
+		            else if (lev == 0) // else if가 아닌 else 처리시 레벨 변화 중간 단계에서 else로 처리됨
+		            	layerTempair.setRadius(1.5);
+		            layerTempair.changed();
 		        }
+		        if (map.getLayers().getArray().includes(layerTempwater)) {
+					if (lev == 3)
+		            	layerTempwater.setRadius(5);
+		            else if (lev == 2)
+		            	layerTempwater.setRadius(3.5);
+		            else if (lev == 1)
+		            	layerTempwater.setRadius(2.5);
+		            else if (lev == 0) // else if가 아닌 else 처리시 레벨 변화 중간 단계에서 else로 처리됨
+		            	layerTempwater.setRadius(1.5);
+		            layerTempwater.changed();
+		        }
+		        /*if (map.getLayers().getArray().includes(Day1_400)) {
+		            map.removeLayer(DAY1_400);
+		        }*/
 		        if (map.getLayers().getArray().includes(DAY1_100)) {
 		            map.removeLayer(DAY1_100);
 		        }
@@ -103,13 +127,41 @@ function mapInit(){
 		        if (map.getLayers().getArray().includes(DAY1_u05)) {
 		            map.removeLayer(DAY1_u05);
 		        }
-		        if (!map.getLayers().getArray().includes(Day1_Base1)) {
+		        if (map.getLayers().getArray().includes(DAY1_u05)) {
+		            map.removeLayer(DAY1_u05);
+		        }
+		        /*if (!map.getLayers().getArray().includes(Day1_Base1)) {
 		            map.addLayer(Day1_Base1);
 					Day1_Base1.setZIndex(-1);
+		        }*/
+		        /*if (!map.getLayers().getArray().includes(Day1_700)) {
+		            map.addLayer(Day1_700);
+					Day1_700.setZIndex(-1);
+		        }*/
+			} else if (lev < 7) {
+		        if (map.getLayers().getArray().includes(layerTempair)) {
+					if (lev == 6)
+		            	layerTempair.setRadius(30);
+		            else if (lev == 5)
+		            	layerTempair.setRadius(17);
+		            else if (lev == 4)
+		            	layerTempair.setRadius(10);
+		            layerTempair.changed();
 		        }
-			} else if (currentScale > 4000000) {
-		        if (map.getLayers().getArray().includes(Day1_Base1)) {
+		        if (map.getLayers().getArray().includes(layerTempwater)) {
+					if (lev == 6)
+		            	layerTempwater.setRadius(30);
+		            else if (lev == 5)
+		            	layerTempwater.setRadius(17);
+		            else if (lev == 4)
+		            	layerTempwater.setRadius(10);
+		            layerTempwater.changed();
+		        }
+		        /*if (map.getLayers().getArray().includes(Day1_Base1)) {
 		            map.removeLayer(Day1_Base1);
+		        }*/
+		        if (map.getLayers().getArray().includes(DAY1_700)) {
+		            map.removeLayer(DAY1_700);
 		        }
 		        if (map.getLayers().getArray().includes(DAY1_100)) {
 		            map.removeLayer(DAY1_100);
@@ -130,7 +182,21 @@ function mapInit(){
 		            map.addLayer(DAY1_400);
 					DAY1_400.setZIndex(-1);
 		        }
-			} else if (currentScale > 1000000) {
+			} else if (lev < 9) {
+		        if (map.getLayers().getArray().includes(layerTempair)) {
+					if (lev == 7)
+		            	layerTempair.setRadius(50);
+		            else if (lev == 8)
+		            	layerTempair.setRadius(100);
+		            layerTempair.changed();
+		        }
+		        if (map.getLayers().getArray().includes(layerTempwater)) {
+					if (lev == 7)
+		            	layerTempwater.setRadius(50);
+		            else if (lev == 8)
+		            	layerTempwater.setRadius(100);
+		            layerTempwater.changed();
+		        }
 		        if (map.getLayers().getArray().includes(DAY1_700)) {
 		            map.removeLayer(DAY1_700);
 		        }
@@ -153,7 +219,21 @@ function mapInit(){
 		            map.addLayer(DAY1_100);
 					DAY1_100.setZIndex(-1);
 		        }
-			} else if (currentScale > 300000) {
+			} else if (lev < 11) {
+		        if (map.getLayers().getArray().includes(layerTempair)) {
+					if (lev == 9)
+		            	layerTempair.setRadius(200);
+		            else if (lev == 10)
+		            	layerTempair.setRadius(400);
+		            layerTempair.changed();
+		        }
+		        if (map.getLayers().getArray().includes(layerTempwater)) {
+					if (lev == 9)
+		            	layerTempwater.setRadius(200);
+		            else if (lev == 10)
+		            	layerTempwater.setRadius(400);
+		            layerTempwater.changed();
+		        }
 		        if (map.getLayers().getArray().includes(DAY1_700)) {
 		            map.removeLayer(DAY1_700);
 		        }
@@ -176,7 +256,25 @@ function mapInit(){
 		            map.addLayer(DAY1_30);
 					DAY1_30.setZIndex(-1);
 		        }
-			} else if (currentScale > 50000) {
+			} else if (lev < 14) {
+		        if (map.getLayers().getArray().includes(layerTempair)) {
+					if (lev == 11)
+		            	layerTempair.setRadius(700);
+		            else if (lev == 12)
+		            	layerTempair.setRadius(1300);
+		            else if (lev == 13)
+		            	layerTempair.setRadius(2000);
+		            layerTempair.changed();
+		        }
+		        if (map.getLayers().getArray().includes(layerTempwater)) {
+					if (lev == 11)
+		            	layerTempwater.setRadius(700);
+		            else if (lev == 12)
+		            	layerTempwater.setRadius(1300);
+		            else if (lev == 13)
+		            	layerTempwater.setRadius(2000);
+		            layerTempwater.changed();
+		        }
 		        if (map.getLayers().getArray().includes(DAY1_700)) {
 		            map.removeLayer(DAY1_700);
 		        }
@@ -199,7 +297,15 @@ function mapInit(){
 		            map.addLayer(DAY1_5);
 					DAY1_5.setZIndex(-1);
 		        }
-			} else if (currentScale > 5000) {
+			} else if (lev < 17) {
+		        if (map.getLayers().getArray().includes(layerTempair)) {
+		            layerTempair.setRadius(2000); // 일정 수치 넘어서면 처리 안될 수 있음
+		            layerTempair.changed();
+		        }
+		        if (map.getLayers().getArray().includes(layerTempwater)) {
+		            layerTempwater.setRadius(2000); // 일정 수치 넘어서면 처리 안될 수 있음
+		            layerTempwater.changed();
+		        }
 		        if (map.getLayers().getArray().includes(DAY1_700)) {
 		            map.removeLayer(DAY1_700);
 		        }
@@ -223,6 +329,14 @@ function mapInit(){
 					DAY1_05.setZIndex(-1);
 		        }
 			} else {
+		        if (map.getLayers().getArray().includes(layerTempair)) {
+		            layerTempair.setRadius(2000); // 일정 수치 넘어서면 처리 안될 수 있음
+		            layerTempair.changed();
+		        }
+		        if (map.getLayers().getArray().includes(layerTempwater)) {
+		            layerTempwater.setRadius(2000); // 일정 수치 넘어서면 처리 안될 수 있음
+		            layerTempwater.changed();
+		        }
 		        if (map.getLayers().getArray().includes(DAY1_700)) {
 		            map.removeLayer(DAY1_700);
 		        }

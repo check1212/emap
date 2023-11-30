@@ -91,7 +91,7 @@ function wmsInit(){
           })
     });
     // 6,999,999 이상일 때의 레이어 그룹
-    /*DAY1_700 = new ol.layer.Tile({
+    DAY1_700 = new ol.layer.Tile({
 		id : 'Day1_700',
     	title: 'Day1_700',
     	opacity: 1,
@@ -114,7 +114,7 @@ function wmsInit(){
             }),
             wrapX: true
           })
-    });*/
+    });
     DAY1_400 = new ol.layer.Tile({
 		id : 'Day1_400',
     	title: 'Day1_400',
@@ -329,7 +329,7 @@ function wmsInit(){
 			// 레벨 값 얻어오기
 			var lev = map.getView().getZoom();
 			console.log(lev);
-			
+
 			if (lev <= 3) {
 	    		map.addLayer(Day1_Base1);
 				Day1_Base1.setZIndex(-1);
