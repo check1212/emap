@@ -98,10 +98,14 @@ public class mapServiceImpl extends EgovAbstractServiceImpl implements mapServic
 	public List<ShipInfoVO> getShipOne(ShipInfoVO vo) throws Exception {
 		return mapDAO.getShipOne(vo);
 	}
-	
+
 	@Override
-	public List<WeatherVO> getWeather() throws Exception {
-		return mapDAO.getWeather();
+	public List<WeatherVO> getWeather(WeatherVO vo) throws Exception {
+		return mapDAO.getWeather(vo);
 	}
 
+	@Override
+	public List<WeatherVO> getWeatherPopup(WeatherVO vo) throws Exception {
+		return mapDAO.getWeatherPopup(vo);
+	}
 }

@@ -97,9 +97,14 @@ public class mapDAO extends EgovComAbstractDAO {
    	public List<ShipInfoVO> getShipOne(ShipInfoVO vo) throws Exception {
     	return (List<ShipInfoVO>) list("map.getShipOne", vo);
     }
-    
+
     @SuppressWarnings("unchecked")
-   	public List<WeatherVO> getWeather() throws Exception {
-    	return (List<WeatherVO>) list("map.getWeather");
+   	public List<WeatherVO> getWeather(WeatherVO vo) throws Exception {
+    	return (List<WeatherVO>) list("map.getWeather", vo);
+    }
+
+    @SuppressWarnings("unchecked")
+   	public List<WeatherVO> getWeatherPopup(WeatherVO vo) throws Exception {
+    	return (List<WeatherVO>) list("map.getWeatherPopup", vo);
     }
 }

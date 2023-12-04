@@ -22,8 +22,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class WeatherVO implements Serializable {
     
-	private String lat = "";
-	private String lon = "";
+	private String date = "";
+	private String tableName = "";
+	private float lat;
+	private float lon;
     private String air_temp = "";
     private String water_temp = "";
     private String u_current = "";
@@ -33,16 +35,29 @@ public class WeatherVO implements Serializable {
     private String fsdir = "";
     private String fshgt = "";
     
-	public String getLat() {
+    
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public String getTableName() {
+		return tableName;
+	}
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+	public float getLat() {
 		return lat;
 	}
-	public void setLat(String lat) {
+	public void setLat(float lat) {
 		this.lat = lat;
 	}
-	public String getLon() {
+	public float getLon() {
 		return lon;
 	}
-	public void setLon(String lon) {
+	public void setLon(float lon) {
 		this.lon = lon;
 	}
 	public String getAir_temp() {

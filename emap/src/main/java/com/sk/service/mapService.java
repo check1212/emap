@@ -33,5 +33,6 @@ public interface mapService {
 	
 	public List<ShipInfoVO> getShipOne(ShipInfoVO vo) throws Exception;
 
-	public List<WeatherVO> getWeather() throws Exception;
+	public List<WeatherVO> getWeather(WeatherVO vo) throws Exception;
+	public List<WeatherVO> getWeatherPopup(WeatherVO vo) throws Exception;
 }

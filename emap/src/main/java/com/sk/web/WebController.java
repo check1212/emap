@@ -40,9 +40,11 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import com.sk.SkShipVO;
 import com.sk.WeatherVO;
+import com.ibm.icu.text.SimpleDateFormat;
 import com.sk.RouteDetailVO;
 import com.sk.RouteVO;
 import com.sk.ShipInfoVO;
+import com.sk.SkAlertVO;
 import com.sk.service.LibJson;
 import com.sk.service.mapService;
 
@@ -242,63 +244,43 @@ public class WebController {
 		}
 	}
 
-	@RestController
-	public class FileController {
-	    @GetMapping("getCSV.do")
-	    public ResponseEntity<byte[]> getCsvFile(@RequestParam("url") String url) throws IOException {
-	        byte[] fileData = null;
-	        HttpHeaders headers = new HttpHeaders();
-	        String fileName = "weather.csv"; // 기본 파일 이름
-
-	        // URL에 따라 다른 응답을 생성
-	        if (url.equals("0")) {
-	            ClassPathResource resource = new ClassPathResource("weather.csv");
-	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
-	            fileName = "weather.csv";
-	        } else if (url.equals("1")) {
-	            ClassPathResource resource = new ClassPathResource("weather1.csv");
-	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
-	            fileName = "weather1.csv";
-	        } else if (url.equals("2")) {
-	            ClassPathResource resource = new ClassPathResource("weather2.csv");
-	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
-	            fileName = "weather2.csv";
-	        } else if (url.equals("3")) {
-	            ClassPathResource resource = new ClassPathResource("weather3.csv");
-	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
-	            fileName = "weather3.csv";
-	        } else if (url.equals("4")) {
-	            ClassPathResource resource = new ClassPathResource("weather4.csv");
-	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
-	            fileName = "weather4.csv";
-	        } else if (url.equals("5")) {
-	            ClassPathResource resource = new ClassPathResource("weather5.csv");
-	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
-	            fileName = "weather5.csv";
-	        } else if (url.equals("6")) {
-	            ClassPathResource resource = new ClassPathResource("weather6.csv");
-	            fileData = FileCopyUtils.copyToByteArray(resource.getInputStream());
-	            fileName = "weather6.csv";
-	        }
-
-	        headers.add("Content-Disposition", "attachment; filename=" + fileName);
-
-	        if (fileData != null) {
-	            return ResponseEntity.ok()
-	                .headers(headers)
-	                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-	                .body(fileData);
-	        } else {
-	            // URL에 해당하는 파일이 없는 경우 404 응답을 반환
-	            return ResponseEntity.notFound().build();
-	        }
-	    }
-	}
-	
 	// 기상 정보
 	@RequestMapping("getWeather.do")
 	public void getWeather(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		List<WeatherVO> slist = mapService.getWeather();		
+		WeatherVO vo = new WeatherVO();
+		//vo.setDate((String)req.getParameter("date"));
+		String dateToTable = (String)req.getParameter("date"); // 20231203
+		vo.setDate(dateToTable);
+
+		dateToTable = "tb_" + dateToTable;
+		//vo.setTableName("tb_20231203");
+		vo.setTableName(dateToTable);
+		//vo.setDate(formattedDate);
+
+		List<WeatherVO> slist = mapService.getWeather(vo);		
+		if(slist.size() > 0) {			
+			json.Json(res, slist);
+		}
+	}
+
+	// 기상 정보 (팝업)
+	@RequestMapping("getWeatherPopup.do")
+	public void getWeatherPopup(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		WeatherVO vo = new WeatherVO();
+		String dateToTable = (String)req.getParameter("date"); // 20231203
+		vo.setDate(dateToTable);
+
+		dateToTable = "tb_" + dateToTable;
+		vo.setTableName(dateToTable);
+
+		String lat = (String)req.getParameter("lat");
+		float floatLat = Float.parseFloat(lat);
+		vo.setLat(floatLat);
+		String lon = (String)req.getParameter("lon");
+		float floatLon = Float.parseFloat(lon);
+		vo.setLon(floatLon);
+
+		List<WeatherVO> slist = mapService.getWeatherPopup(vo);		
 		if(slist.size() > 0) {			
 			json.Json(res, slist);
 		}

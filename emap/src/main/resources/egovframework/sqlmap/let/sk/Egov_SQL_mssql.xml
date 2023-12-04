@@ -90,12 +90,21 @@
 	
 	<select id="map.getWeather" resultClass="WeatherVO">
 		<![CDATA[
-			SELECT * FROM "tb_20231127"
-			 WHERE time = '2023-11-27 00:00:00.000'
+			SELECT * FROM $tableName$
+			 WHERE time::date = TO_DATE(#date#, 'YYYYMMDD')
 			 and lat >= 32
 			 and lat <= 39
 			 and lon >= 122
 			 and lon <= 132
+		]]>
+	</select>
+	
+	<select id="map.getWeatherPopup" resultClass="WeatherVO">
+		<![CDATA[
+			SELECT * FROM $tableName$
+			 WHERE time::date = TO_DATE(#date#, 'YYYYMMDD')
+			 and lat = #lat#
+			 and lon = #lon#
 		]]>
 	</select>
 </sqlMap>

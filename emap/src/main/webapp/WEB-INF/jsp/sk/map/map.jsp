@@ -12,9 +12,6 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/js/libs/colorpicker/css/colorpicker.css"/>"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/js/libs/colorpicker/css/layout.css"/>"/>
 <link rel="stylesheet" href="<c:url value="/js/libs/openlayers/ol-v5.30/ol.css"/>">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v5.3.0/css/ol.css"> -->
-<!-- <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css"> -->
-<%-- <link rel="stylesheet" href="<c:url value="/js/libs/openlayers/ol-v5.30-pkg/ol.css"/>"> --%>
 <link rel="stylesheet" href="<c:url value="/js/libs/openlayers/ol-ext/ol-ext.min.css"/>"/>
 <link rel="stylesheet" href="<c:url value="/css/common.css?version=${nowDate}"/>"/>
 <link type="text/css" href="<c:url value="/css/perfect-scrollbar.css"/>" rel="stylesheet"/>
@@ -39,8 +36,6 @@
 
 <!-- openlayers -->
 <script type="text/javascript" src="<c:url value="/js/libs/openlayers/ol-v5.30/ol.js"/>"></script>
-<%-- <script type="text/javascript" src="<c:url value="/js/libs/openlayers/ol-v5.30-pkg/ol.js"/>"></script> --%>
-<!-- <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v5.3.0/build/ol.js"></script> -->
 <!-- openlayers -->
 <script type="text/javascript" src="<c:url value="/js/libs/openlayers/ol-ext/ol-ext.min.js"/>"></script>
 
@@ -55,9 +50,6 @@
 <script type="text/javascript" src="<c:url value="/js/map/customDragInteraction.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/libs/perfect-scrollbar.min.js"/>"></script>
 
-<!-- csv 로딩용 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-
 <script>    
 	var ctx = "${ctx}";
 </script>
@@ -65,7 +57,6 @@
 <script type="text/javascript" src="<c:url value="/js/map/style.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/map.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/layer.js?version=${nowDate}"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/map/layerWeather.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/wfsLayer.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/interaction.js?version=${nowDate}"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/map/measure.js?version=${nowDate}"/>"></script>
@@ -82,16 +73,6 @@
 <script>    
 let map;
 window.onload = function(){
-    var Day1_Base1;
-    var DAY1_700;
-    var DAY1_400;
-    var DAY1_100;
-    var DAY1_30;
-    var DAY1_5;
-    var DAY1_05;
-    var DAY1_u05;
-    var DAY2;
-    var DAY3;
 	mapInit();
 	// bundle.js가 먼저 로드되어 map 오류 발생 해결
     const bundleScript = document.createElement('script');
@@ -101,7 +82,12 @@ window.onload = function(){
 </script>
 </head>
 <body>
-<!-- <script type="text/javascript" src="js/map/canvasLayer/bundle.js"></script> -->
+<!-- 애니메이션 프로그래스 바 -->
+<div id="animationContainer" style="display: none">
+  <div class="progressBar">
+    <div class="progress" id="progress"><span id="currentPositionLabel" class="progressLabel"></span></div>
+  </div>
+</div>
 
 <div id="wrapper">
 		<div id="container">
@@ -166,50 +152,43 @@ window.onload = function(){
 					<input type="hidden" id="select_ship">
 				</div>
 				<div id="div_left_mapSetting" style="display: none">
-					<table width="100%">
-						<tr height="50px">
-							<td></td>
-						<tr>
-							<td>보기 설정</td>
-						</tr>
-						<tr height="10px">
-							<td></td>
-						<tr>
-						<tr height="1px">
-							<td style="background-color: black"></td>
-						<tr>
-						<tr height="10px">
-							<td></td>
-						<tr>
-						<tr>
-							<td>Base <input type="radio" name="ShipView" value="1" checked></td>
-						</tr>
-						<tr height="5px">
-							<td></td>
-						<tr>
-						<tr>
-							<td>Standard <input type="radio" name="ShipView" value="2" checked></td>
-						</tr>
-						<tr height="5px">
-							<td></td>
-						<tr>
-						<tr>
-							<td>Detail <input type="radio" name="ShipView" value="3"></td>
-						</tr>
-					</table>
+					<form id="radioSetting">
+						<table style="width: 100%">
+							<tr height="50px">
+								<td></td>
+							<tr>
+								<td>보기 설정</td>
+							</tr>
+							<tr height="10px">
+								<td></td>
+							<tr>
+							<tr height="1px">
+								<td style="background-color: black"></td>
+							<tr>
+							<tr height="10px">
+								<td></td>
+							<tr>
+							<tr>
+								<td>Base <input type="radio" id="mapBase" name="mapSetting" value="1"></td>
+							</tr>
+							<tr height="5px">
+								<td></td>
+							<tr>
+							<tr>
+								<td>Standard <input type="radio" id="mapStandard" name="mapSetting" value="2"></td>
+							</tr>
+							<tr height="5px">
+								<td></td>
+							<tr>
+							<tr>
+								<td>Detail <input type="radio" id="mapDetail" name="mapSetting" value="3"></td>
+							</tr>
+						</table>
+					</form>
+					<script>
+					</script>
 				</div>
 			</div>
-			<!-- <div class="div_left2">
-				<div id="div_left_weather" style="display: none;">
-					<table style="margin: 10px 10px 0;">
-						<colgroup><col width="50%"><col width="50%"></colgroup>
-						<tr>
-							<th style="padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;">1선명</th>
-							<th style="padding: 5px; border-bottom: 1px solid #d4d4d4; font-size: 13px; text-align: center;">IMO 번호</th>
-						</tr>
-					</table>
-				</div>
-			</div> -->
 			<div class="con_center">
 				<div class="menuBar">
 					<table>
@@ -342,41 +321,6 @@ window.onload = function(){
 				<button id="close_detail">닫기</button>
 			</div>		
 			<div class="scale"> <span id="mouseLocationStat" style="width:210px;float:left;"></span>  <span id="mapZoomLevelStat" style="width:200px;float:left;">SCALE=>1:10.000[LEVEL:27]</span></div>
-<!-- 			<div class="leftMenu">
-				<table style="border-collapse: separate; border-spacing: 5px;">
-					<tr>
-						<td>선박관리</td>
-					</tr>
-					<tr height="1px">
-						<td style="background-color: #6395b2"></td>
-					</tr>
-					<tr>
-						<td>지도설정</td>
-					</tr>
-					<tr height="1px">
-						<td style="background-color: #6395b2"></td>
-					</tr>
-					<tr>
-						<td style="background-color: #487295; font-weight: bold">기상정보</td>
-					</tr>
-					<tr height="1px">
-						<td style="background-color: #6395b2"></td>
-					</tr>
-					<tr>
-						<td>항로계획</td>
-					</tr>
-					<tr height="1px">
-						<td style="background-color: #6395b2"></td>
-					</tr>
-					<tr>
-						<td>기타</td>
-					</tr>
-					<tr height="1px">
-						<td style="background-color: #6395b2"></td>
-					</tr>
-				</table>
-			</div> -->
-
 			<div id="popup" class="ol-popup">
 				<a href="#" onclick="popupClose()" id="popup-closer" class="ol-popup-closer"></a>
 				<div id="popup-content"></div>
@@ -387,7 +331,7 @@ window.onload = function(){
 					$("#popup").hide();
 				}
 				
-				var isPopupOpen = false;
+				isPopupOpen = false;
 			</script>
 		</div>
 	</div>
