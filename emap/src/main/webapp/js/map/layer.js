@@ -46,11 +46,17 @@ function wmsInit(){
 	addLayers('Day1_Base');
 	addLayers('Day1_Standard');
 	addLayers('Day1_Detail');
+	addLayers('Day2_Base');
+	addLayers('Day2_Standard');
+	addLayers('Day2_Detail');
+	addLayers('Day3_Base');
+	addLayers('Day3_Standard');
+	addLayers('Day3_Detail');
 
     map.addLayer(Day1_Base7); // 기본값이라 추가
 
     //wms Day 야간(기본맵처럼사용)
-	DAY2 = new ol.layer.Tile({
+	/*DAY2 = new ol.layer.Tile({
 		id : 'Day2',
     	title: 'Day2',
     	opacity: 1,
@@ -99,7 +105,7 @@ function wmsInit(){
             }),
             wrapX: true
           })
-    });
+    });*/
 
    //wms lev6_OILBAR_L(기본맵처럼사용)
     var lev6_OILBAR_L = new ol.layer.Tile({
@@ -131,21 +137,21 @@ function wmsInit(){
 
     // 라디오 버튼 선택 시
 	radioSetting.addEventListener("change", function(event) {
-		const baseLayers = [Day1_Base1, Day1_Base4, Day1_Base7, Day1_Base10, Day1_Base12, Day1_Base13, Day1_Base14];
-		const standardLayers = [Day1_Standard1, Day1_Standard4, Day1_Standard7, Day1_Standard10, Day1_Standard12, Day1_Standard13, Day1_Standard14];
-		const detailLayers = [Day1_Detail1, Day1_Detail4, Day1_Detail7, Day1_Detail10, Day1_Detail12, Day1_Detail13, Day1_Detail14];
+		const baseLayers = [Day1_Base1, Day1_Base4, Day1_Base7, Day1_Base10, Day1_Base12, Day1_Base13, Day1_Base14, Day2_Base1, Day2_Base4, Day2_Base7, Day2_Base10, Day2_Base12, Day2_Base13, Day2_Base14, Day3_Base1, Day3_Base4, Day3_Base7, Day3_Base10, Day3_Base12, Day3_Base13, Day3_Base14];
+		const standardLayers = [Day1_Standard1, Day1_Standard4, Day1_Standard7, Day1_Standard10, Day1_Standard12, Day1_Standard13, Day1_Standard14, Day2_Standard1, Day2_Standard4, Day2_Standard7, Day2_Standard10, Day2_Standard12, Day2_Standard13, Day2_Standard14, Day3_Standard1, Day3_Standard4, Day3_Standard7, Day3_Standard10, Day3_Standard12, Day3_Standard13, Day3_Standard14];
+		const detailLayers = [Day1_Detail1, Day1_Detail4, Day1_Detail7, Day1_Detail10, Day1_Detail12, Day1_Detail13, Day1_Detail14, Day2_Detail1, Day2_Detail4, Day2_Detail7, Day2_Detail10, Day2_Detail12, Day2_Detail13, Day2_Detail14, Day3_Detail1, Day3_Detail4, Day3_Detail7, Day3_Detail10, Day3_Detail12, Day3_Detail13, Day3_Detail14];
 		
 		var allLayers = map.getLayers().getArray(); // 모든 추가된 레이어 정보 확인
 		const removeLayerIfPresent = (layer) => {
-		  if (allLayers.includes(layer)) {
-		    map.removeLayer(layer);
-		  }
+			if (allLayers.includes(layer)) {
+				map.removeLayer(layer);
+			}
 		};
 		
+		// 레이어들 삭제
 		baseLayers.forEach(removeLayerIfPresent);
 		standardLayers.forEach(removeLayerIfPresent);
 		detailLayers.forEach(removeLayerIfPresent);
-
 
         var selectedValue = event.target.value;
         if (selectedValue === '1') {
@@ -154,17 +160,37 @@ function wmsInit(){
         	layerMode = 2;
         } else if (selectedValue === '3') {
         	layerMode = 3;
-
-            /*var brightSelect = document.getElementById("brightSelect");
-
-            // brightSelect 값을 변경한 것처럼 'change' 이벤트를 발생시킴
-            var event = new Event('change');
-            brightSelect.dispatchEvent(event);*/
         }
-        
 		
 		// 레벨 값 얻어오기
 		var lev = map.getView().getZoom();
+		
+		/*var layerNo = lev;
+		if (lev <= 4)
+			layerNo = 1;
+		else if (lev < 7)
+			layerNo = 4;
+		else if (lev < 10)
+			layerNo = 7;
+		else if (lev < 12)
+			layerNo = 10;
+
+		var layerModeStr;
+		if (layerMode == 1)
+			layerModeStr = 'Base';
+		else if (layerMode ==2)
+			layerModeStr = 'Standard';
+		else
+			layerModeStr = 'Detail';
+
+var layerName = "Day" + brightMode + "_" + layerModeStr + layerNo;
+var layer = map.getLayer(layerName);
+alert(layer);
+
+		//map.addLayer(Day1_Standard7);
+   		map.addLayer(layer);
+		//`Day${brightMode}_${layerModeStr}${layerNo}`.setZIndex(-1);*/
+
 
 		if (brightMode == 1) {
 			if (layerMode == 1) {
@@ -238,15 +264,155 @@ function wmsInit(){
 				}
 			}
 		} else if (brightMode == 2) {
-			if (allLayers.includes(DAY3))
+			if (layerMode == 1) {
+				if (lev < 4) {
+		    		map.addLayer(Day2_Base1);
+					Day2_Base1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day2_Base4);
+					Day2_Base4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day2_Base7);
+					Day2_Base7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day2_Base10);
+					Day2_Base10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day2_Base12);
+					Day2_Base12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day2_Base13);
+					Day2_Base13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day2_Base14);
+					Day2_Base14.setZIndex(-1);
+				}
+			} else if (layerMode == 2) {
+				if (lev < 4) {
+		    		map.addLayer(Day2_Standard1);
+					Day2_Standard1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day2_Standard4);
+					Day2_Standard4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day2_Standard7);
+					Day2_Standard7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day2_Standard10);
+					Day2_Standard10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day2_Standard12);
+					Day2_Standard12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day2_Standard13);
+					Day2_Standard13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day2_Standard14);
+					Day2_Standard14.setZIndex(-1);
+				}
+			} else { // 3
+				if (lev < 4) {
+		    		map.addLayer(Day2_Detail1);
+					Day2_Detail1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day2_Detail4);
+					Day2_Detail4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day2_Detail7);
+					Day2_Detail7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day2_Detail10);
+					Day2_Detail10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day2_Detail12);
+					Day2_Detail12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day2_Detail13);
+					Day2_Detail13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day2_Detail14);
+					Day2_Detail14.setZIndex(-1);
+				}
+			}
+			/*if (allLayers.includes(DAY3))
 				map.removeLayer(DAY3);
 			map.addLayer(DAY2);
-			DAY2.setZIndex(-1);
+			DAY2.setZIndex(-1);*/
 		} else {
-			if (allLayers.includes(DAY2))
+			if (layerMode == 1) {
+				if (lev < 4) {
+		    		map.addLayer(Day3_Base1);
+					Day3_Base1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day3_Base4);
+					Day3_Base4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day3_Base7);
+					Day3_Base7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day3_Base10);
+					Day3_Base10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day3_Base12);
+					Day3_Base12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day3_Base13);
+					Day3_Base13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day3_Base14);
+					Day3_Base14.setZIndex(-1);
+				}
+			} else if (layerMode == 2) {
+				if (lev < 4) {
+		    		map.addLayer(Day3_Standard1);
+					Day3_Standard1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day3_Standard4);
+					Day3_Standard4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day3_Standard7);
+					Day3_Standard7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day3_Standard10);
+					Day3_Standard10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day3_Standard12);
+					Day3_Standard12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day3_Standard13);
+					Day3_Standard13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day3_Standard14);
+					Day3_Standard14.setZIndex(-1);
+				}
+			} else { // 3
+				if (lev < 4) {
+		    		map.addLayer(Day3_Detail1);
+					Day3_Detail1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day3_Detail4);
+					Day3_Detail4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day3_Detail7);
+					Day3_Detail7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day3_Detail10);
+					Day3_Detail10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day3_Detail12);
+					Day3_Detail12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day3_Detail13);
+					Day3_Detail13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day3_Detail14);
+					Day3_Detail14.setZIndex(-1);
+				}
+			}
+			/*if (allLayers.includes(DAY2))
 				map.removeLayer(DAY2);
     		map.addLayer(DAY3);
-			DAY3.setZIndex(-1);
+			DAY3.setZIndex(-1);*/
 		}
     });
 
@@ -280,10 +446,10 @@ function wmsInit(){
 
 		if (brightRange == 1) {
 			//alert("layerModeAAAA : " + layerMode)
-			if (allLayers.includes(DAY2))
+			/*if (allLayers.includes(DAY2))
 				map.removeLayer(DAY2);
 			else if (allLayers.includes(DAY3))
-				map.removeLayer(DAY3);
+				map.removeLayer(DAY3);*/
 			//else if (layerMode == 1) {
 			/*if (allLayers.includes(Day1_Base1))
 				map.removeLayer(Day1_Base1);
@@ -402,8 +568,78 @@ function wmsInit(){
 				}
 			}
 		} else if (brightRange == 2) {
-			if (allLayers.includes(DAY3))
-				map.removeLayer(DAY3);
+			if (layerMode == 1) {
+				if (lev < 4) {
+		    		map.addLayer(Day2_Base1);
+					Day2_Base1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day2_Base4);
+					Day2_Base4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day2_Base7);
+					Day2_Base7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day2_Base10);
+					Day2_Base10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day2_Base12);
+					Day2_Base12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day2_Base13);
+					Day2_Base13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day2_Base14);
+					Day2_Base14.setZIndex(-1);
+				}
+			} else if (layerMode == 2) {
+				if (lev < 4) {
+		    		map.addLayer(Day2_Standard1);
+					Day2_Standard1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day2_Standard4);
+					Day2_Standard4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day2_Standard7);
+					Day2_Standard7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day2_Standard10);
+					Day2_Standard10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day2_Standard12);
+					Day2_Standard12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day2_Standard13);
+					Day2_Standard13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day2_Standard14);
+					Day2_Standard14.setZIndex(-1);
+				}
+			} else { // 3
+				if (lev < 4) {
+		    		map.addLayer(Day2_Detail1);
+					Day2_Detail1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day2_Detail4);
+					Day2_Detail4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day2_Detail7);
+					Day2_Detail7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day2_Detail10);
+					Day2_Detail10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day2_Detail12);
+					Day2_Detail12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day2_Detail13);
+					Day2_Detail13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day2_Detail14);
+					Day2_Detail14.setZIndex(-1);
+				}
+			}
+			/*if (allLayers.includes(DAY3))
+				map.removeLayer(DAY3);*/
 			/*else if (layerMode == 1) {
 				if (allLayers.includes(Day1_Base1))
 					map.removeLayer(Day1_Base1);
@@ -450,11 +686,81 @@ function wmsInit(){
 				else if (allLayers.includes(Day1_Detail14))
 					map.removeLayer(Day1_Detail14);
 			}*/
-			map.addLayer(DAY2);
-			DAY2.setZIndex(-1);
+			/*map.addLayer(DAY2);
+			DAY2.setZIndex(-1);*/
 		} else {
-			if (allLayers.includes(DAY2))
-				map.removeLayer(DAY2);
+			if (layerMode == 1) {
+				if (lev < 4) {
+		    		map.addLayer(Day3_Base1);
+					Day3_Base1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day3_Base4);
+					Day3_Base4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day3_Base7);
+					Day3_Base7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day3_Base10);
+					Day3_Base10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day3_Base12);
+					Day3_Base12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day3_Base13);
+					Day3_Base13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day3_Base14);
+					Day3_Base14.setZIndex(-1);
+				}
+			} else if (layerMode == 2) {
+				if (lev < 4) {
+		    		map.addLayer(Day3_Standard1);
+					Day3_Standard1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day3_Standard4);
+					Day3_Standard4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day3_Standard7);
+					Day3_Standard7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day3_Standard10);
+					Day3_Standard10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day3_Standard12);
+					Day3_Standard12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day3_Standard13);
+					Day3_Standard13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day3_Standard14);
+					Day3_Standard14.setZIndex(-1);
+				}
+			} else { // 3
+				if (lev < 4) {
+		    		map.addLayer(Day3_Detail1);
+					Day3_Detail1.setZIndex(-1);
+				} else if (lev < 7) {
+		    		map.addLayer(Day3_Detail4);
+					Day3_Detail4.setZIndex(-1);
+				} else if (lev < 10) {
+		    		map.addLayer(Day3_Detail7);
+					Day3_Detail7.setZIndex(-1);
+				} else if (lev < 12) {
+		    		map.addLayer(Day3_Detail10);
+					Day3_Detail10.setZIndex(-1);
+				} else if (lev == 12) {
+		    		map.addLayer(Day3_Detail12);
+					Day3_Detail12.setZIndex(-1);
+				} else if (lev == 13) {
+		    		map.addLayer(Day3_Detail13);
+					Day3_Detail13.setZIndex(-1);
+				} else {
+		    		map.addLayer(Day3_Detail14);
+					Day3_Detail14.setZIndex(-1);
+				}
+			}
+			/*if (allLayers.includes(DAY2))
+				map.removeLayer(DAY2);*/
 			/*else if (layerMode == 1) {
 				if (allLayers.includes(Day1_Base1))
 					map.removeLayer(Day1_Base1);
@@ -501,8 +807,8 @@ function wmsInit(){
 				else if (allLayers.includes(Day1_Detail14))
 					map.removeLayer(Day1_Detail14);
 			}*/
-    		map.addLayer(DAY3);
-			DAY3.setZIndex(-1);
+    		/*map.addLayer(DAY3);
+			DAY3.setZIndex(-1);*/
 		}
 	});
 }

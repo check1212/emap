@@ -87,8 +87,8 @@
 			 order by "GatherTime"
 		]]>
 	</select>
-	
-	<select id="map.getWeather" resultClass="WeatherVO">
+
+	<!-- <select id="map.getWeather" resultClass="WeatherVO">
 		<![CDATA[
 			SELECT * FROM $tableName$
 			 WHERE time::date = TO_DATE(#date#, 'YYYYMMDD')
@@ -96,6 +96,12 @@
 			 and lat <= 39
 			 and lon >= 122
 			 and lon <= 132
+		]]>
+	</select> -->
+	<select id="map.getWeather" resultClass="WeatherVO">
+		<![CDATA[
+			SELECT * FROM $tableName$
+			 WHERE time::date = TO_DATE(#date#, 'YYYYMMDD')
 		]]>
 	</select>
 	

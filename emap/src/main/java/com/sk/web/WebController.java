@@ -281,7 +281,7 @@ public class WebController {
 		vo.setLon(floatLon);
 
 		List<WeatherVO> slist = mapService.getWeatherPopup(vo);		
-		if(slist.size() > 0) {			
+		if(slist.size() > 0) {
 			json.Json(res, slist);
 		}
 	}
