@@ -193,7 +193,7 @@ table input[type='checkbox'] {
 
 .ol-popup {
   position: absolute;
-  width: 190px;
+  width: 200px;
   height: 175px;
   background-color: white;
   -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));

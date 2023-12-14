@@ -70,7 +70,13 @@
 
 <script type="text/javascript" src="<c:url value="/js/script.js?version=${nowDate}"/>"></script>
 
-<script>    
+<!-- TTEST -->
+<!-- OpenSeaMap Harbour -->
+<script type="text/javascript" src="<c:url value="/js/map/openseamap/harbours.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/map/openseamap/utilities.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/map/openseamap/tidal_scale.js"/>"></script>
+
+<script>
 let map;
 window.onload = function(){
 	mapInit();

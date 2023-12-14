@@ -32,6 +32,11 @@ var shipMoveList = [];		//선박항적리스트
 var chocieShipMmsi="";  //상세선박정보 id
 var featTest;
 
+//TTEST
+var zoom = 10;
+var language = "ko";
+var linkTextWeatherHarbour = "Meteogramm";
+
 var animationId; // 애니메이션 식별자
 var isPopupOpen;
 var Day1_Base1;
@@ -135,8 +140,22 @@ function mapInit(){
 
 	map = new ol.Map({
 		layers: [
-			googlemap
+		    new ol.layer.Tile({
+		        source: new ol.source.OSM() // 기본 OpenStreetMap 레이어
+		    }),
+		    new ol.layer.Tile({
+		        source: new ol.source.OSM({
+		            attributions: [
+		                ol.source.OSM.DATA_ATTRIBUTION,
+		                '© <a href="http://www.openseamap.org/">OpenSeaMap</a>'
+		            ],
+		            url: 'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png'
+		        })
+		    })
 		],
+		/*layers: [
+			googlemap
+		],*/
 		target: 'dvMap',
 		view: view,
 		controls: new ol.control.defaults().extend([mouseControlCoordinate]),
@@ -145,9 +164,9 @@ function mapInit(){
 	});
     map.on('moveend', onMoveEnd);
 
-    // 배율 변경 이벤트에 따라 레이어 변경
+    // 배율(스케일) 변경 이벤트에 따라 레이어 변경
     //var previousScale = 34466743;
-	map.getView().on('change:resolution', function() {
+	/*map.getView().on('change:resolution', function() {
 		var allLayers = map.getLayers().getArray(); // 모든 추가된 레이어 정보 확인
 
 		//if (!allLayers.includes(DAY2) && !allLayers.includes(DAY3)) { // 밝기가 주간인 경우에만 동작
@@ -589,7 +608,7 @@ function mapInit(){
 		}
 		layerChange(layerMap, layerMode);
 		//}
-	});
+	});*/
 
 	map.on('singleclick', function (evt) {
 		if($("#div_route_detail").css("display") != "block" && drawInteration_route == null && drawInteration_search == null && isPopupOpen == false){
