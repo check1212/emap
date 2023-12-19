@@ -32,11 +32,13 @@ var shipMoveList = [];		//선박항적리스트
 var chocieShipMmsi="";  //상세선박정보 id
 var featTest;
 
+var zoom;
 //TTEST
-var zoom = 10;
-var language = "ko";
+/*var language = "ko";
 var linkTextWeatherHarbour = "Meteogramm";
+var linkTextSkipperGuide = "Port pilot";*/
 
+var lev; // 스케일 공유
 var animationId; // 애니메이션 식별자
 var isPopupOpen;
 var Day1_Base1;
@@ -166,449 +168,9 @@ function mapInit(){
 
     // 배율(스케일) 변경 이벤트에 따라 레이어 변경
     //var previousScale = 34466743;
-	/*map.getView().on('change:resolution', function() {
-		var allLayers = map.getLayers().getArray(); // 모든 추가된 레이어 정보 확인
-
-		//if (!allLayers.includes(DAY2) && !allLayers.includes(DAY3)) { // 밝기가 주간인 경우에만 동작
-		var lev = map.getView().getZoom();
-		var layerMap;
-
-		if (lev < 4) { // 특정 레벨 이상일 때 레이어 추가
-	        if (map.getLayers().getArray().includes(layerTempair)) {
-				if (lev == 3)
-	            	layerTempair.setRadius(5);
-	            else if (lev == 2)
-	            	layerTempair.setRadius(3.5);
-	            else if (lev == 1)
-	            	layerTempair.setRadius(2.5);
-	            else if (lev == 0) // else if가 아닌 else 처리시 레벨 변화 중간 단계에서 else로 처리됨
-	            	layerTempair.setRadius(1.5);
-	            layerTempair.changed();
-	        }
-	        if (map.getLayers().getArray().includes(layerTempwater)) {
-				if (lev == 3)
-	            	layerTempwater.setRadius(5);
-	            else if (lev == 2)
-	            	layerTempwater.setRadius(3.5);
-	            else if (lev == 1)
-	            	layerTempwater.setRadius(2.5);
-	            else if (lev == 0) // else if가 아닌 else 처리시 레벨 변화 중간 단계에서 else로 처리됨
-	            	layerTempwater.setRadius(1.5);
-	            layerTempwater.changed();
-	        }
-
-			if (brightMode == 1) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day1_Base4, Day1_Base7, Day1_Base10, Day1_Base12, Day1_Base13, Day1_Base14],
-						layerGroup: Day1_Base1
-					},
-					2: {
-						layerRemove: [Day1_Standard4, Day1_Standard7, Day1_Standard10, Day1_Standard12, Day1_Standard13, Day1_Standard14],
-						layerGroup: Day1_Standard1
-					},
-					3: {
-						layerRemove: [Day1_Detail4, Day1_Detail7, Day1_Detail10, Day1_Detail12, Day1_Detail13, Day1_Detail14],
-						layerGroup: Day1_Detail1
-					}
-				}
-			} else if (brightMode == 2) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day2_Base4, Day2_Base7, Day2_Base10, Day2_Base12, Day2_Base13, Day2_Base14],
-						layerGroup: Day2_Base1
-					},
-					2: {
-						layerRemove: [Day2_Standard4, Day2_Standard7, Day2_Standard10, Day2_Standard12, Day2_Standard13, Day2_Standard14],
-						layerGroup: Day2_Standard1
-					},
-					3: {
-						layerRemove: [Day2_Detail4, Day2_Detail7, Day2_Detail10, Day2_Detail12, Day2_Detail13, Day2_Detail14],
-						layerGroup: Day2_Detail1
-					}
-				}
-			} else { //3
-		        layerMap = {
-					1: {
-						layerRemove: [Day3_Base4, Day3_Base7, Day3_Base10, Day3_Base12, Day3_Base13, Day3_Base14],
-						layerGroup: Day3_Base1
-					},
-					2: {
-						layerRemove: [Day3_Standard4, Day3_Standard7, Day3_Standard10, Day3_Standard12, Day3_Standard13, Day3_Standard14],
-						layerGroup: Day3_Standard1
-					},
-					3: {
-						layerRemove: [Day3_Detail4, Day3_Detail7, Day3_Detail10, Day3_Detail12, Day3_Detail13, Day3_Detail14],
-						layerGroup: Day3_Detail1
-					}
-				}
-			}
-		} else if (lev < 7) {
-	        if (map.getLayers().getArray().includes(layerTempair)) {
-				if (lev == 6)
-	            	layerTempair.setRadius(30);
-	            else if (lev == 5)
-	            	layerTempair.setRadius(17);
-	            else if (lev == 4)
-	            	layerTempair.setRadius(10);
-	            layerTempair.changed();
-	        }
-	        if (map.getLayers().getArray().includes(layerTempwater)) {
-				if (lev == 6)
-	            	layerTempwater.setRadius(30);
-	            else if (lev == 5)
-	            	layerTempwater.setRadius(17);
-	            else if (lev == 4)
-	            	layerTempwater.setRadius(10);
-	            layerTempwater.changed();
-	        }
-
-			if (brightMode == 1) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day1_Base1, Day1_Base7, Day1_Base10, Day1_Base12, Day1_Base13, Day1_Base14],
-						layerGroup: Day1_Base4
-					},
-					2: {
-						layerRemove: [Day1_Standard1, Day1_Standard7, Day1_Standard10, Day1_Standard12, Day1_Standard13, Day1_Standard14],
-						layerGroup: Day1_Standard4
-					},
-					3: {
-						layerRemove: [Day1_Detail1, Day1_Detail7, Day1_Detail10, Day1_Detail12, Day1_Detail13, Day1_Detail14],
-						layerGroup: Day1_Detail4
-					}
-				}
-			} else if (brightMode == 2) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day2_Base1, Day2_Base7, Day2_Base10, Day2_Base12, Day2_Base13, Day2_Base14],
-						layerGroup: Day2_Base4
-					},
-					2: {
-						layerRemove: [Day2_Standard1, Day2_Standard7, Day2_Standard10, Day2_Standard12, Day2_Standard13, Day2_Standard14],
-						layerGroup: Day2_Standard4
-					},
-					3: {
-						layerRemove: [Day2_Detail1, Day2_Detail7, Day2_Detail10, Day2_Detail12, Day2_Detail13, Day2_Detail14],
-						layerGroup: Day2_Detail4
-					}
-				}
-			} else {
-		        layerMap = {
-					1: {
-						layerRemove: [Day3_Base1, Day3_Base7, Day3_Base10, Day3_Base12, Day3_Base13, Day3_Base14],
-						layerGroup: Day3_Base4
-					},
-					2: {
-						layerRemove: [Day3_Standard1, Day3_Standard7, Day3_Standard10, Day3_Standard12, Day3_Standard13, Day3_Standard14],
-						layerGroup: Day3_Standard4
-					},
-					3: {
-						layerRemove: [Day3_Detail1, Day3_Detail7, Day3_Detail10, Day3_Detail12, Day3_Detail13, Day3_Detail14],
-						layerGroup: Day3_Detail4
-					}
-				}
-			}
-		} else if (lev < 10) {
-	        if (map.getLayers().getArray().includes(layerTempair)) {
-				if (lev == 7)
-	            	layerTempair.setRadius(50);
-	            else if (lev == 8)
-	            	layerTempair.setRadius(100);
-				else if (lev == 9)
-	            	layerTempair.setRadius(200);
-	            layerTempair.changed();
-	        }
-	        if (map.getLayers().getArray().includes(layerTempwater)) {
-				if (lev == 7)
-	            	layerTempwater.setRadius(50);
-	            else if (lev == 8)
-	            	layerTempwater.setRadius(100);
-				else if (lev == 9)
-	            	layerTempwater.setRadius(200);
-	            layerTempwater.changed();
-	        }
-
-			if (brightMode == 1) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day1_Base1, Day1_Base4, Day1_Base10, Day1_Base12, Day1_Base13, Day1_Base14],
-						layerGroup: Day1_Base7
-					},
-					2: {
-						layerRemove: [Day1_Standard1, Day1_Standard4, Day1_Standard10, Day1_Standard12, Day1_Standard13, Day1_Standard14],
-						layerGroup: Day1_Standard7
-					},
-					3: {
-						layerRemove: [Day1_Detail1, Day1_Detail4, Day1_Detail10, Day1_Detail12, Day1_Detail13, Day1_Detail14],
-						layerGroup: Day1_Detail7
-					}
-				}
-			} else if (brightMode == 2) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day2_Base1, Day2_Base4, Day2_Base10, Day2_Base12, Day2_Base13, Day2_Base14],
-						layerGroup: Day2_Base7
-					},
-					2: {
-						layerRemove: [Day2_Standard1, Day2_Standard4, Day2_Standard10, Day2_Standard12, Day2_Standard13, Day2_Standard14],
-						layerGroup: Day2_Standard7
-					},
-					3: {
-						layerRemove: [Day2_Detail1, Day2_Detail4, Day2_Detail10, Day2_Detail12, Day2_Detail13, Day2_Detail14],
-						layerGroup: Day2_Detail7
-					}
-				}
-			} else {
-		        layerMap = {
-					1: {
-						layerRemove: [Day3_Base1, Day3_Base4, Day3_Base10, Day3_Base12, Day3_Base13, Day3_Base14],
-						layerGroup: Day3_Base7
-					},
-					2: {
-						layerRemove: [Day3_Standard1, Day3_Standard4, Day3_Standard10, Day3_Standard12, Day3_Standard13, Day3_Standard14],
-						layerGroup: Day3_Standard7
-					},
-					3: {
-						layerRemove: [Day3_Detail1, Day3_Detail4, Day3_Detail10, Day3_Detail12, Day3_Detail13, Day3_Detail14],
-						layerGroup: Day3_Detail7
-					}
-				}
-			}
-		} else if (lev < 12) {
-	        if (map.getLayers().getArray().includes(layerTempair)) {
-				if (lev == 10)
-	            	layerTempair.setRadius(400);
-				else if (lev == 11)
-	            	layerTempair.setRadius(700);
-	            layerTempair.changed();
-	        }
-	        if (map.getLayers().getArray().includes(layerTempwater)) {
-	            if (lev == 10)
-	            	layerTempwater.setRadius(400);
-				else if (lev == 11)
-	            	layerTempwater.setRadius(700);
-	            layerTempwater.changed();
-	        }
-
-			if (brightMode == 1) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day1_Base1, Day1_Base4, Day1_Base7, Day1_Base12, Day1_Base13, Day1_Base14],
-						layerGroup: Day1_Base10
-					},
-					2: {
-						layerRemove: [Day1_Standard1, Day1_Standard4, Day1_Standard7, Day1_Standard12, Day1_Standard13, Day1_Standard14],
-						layerGroup: Day1_Standard10
-					},
-					3: {
-						layerRemove: [Day1_Detail1, Day1_Detail4, Day1_Detail7, Day1_Detail12, Day1_Detail13, Day1_Detail14],
-						layerGroup: Day1_Detail10
-					}
-				}
-			} else if (brightMode == 2) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day2_Base1, Day2_Base4, Day2_Base7, Day2_Base12, Day2_Base13, Day2_Base14],
-						layerGroup: Day2_Base10
-					},
-					2: {
-						layerRemove: [Day2_Standard1, Day2_Standard4, Day2_Standard7, Day2_Standard12, Day2_Standard13, Day2_Standard14],
-						layerGroup: Day2_Standard10
-					},
-					3: {
-						layerRemove: [Day2_Detail1, Day2_Detail4, Day2_Detail7, Day2_Detail12, Day2_Detail13, Day2_Detail14],
-						layerGroup: Day2_Detail10
-					}
-				}
-			} else {
-		        layerMap = {
-					1: {
-						layerRemove: [Day3_Base1, Day3_Base4, Day3_Base7, Day3_Base12, Day3_Base13, Day3_Base14],
-						layerGroup: Day3_Base10
-					},
-					2: {
-						layerRemove: [Day3_Standard1, Day3_Standard4, Day3_Standard7, Day3_Standard12, Day3_Standard13, Day3_Standard14],
-						layerGroup: Day3_Standard10
-					},
-					3: {
-						layerRemove: [Day3_Detail1, Day3_Detail4, Day3_Detail7, Day3_Detail12, Day3_Detail13, Day3_Detail14],
-						layerGroup: Day3_Detail10
-					}
-				}
-			}
-		} else if (lev == 12) {
-	        if (map.getLayers().getArray().includes(layerTempair)) {
-	            layerTempair.setRadius(1300);
-	            layerTempair.changed();
-	        }
-	        if (map.getLayers().getArray().includes(layerTempwater)) {
-	            layerTempwater.setRadius(1300);
-	            layerTempwater.changed();
-	        }
-
-			if (brightMode == 1) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day1_Base1, Day1_Base4, Day1_Base7, Day1_Base10, Day1_Base13, Day1_Base14],
-						layerGroup: Day1_Base12
-					},
-					2: {
-						layerRemove: [Day1_Standard1, Day1_Standard4, Day1_Standard7, Day1_Standard10, Day1_Standard13, Day1_Standard14],
-						layerGroup: Day1_Standard12
-					},
-					3: {
-						layerRemove: [Day1_Detail1, Day1_Detail4, Day1_Detail7, Day1_Detail10, Day1_Detail13, Day1_Detail14],
-						layerGroup: Day1_Detail12
-					}
-				}
-			} else if (brightMode == 2) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day2_Base1, Day2_Base4, Day2_Base7, Day2_Base10, Day2_Base13, Day2_Base14],
-						layerGroup: Day2_Base12
-					},
-					2: {
-						layerRemove: [Day2_Standard1, Day2_Standard4, Day2_Standard7, Day2_Standard10, Day2_Standard13, Day2_Standard14],
-						layerGroup: Day2_Standard12
-					},
-					3: {
-						layerRemove: [Day2_Detail1, Day2_Detail4, Day2_Detail7, Day2_Detail10, Day2_Detail13, Day2_Detail14],
-						layerGroup: Day2_Detail12
-					}
-				}
-			} else {
-		        layerMap = {
-					1: {
-						layerRemove: [Day3_Base1, Day3_Base4, Day3_Base7, Day3_Base10, Day3_Base13, Day3_Base14],
-						layerGroup: Day3_Base12
-					},
-					2: {
-						layerRemove: [Day3_Standard1, Day3_Standard4, Day3_Standard7, Day3_Standard10, Day3_Standard13, Day3_Standard14],
-						layerGroup: Day3_Standard12
-					},
-					3: {
-						layerRemove: [Day3_Detail1, Day3_Detail4, Day3_Detail7, Day3_Detail10, Day3_Detail13, Day3_Detail14],
-						layerGroup: Day3_Detail12
-					}
-				}
-			}
-		} else if (lev == 13) {
-	        if (map.getLayers().getArray().includes(layerTempair)) {
-	            layerTempair.setRadius(2000); // 일정 수치 넘어서면 처리 안될 수 있음
-	            layerTempair.changed();
-	        }
-	        if (map.getLayers().getArray().includes(layerTempwater)) {
-	            layerTempwater.setRadius(2000);
-	            layerTempwater.changed();
-	        }
-
-			if (brightMode == 1) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day1_Base1, Day1_Base4, Day1_Base7, Day1_Base10, Day1_Base12, Day1_Base14],
-						layerGroup: Day1_Base13
-					},
-					2: {
-						layerRemove: [Day1_Standard1, Day1_Standard4, Day1_Standard7, Day1_Standard10, Day1_Standard12, Day1_Standard14],
-						layerGroup: Day1_Standard13
-					},
-					3: {
-						layerRemove: [Day1_Detail1, Day1_Detail4, Day1_Detail7, Day1_Detail10, Day1_Detail12, Day1_Detail14],
-						layerGroup: Day1_Detail13
-					}
-				}
-			} else if (brightMode == 2) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day2_Base1, Day2_Base4, Day2_Base7, Day2_Base10, Day2_Base12, Day2_Base14],
-						layerGroup: Day2_Base13
-					},
-					2: {
-						layerRemove: [Day2_Standard1, Day2_Standard4, Day2_Standard7, Day2_Standard10, Day2_Standard12, Day2_Standard14],
-						layerGroup: Day2_Standard13
-					},
-					3: {
-						layerRemove: [Day2_Detail1, Day2_Detail4, Day2_Detail7, Day2_Detail10, Day2_Detail12, Day2_Detail14],
-						layerGroup: Day2_Detail13
-					}
-				}
-			} else {
-		        layerMap = {
-					1: {
-						layerRemove: [Day3_Base1, Day3_Base4, Day3_Base7, Day3_Base10, Day3_Base12, Day3_Base14],
-						layerGroup: Day3_Base13
-					},
-					2: {
-						layerRemove: [Day3_Standard1, Day3_Standard4, Day3_Standard7, Day3_Standard10, Day3_Standard12, Day3_Standard14],
-						layerGroup: Day3_Standard13
-					},
-					3: {
-						layerRemove: [Day3_Detail1, Day3_Detail4, Day3_Detail7, Day3_Detail10, Day3_Detail12, Day3_Detail14],
-						layerGroup: Day3_Detail13
-					}
-				}
-			}
-		} else {
-	        if (map.getLayers().getArray().includes(layerTempair)) {
-	            layerTempair.setRadius(2000);
-	            layerTempair.changed();
-	        }
-	        if (map.getLayers().getArray().includes(layerTempwater)) {
-	            layerTempwater.setRadius(2000);
-	            layerTempwater.changed();
-	        }
-
-			if (brightMode == 1) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day1_Base1, Day1_Base4, Day1_Base7, Day1_Base10, Day1_Base12, Day1_Base13],
-						layerGroup: Day1_Base14
-					},
-					2: {
-						layerRemove: [Day1_Standard1, Day1_Standard4, Day1_Standard7, Day1_Standard10, Day1_Standard12, Day1_Standard13],
-						layerGroup: Day1_Standard14
-					},
-					3: {
-						layerRemove: [Day1_Detail1, Day1_Detail4, Day1_Detail7, Day1_Detail10, Day1_Detail12, Day1_Detail13],
-						layerGroup: Day1_Detail14
-					}
-				}
-			} else if (brightMode == 2) {
-		        layerMap = {
-					1: {
-						layerRemove: [Day2_Base1, Day2_Base4, Day2_Base7, Day2_Base10, Day2_Base12, Day2_Base13],
-						layerGroup: Day2_Base14
-					},
-					2: {
-						layerRemove: [Day2_Standard1, Day2_Standard4, Day2_Standard7, Day2_Standard10, Day2_Standard12, Day2_Standard13],
-						layerGroup: Day2_Standard14
-					},
-					3: {
-						layerRemove: [Day2_Detail1, Day2_Detail4, Day2_Detail7, Day2_Detail10, Day2_Detail12, Day2_Detail13],
-						layerGroup: Day2_Detail14
-					}
-				}
-			} else {
-		        layerMap = {
-					1: {
-						layerRemove: [Day3_Base1, Day3_Base4, Day3_Base7, Day3_Base10, Day3_Base12, Day3_Base13],
-						layerGroup: Day3_Base14
-					},
-					2: {
-						layerRemove: [Day3_Standard1, Day3_Standard4, Day3_Standard7, Day3_Standard10, Day3_Standard12, Day3_Standard13],
-						layerGroup: Day3_Standard14
-					},
-					3: {
-						layerRemove: [Day3_Detail1, Day3_Detail4, Day3_Detail7, Day3_Detail10, Day3_Detail12, Day3_Detail13],
-						layerGroup: Day3_Detail14
-					}
-				}
-			}
-		}
-		layerChange(layerMap, layerMode);
-		//}
-	});*/
+	map.getView().on('change:resolution', function() {
+		levelLayer();
+	});
 
 	map.on('singleclick', function (evt) {
 		if($("#div_route_detail").css("display") != "block" && drawInteration_route == null && drawInteration_search == null && isPopupOpen == false){
@@ -644,6 +206,8 @@ function mapInit(){
 
 	// 해도 레이어
 	wmsInit();
+	//TTEST
+	layer_osm();
 	map.removeLayer(googlemap); //배경맵 삭제
     vectorInit(); //베이스 vector레이어
     mapEvent(); //맵 버튼이벤트 설정
@@ -657,6 +221,450 @@ function mapInit(){
 	
 	getShipSearch(); //선박정보
 }
+
+function levelLayer() {
+	var allLayers = map.getLayers().getArray(); // 모든 추가된 레이어 정보 확인
+
+	//if (!allLayers.includes(DAY2) && !allLayers.includes(DAY3)) { // 밝기가 주간인 경우에만 동작
+	lev = map.getView().getZoom();
+	var layerMap;
+
+	if (lev < 4) { // 특정 레벨 이상일 때 레이어 추가
+        if (map.getLayers().getArray().includes(layerTempair)) {
+			if (lev == 3)
+            	layerTempair.setRadius(5);
+            else if (lev == 2)
+            	layerTempair.setRadius(3.5);
+            else if (lev == 1)
+            	layerTempair.setRadius(2.5);
+            else if (lev == 0) // else if가 아닌 else 처리시 레벨 변화 중간 단계에서 else로 처리됨
+            	layerTempair.setRadius(1.5);
+            layerTempair.changed();
+        }
+        if (map.getLayers().getArray().includes(layerTempwater)) {
+			if (lev == 3)
+            	layerTempwater.setRadius(5);
+            else if (lev == 2)
+            	layerTempwater.setRadius(3.5);
+            else if (lev == 1)
+            	layerTempwater.setRadius(2.5);
+            else if (lev == 0) // else if가 아닌 else 처리시 레벨 변화 중간 단계에서 else로 처리됨
+            	layerTempwater.setRadius(1.5);
+            layerTempwater.changed();
+        }
+
+		/*if (brightMode == 1) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day1_Base4, Day1_Base7, Day1_Base10, Day1_Base12, Day1_Base13, Day1_Base14],
+					layerGroup: Day1_Base1
+				},
+				2: {
+					layerRemove: [Day1_Standard4, Day1_Standard7, Day1_Standard10, Day1_Standard12, Day1_Standard13, Day1_Standard14],
+					layerGroup: Day1_Standard1
+				},
+				3: {
+					layerRemove: [Day1_Detail4, Day1_Detail7, Day1_Detail10, Day1_Detail12, Day1_Detail13, Day1_Detail14],
+					layerGroup: Day1_Detail1
+				}
+			}
+		} else if (brightMode == 2) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day2_Base4, Day2_Base7, Day2_Base10, Day2_Base12, Day2_Base13, Day2_Base14],
+					layerGroup: Day2_Base1
+				},
+				2: {
+					layerRemove: [Day2_Standard4, Day2_Standard7, Day2_Standard10, Day2_Standard12, Day2_Standard13, Day2_Standard14],
+					layerGroup: Day2_Standard1
+				},
+				3: {
+					layerRemove: [Day2_Detail4, Day2_Detail7, Day2_Detail10, Day2_Detail12, Day2_Detail13, Day2_Detail14],
+					layerGroup: Day2_Detail1
+				}
+			}
+		} else { //3
+	        layerMap = {
+				1: {
+					layerRemove: [Day3_Base4, Day3_Base7, Day3_Base10, Day3_Base12, Day3_Base13, Day3_Base14],
+					layerGroup: Day3_Base1
+				},
+				2: {
+					layerRemove: [Day3_Standard4, Day3_Standard7, Day3_Standard10, Day3_Standard12, Day3_Standard13, Day3_Standard14],
+					layerGroup: Day3_Standard1
+				},
+				3: {
+					layerRemove: [Day3_Detail4, Day3_Detail7, Day3_Detail10, Day3_Detail12, Day3_Detail13, Day3_Detail14],
+					layerGroup: Day3_Detail1
+				}
+			}
+		}*/
+	} else if (lev < 7) {
+        if (map.getLayers().getArray().includes(layerTempair)) {
+			if (lev == 6)
+            	layerTempair.setRadius(30);
+            else if (lev == 5)
+            	layerTempair.setRadius(17);
+            else if (lev == 4)
+            	layerTempair.setRadius(10);
+            layerTempair.changed();
+        }
+        if (map.getLayers().getArray().includes(layerTempwater)) {
+			if (lev == 6)
+            	layerTempwater.setRadius(30);
+            else if (lev == 5)
+            	layerTempwater.setRadius(17);
+            else if (lev == 4)
+            	layerTempwater.setRadius(10);
+            layerTempwater.changed();
+        }
+
+		/*Wif (brightMode == 1) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day1_Base1, Day1_Base7, Day1_Base10, Day1_Base12, Day1_Base13, Day1_Base14],
+					layerGroup: Day1_Base4
+				},
+				2: {
+					layerRemove: [Day1_Standard1, Day1_Standard7, Day1_Standard10, Day1_Standard12, Day1_Standard13, Day1_Standard14],
+					layerGroup: Day1_Standard4
+				},
+				3: {
+					layerRemove: [Day1_Detail1, Day1_Detail7, Day1_Detail10, Day1_Detail12, Day1_Detail13, Day1_Detail14],
+					layerGroup: Day1_Detail4
+				}
+			}
+		} else if (brightMode == 2) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day2_Base1, Day2_Base7, Day2_Base10, Day2_Base12, Day2_Base13, Day2_Base14],
+					layerGroup: Day2_Base4
+				},
+				2: {
+					layerRemove: [Day2_Standard1, Day2_Standard7, Day2_Standard10, Day2_Standard12, Day2_Standard13, Day2_Standard14],
+					layerGroup: Day2_Standard4
+				},
+				3: {
+					layerRemove: [Day2_Detail1, Day2_Detail7, Day2_Detail10, Day2_Detail12, Day2_Detail13, Day2_Detail14],
+					layerGroup: Day2_Detail4
+				}
+			}
+		} else {
+	        layerMap = {
+				1: {
+					layerRemove: [Day3_Base1, Day3_Base7, Day3_Base10, Day3_Base12, Day3_Base13, Day3_Base14],
+					layerGroup: Day3_Base4
+				},
+				2: {
+					layerRemove: [Day3_Standard1, Day3_Standard7, Day3_Standard10, Day3_Standard12, Day3_Standard13, Day3_Standard14],
+					layerGroup: Day3_Standard4
+				},
+				3: {
+					layerRemove: [Day3_Detail1, Day3_Detail7, Day3_Detail10, Day3_Detail12, Day3_Detail13, Day3_Detail14],
+					layerGroup: Day3_Detail4
+				}
+			}
+		}*/
+	} else if (lev < 10) {
+        if (map.getLayers().getArray().includes(layerTempair)) {
+			if (lev == 7)
+            	layerTempair.setRadius(50);
+            else if (lev == 8)
+            	layerTempair.setRadius(100);
+			else if (lev == 9)
+            	layerTempair.setRadius(200);
+            layerTempair.changed();
+        }
+        if (map.getLayers().getArray().includes(layerTempwater)) {
+			if (lev == 7)
+            	layerTempwater.setRadius(50);
+            else if (lev == 8)
+            	layerTempwater.setRadius(100);
+			else if (lev == 9)
+            	layerTempwater.setRadius(200);
+            layerTempwater.changed();
+        }
+
+		/*if (brightMode == 1) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day1_Base1, Day1_Base4, Day1_Base10, Day1_Base12, Day1_Base13, Day1_Base14],
+					layerGroup: Day1_Base7
+				},
+				2: {
+					layerRemove: [Day1_Standard1, Day1_Standard4, Day1_Standard10, Day1_Standard12, Day1_Standard13, Day1_Standard14],
+					layerGroup: Day1_Standard7
+				},
+				3: {
+					layerRemove: [Day1_Detail1, Day1_Detail4, Day1_Detail10, Day1_Detail12, Day1_Detail13, Day1_Detail14],
+					layerGroup: Day1_Detail7
+				}
+			}
+		} else if (brightMode == 2) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day2_Base1, Day2_Base4, Day2_Base10, Day2_Base12, Day2_Base13, Day2_Base14],
+					layerGroup: Day2_Base7
+				},
+				2: {
+					layerRemove: [Day2_Standard1, Day2_Standard4, Day2_Standard10, Day2_Standard12, Day2_Standard13, Day2_Standard14],
+					layerGroup: Day2_Standard7
+				},
+				3: {
+					layerRemove: [Day2_Detail1, Day2_Detail4, Day2_Detail10, Day2_Detail12, Day2_Detail13, Day2_Detail14],
+					layerGroup: Day2_Detail7
+				}
+			}
+		} else {
+	        layerMap = {
+				1: {
+					layerRemove: [Day3_Base1, Day3_Base4, Day3_Base10, Day3_Base12, Day3_Base13, Day3_Base14],
+					layerGroup: Day3_Base7
+				},
+				2: {
+					layerRemove: [Day3_Standard1, Day3_Standard4, Day3_Standard10, Day3_Standard12, Day3_Standard13, Day3_Standard14],
+					layerGroup: Day3_Standard7
+				},
+				3: {
+					layerRemove: [Day3_Detail1, Day3_Detail4, Day3_Detail10, Day3_Detail12, Day3_Detail13, Day3_Detail14],
+					layerGroup: Day3_Detail7
+				}
+			}
+		}*/
+	} else if (lev < 12) {
+        if (map.getLayers().getArray().includes(layerTempair)) {
+			if (lev == 10)
+            	layerTempair.setRadius(400);
+			else if (lev == 11)
+            	layerTempair.setRadius(700);
+            layerTempair.changed();
+        }
+        if (map.getLayers().getArray().includes(layerTempwater)) {
+            if (lev == 10)
+            	layerTempwater.setRadius(400);
+			else if (lev == 11)
+            	layerTempwater.setRadius(700);
+            layerTempwater.changed();
+        }
+
+		/*if (brightMode == 1) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day1_Base1, Day1_Base4, Day1_Base7, Day1_Base12, Day1_Base13, Day1_Base14],
+					layerGroup: Day1_Base10
+				},
+				2: {
+					layerRemove: [Day1_Standard1, Day1_Standard4, Day1_Standard7, Day1_Standard12, Day1_Standard13, Day1_Standard14],
+					layerGroup: Day1_Standard10
+				},
+				3: {
+					layerRemove: [Day1_Detail1, Day1_Detail4, Day1_Detail7, Day1_Detail12, Day1_Detail13, Day1_Detail14],
+					layerGroup: Day1_Detail10
+				}
+			}
+		} else if (brightMode == 2) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day2_Base1, Day2_Base4, Day2_Base7, Day2_Base12, Day2_Base13, Day2_Base14],
+					layerGroup: Day2_Base10
+				},
+				2: {
+					layerRemove: [Day2_Standard1, Day2_Standard4, Day2_Standard7, Day2_Standard12, Day2_Standard13, Day2_Standard14],
+					layerGroup: Day2_Standard10
+				},
+				3: {
+					layerRemove: [Day2_Detail1, Day2_Detail4, Day2_Detail7, Day2_Detail12, Day2_Detail13, Day2_Detail14],
+					layerGroup: Day2_Detail10
+				}
+			}
+		} else {
+	        layerMap = {
+				1: {
+					layerRemove: [Day3_Base1, Day3_Base4, Day3_Base7, Day3_Base12, Day3_Base13, Day3_Base14],
+					layerGroup: Day3_Base10
+				},
+				2: {
+					layerRemove: [Day3_Standard1, Day3_Standard4, Day3_Standard7, Day3_Standard12, Day3_Standard13, Day3_Standard14],
+					layerGroup: Day3_Standard10
+				},
+				3: {
+					layerRemove: [Day3_Detail1, Day3_Detail4, Day3_Detail7, Day3_Detail12, Day3_Detail13, Day3_Detail14],
+					layerGroup: Day3_Detail10
+				}
+			}
+		}*/
+	} else if (lev == 12) {
+        if (map.getLayers().getArray().includes(layerTempair)) {
+            layerTempair.setRadius(1300);
+            layerTempair.changed();
+        }
+        if (map.getLayers().getArray().includes(layerTempwater)) {
+            layerTempwater.setRadius(1300);
+            layerTempwater.changed();
+        }
+
+		/*if (brightMode == 1) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day1_Base1, Day1_Base4, Day1_Base7, Day1_Base10, Day1_Base13, Day1_Base14],
+					layerGroup: Day1_Base12
+				},
+				2: {
+					layerRemove: [Day1_Standard1, Day1_Standard4, Day1_Standard7, Day1_Standard10, Day1_Standard13, Day1_Standard14],
+					layerGroup: Day1_Standard12
+				},
+				3: {
+					layerRemove: [Day1_Detail1, Day1_Detail4, Day1_Detail7, Day1_Detail10, Day1_Detail13, Day1_Detail14],
+					layerGroup: Day1_Detail12
+				}
+			}
+		} else if (brightMode == 2) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day2_Base1, Day2_Base4, Day2_Base7, Day2_Base10, Day2_Base13, Day2_Base14],
+					layerGroup: Day2_Base12
+				},
+				2: {
+					layerRemove: [Day2_Standard1, Day2_Standard4, Day2_Standard7, Day2_Standard10, Day2_Standard13, Day2_Standard14],
+					layerGroup: Day2_Standard12
+				},
+				3: {
+					layerRemove: [Day2_Detail1, Day2_Detail4, Day2_Detail7, Day2_Detail10, Day2_Detail13, Day2_Detail14],
+					layerGroup: Day2_Detail12
+				}
+			}
+		} else {
+	        layerMap = {
+				1: {
+					layerRemove: [Day3_Base1, Day3_Base4, Day3_Base7, Day3_Base10, Day3_Base13, Day3_Base14],
+					layerGroup: Day3_Base12
+				},
+				2: {
+					layerRemove: [Day3_Standard1, Day3_Standard4, Day3_Standard7, Day3_Standard10, Day3_Standard13, Day3_Standard14],
+					layerGroup: Day3_Standard12
+				},
+				3: {
+					layerRemove: [Day3_Detail1, Day3_Detail4, Day3_Detail7, Day3_Detail10, Day3_Detail13, Day3_Detail14],
+					layerGroup: Day3_Detail12
+				}
+			}
+		}*/
+	} else if (lev == 13) {
+        if (map.getLayers().getArray().includes(layerTempair)) {
+            layerTempair.setRadius(2000); // 일정 수치 넘어서면 처리 안될 수 있음
+            layerTempair.changed();
+        }
+        if (map.getLayers().getArray().includes(layerTempwater)) {
+            layerTempwater.setRadius(2000);
+            layerTempwater.changed();
+        }
+
+		/*if (brightMode == 1) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day1_Base1, Day1_Base4, Day1_Base7, Day1_Base10, Day1_Base12, Day1_Base14],
+					layerGroup: Day1_Base13
+				},
+				2: {
+					layerRemove: [Day1_Standard1, Day1_Standard4, Day1_Standard7, Day1_Standard10, Day1_Standard12, Day1_Standard14],
+					layerGroup: Day1_Standard13
+				},
+				3: {
+					layerRemove: [Day1_Detail1, Day1_Detail4, Day1_Detail7, Day1_Detail10, Day1_Detail12, Day1_Detail14],
+					layerGroup: Day1_Detail13
+				}
+			}
+		} else if (brightMode == 2) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day2_Base1, Day2_Base4, Day2_Base7, Day2_Base10, Day2_Base12, Day2_Base14],
+					layerGroup: Day2_Base13
+				},
+				2: {
+					layerRemove: [Day2_Standard1, Day2_Standard4, Day2_Standard7, Day2_Standard10, Day2_Standard12, Day2_Standard14],
+					layerGroup: Day2_Standard13
+				},
+				3: {
+					layerRemove: [Day2_Detail1, Day2_Detail4, Day2_Detail7, Day2_Detail10, Day2_Detail12, Day2_Detail14],
+					layerGroup: Day2_Detail13
+				}
+			}
+		} else {
+	        layerMap = {
+				1: {
+					layerRemove: [Day3_Base1, Day3_Base4, Day3_Base7, Day3_Base10, Day3_Base12, Day3_Base14],
+					layerGroup: Day3_Base13
+				},
+				2: {
+					layerRemove: [Day3_Standard1, Day3_Standard4, Day3_Standard7, Day3_Standard10, Day3_Standard12, Day3_Standard14],
+					layerGroup: Day3_Standard13
+				},
+				3: {
+					layerRemove: [Day3_Detail1, Day3_Detail4, Day3_Detail7, Day3_Detail10, Day3_Detail12, Day3_Detail14],
+					layerGroup: Day3_Detail13
+				}
+			}
+		}*/
+	} else {
+        if (map.getLayers().getArray().includes(layerTempair)) {
+            layerTempair.setRadius(2000);
+            layerTempair.changed();
+        }
+        if (map.getLayers().getArray().includes(layerTempwater)) {
+            layerTempwater.setRadius(2000);
+            layerTempwater.changed();
+        }
+
+		/*if (brightMode == 1) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day1_Base1, Day1_Base4, Day1_Base7, Day1_Base10, Day1_Base12, Day1_Base13],
+					layerGroup: Day1_Base14
+				},
+				2: {
+					layerRemove: [Day1_Standard1, Day1_Standard4, Day1_Standard7, Day1_Standard10, Day1_Standard12, Day1_Standard13],
+					layerGroup: Day1_Standard14
+				},
+				3: {
+					layerRemove: [Day1_Detail1, Day1_Detail4, Day1_Detail7, Day1_Detail10, Day1_Detail12, Day1_Detail13],
+					layerGroup: Day1_Detail14
+				}
+			}
+		} else if (brightMode == 2) {
+	        layerMap = {
+				1: {
+					layerRemove: [Day2_Base1, Day2_Base4, Day2_Base7, Day2_Base10, Day2_Base12, Day2_Base13],
+					layerGroup: Day2_Base14
+				},
+				2: {
+					layerRemove: [Day2_Standard1, Day2_Standard4, Day2_Standard7, Day2_Standard10, Day2_Standard12, Day2_Standard13],
+					layerGroup: Day2_Standard14
+				},
+				3: {
+					layerRemove: [Day2_Detail1, Day2_Detail4, Day2_Detail7, Day2_Detail10, Day2_Detail12, Day2_Detail13],
+					layerGroup: Day2_Detail14
+				}
+			}
+		} else {
+	        layerMap = {
+				1: {
+					layerRemove: [Day3_Base1, Day3_Base4, Day3_Base7, Day3_Base10, Day3_Base12, Day3_Base13],
+					layerGroup: Day3_Base14
+				},
+				2: {
+					layerRemove: [Day3_Standard1, Day3_Standard4, Day3_Standard7, Day3_Standard10, Day3_Standard12, Day3_Standard13],
+					layerGroup: Day3_Standard14
+				},
+				3: {
+					layerRemove: [Day3_Detail1, Day3_Detail4, Day3_Detail7, Day3_Detail10, Day3_Detail12, Day3_Detail13],
+					layerGroup: Day3_Detail14
+				}
+			}
+		}*/
+	}
+	//layerChange(layerMap, layerMode);
+}
+//});
 
 //맵 버튼이벤트 설정
 function mapEvent(){

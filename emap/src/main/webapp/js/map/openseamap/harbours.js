@@ -216,7 +216,7 @@ function harbourSourceLoader(extent, resolution, projection, success, failure) {
         });
       vectorSource.clear(true);
       vectorSource.addFeatures(features);
-      success(features);
+      //success(features);
     } else {
       onError();
     }

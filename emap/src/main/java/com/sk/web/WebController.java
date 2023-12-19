@@ -44,7 +44,6 @@ import com.ibm.icu.text.SimpleDateFormat;
 import com.sk.RouteDetailVO;
 import com.sk.RouteVO;
 import com.sk.ShipInfoVO;
-import com.sk.SkAlertVO;
 import com.sk.service.LibJson;
 import com.sk.service.mapService;
 
@@ -243,6 +242,25 @@ public class WebController {
 			json.Json(res, slist);
 		}
 	}
+
+	// 기상 테이블 존재 확인
+	/*@RequestMapping("getTable.do")
+	public void getTable(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		WeatherVO vo = new WeatherVO();
+		//vo.setDate((String)req.getParameter("date"));
+		String dateToTable = (String)req.getParameter("date"); // 20231203
+		vo.setDate(dateToTable);
+
+		dateToTable = "tb_" + dateToTable;
+		//vo.setTableName("tb_20231203");
+		vo.setTableName(dateToTable);
+		//vo.setDate(formattedDate);
+
+		List<WeatherVO> slist = mapService.getWeather(vo);		
+		if(slist.size() > 0) {			
+			json.Json(res, slist);
+		}
+	}*/
 
 	// 기상 정보
 	@RequestMapping("getWeather.do")

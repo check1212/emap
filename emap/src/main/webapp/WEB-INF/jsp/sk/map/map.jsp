@@ -72,9 +72,11 @@
 
 <!-- TTEST -->
 <!-- OpenSeaMap Harbour -->
-<script type="text/javascript" src="<c:url value="/js/map/openseamap/harbours.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/map/openseamap/utilities.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/map/openseamap/tidal_scale.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/map/openseamap/layer_osm.js?version=${nowDate}"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/map/openseamap/harbours.js?version=${nowDate}"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/map/openseamap/map_utils.js?version=${nowDate}"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/map/openseamap/tidal_scale.js?version=${nowDate}"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/map/openseamap/utilities.js?version=${nowDate}"/>"></script>
 
 <script>
 let map;
